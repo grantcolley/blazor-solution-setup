@@ -15,4 +15,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorComponents\BlazorComponents.csproj" />
+  </ItemGroup>
+
 </Project>
