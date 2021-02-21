@@ -12,7 +12,7 @@ namespace BlazorWebAssemblyApp
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<BlazorShared.App>("#app");
+            builder.RootComponents.Add<BlazorShared.App>("app");
 
             builder.Services.AddHttpClient<IWeatherForecastService, WeatherForecastService>(client =>
             {
