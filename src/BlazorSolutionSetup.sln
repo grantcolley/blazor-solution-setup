@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebAssemblyApp", "Bla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerApp", "BlazorServerApp\BlazorServerApp.csproj", "{DD08F566-7CF2-4C44-952B-CCBBC2FE0C6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityProvider", "IdentityProvider\IdentityProvider.csproj", "{C0258847-1822-4A8D-9FB2-3C55135BC4DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{DD08F566-7CF2-4C44-952B-CCBBC2FE0C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD08F566-7CF2-4C44-952B-CCBBC2FE0C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD08F566-7CF2-4C44-952B-CCBBC2FE0C6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0258847-1822-4A8D-9FB2-3C55135BC4DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0258847-1822-4A8D-9FB2-3C55135BC4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0258847-1822-4A8D-9FB2-3C55135BC4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0258847-1822-4A8D-9FB2-3C55135BC4DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
