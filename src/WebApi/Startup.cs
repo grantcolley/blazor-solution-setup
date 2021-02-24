@@ -1,5 +1,6 @@
 using AppCore.Interface;
 using AppRepository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +37,14 @@ namespace WebApi
             });
 
             services.AddControllers();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://localhost:5001";
+                    options.Audience = "weatherapi";
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
@@ -57,6 +66,8 @@ namespace WebApi
             app.UseRouting();
 
             app.UseCors("Open");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
