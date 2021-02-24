@@ -42,10 +42,10 @@ namespace IdentityProvider
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44339" },
-                    AllowedScopes = { "openid", "profile", "email", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44339/authentication/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:44339/" },
+                    AllowedCorsOrigins = { "https://localhost:44308" },
+                    AllowedScopes = { "openid", "profile", "weatherapiread" },
+                    RedirectUris = { "https://localhost:44308/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:44308/" },
                     Enabled = true
                 },
 
