@@ -1,4 +1,6 @@
 ﻿@page "/fetchdata"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
 
 <h1>Weather forecast</h1>
 
@@ -34,9 +36,9 @@ else
 }
 
 @code {
-    
+
     protected IEnumerable<WeatherForecast> forecasts;
-    
+
     [Inject]
     public IWeatherForecastService WeatherForecastService { get; set; }
 
