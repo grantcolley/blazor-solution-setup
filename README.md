@@ -81,7 +81,7 @@ Create a class library for the repository code.
 ```
 
 ## 3. ASP.NET Core Web API
-Create an ASP.NET Core Web API 
+Create an ASP.NET Core Web API for restricted access to our repository.
 
 3.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
 
@@ -100,9 +100,9 @@ Microsoft.AspNetCore.Authentication.Jwt
   "sslPort": 5000
 ```
 
-3.4. Delete class *WeatherForecast.cs*
+3.5. Delete class *WeatherForecast.cs*
 
-3.5 In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
+3.6 In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
   * Register [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) with the concrete implementation [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs)
   * Add a CORS policy to enable Cross-Origin Requests to allow requests from a different origin to the WebApi. See [Enable Cross-Origin Requests (CORS)](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0) for more details.
   * Add `AddAuthentication`
@@ -131,7 +131,7 @@ Microsoft.AspNetCore.Authentication.Jwt
         }
 ```
 
-3.6. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs) :
+3.7. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs) :
   * Add `UseAuthentication` before `app.UseAuthorization` 
   * Add a call to `UserCors` extension method to add the CORS middleware. This must be after `UseRouting`, but before `UseAuthentication`
 
@@ -152,9 +152,9 @@ Microsoft.AspNetCore.Authentication.Jwt
         }
 ```
 
-3.6. In the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
+3.8. In the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
   * Delete the *Summaries* array field
-  * Add a `[Authorize]` attribute at class level to restrict access to it 
+  * Add an `[Authorize]` attribute at class level to restrict access to it 
   * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Core/Interface/IWeatherForecastRepository.cs) into the construcor and replace the contents of the `Get()` method as follows:
   
 ```C#
