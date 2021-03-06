@@ -15,7 +15,7 @@ From the outset I want to consider both hosting models when writing classes and 
 * [Repository Class Library](#repository-class-library)
 
 
-### 1. Core Class Library
+# 1. Core Class Library
 First up we create a class library for core classes that will be shared across all projects. How we use these will become apparent later. 
 
 1.1. Create a Class Library called [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
@@ -38,7 +38,7 @@ First up we create a class library for core classes that will be shared across a
   * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/WeatherForecast.cs)
   * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
 
-### 2. Repository Class Library
+# 2. Repository Class Library
 
 2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
