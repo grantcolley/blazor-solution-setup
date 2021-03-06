@@ -14,7 +14,7 @@ From the outset I want to consider both hosting models when writing classes and 
 * [Core Class Library](#core-class-library)
 
 ### 1. Core Class Library
-First up we create a class library for core classes that will be shared across all projects.
+First up we create a class library for core classes that will be shared across all projects. How we use these will become apparent later. 
 
 1.1. Create a Class Library called [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
