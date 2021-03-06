@@ -26,6 +26,7 @@ First up we create a class library for core classes that will be shared across a
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 ```
+
 1.3. Delete *Class1.cs*
 
 1.4. Create two folders called *Interface* and *Model*
@@ -39,6 +40,7 @@ First up we create a class library for core classes that will be shared across a
   * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
 
 ## 2. Repository Class Library
+Create a class library for the repository code.
 
 2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
@@ -49,9 +51,9 @@ First up we create a class library for core classes that will be shared across a
   </PropertyGroup>
 ```
 
-2.3. Delete *Class1.cs*
+2.3. Add a reference to [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
-2.4. Add a reference to [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
+2.4. Delete *Class1.cs*
 
 2.5. Create a class called [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs) that implements [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs)
 
@@ -77,4 +79,98 @@ First up we create a class library for core classes that will be shared across a
     }
 ```
 
+## 3. ASP.NET Core Web API
+Create an ASP.NET Core Web API 
+
+3.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
+
+3.2. Add a reference to the following projects:
+   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+   * [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
+
+3.3 Add the following nuget package to enable the [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi) to receive an OpenID Connect bearer token:
+
+```C#
+Microsoft.AspNetCore.Authentication.Jwt
+```
+
+3.4. Delete class *WeatherForecast.cs*
+
+3.5 In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
+  * Register [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) with the concrete implementation [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs)
+  * Add a CORS policy to enable Cross-Origin Requests to allow requests from a different origin to the WebApi. See [Enable Cross-Origin Requests (CORS)](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0) for more details.
+  * Add `AddAuthentication`
+
+```C#
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
+
+            services.AddControllers();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://localhost:5001";
+                    options.Audience = "weatherapi";
+                });
+                
+            // additional code removed for simplicity
+          
+        }
+```
+
+3.6. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs) :
+  * Add `UseAuthentication` before `app.UseAuthorization` 
+  * Add a call to `UserCors` extension method to add the CORS middleware. This must be after `UseRouting`, but before `UseAuthentication`
+
+```C#
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            // additional code removed for simplicity
+            
+            app.UseRouting();
+
+            app.UseCors("Open");
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+            // additional code removed for simplicity
+        }
+```
+
+3.6. In the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
+  * Delete the *Summaries* array field
+  * Add a `[Authorize]` attribute at class level to restrict access to it 
+  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Core/Interface/IWeatherForecastRepository.cs) into the construcor and replace the contents of the `Get()` method as follows:
+  
+```C#
+    [Authorize]
+    [ApiController]
+    [Route("[controller]")]
+    public class WeatherForecastController : ControllerBase
+    {
+        private readonly ILogger<WeatherForecastController> logger;
+        private readonly IWeatherForecastRepository weatherForecastRepository;
+
+        public WeatherForecastController(IWeatherForecastRepository weatherForecastRepository, ILogger<WeatherForecastController> logger)
+        {
+            this.weatherForecastRepository = weatherForecastRepository;
+            this.logger = logger;
+        }
+
+        [HttpGet]
+        public IEnumerable<WeatherForecast> Get()
+        {
+            return weatherForecastRepository.GetWeatherForecasts();
+        }
+    }
+```
 
