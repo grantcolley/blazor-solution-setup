@@ -10,3 +10,28 @@ From the outset I want to consider both hosting models when writing classes and 
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
+#### Table of Contents
+* [Core Class Library](#core-class-library)
+
+### 1. Core Class Library
+First up we create a class library for core classes that will be shared across all projects.
+
+1.1. Create a Class Library called [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+
+1.2. Double-click on the project and set the target framework to .NET 5.0
+```C#
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+```
+1.3. Delete *Class1.cs*
+
+1.4. Create two folders called *Interface* and *Model*
+
+1.5. In the *Interface* folder create the following interfaces:
+  * [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs)
+  * [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+
+1.6. In the *Model* folder create the following classes:
+  * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/WeatherForecast.cs)
+  * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
