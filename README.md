@@ -10,4 +10,3 @@ From the outset I want to consider both hosting models when writing classes and 
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
-
