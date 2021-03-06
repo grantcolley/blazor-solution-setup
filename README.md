@@ -165,8 +165,10 @@ Microsoft.AspNetCore.Authentication.Jwt
     {
         private readonly ILogger<WeatherForecastController> logger;
         private readonly IWeatherForecastRepository weatherForecastRepository;
-
-        public WeatherForecastController(IWeatherForecastRepository weatherForecastRepository, ILogger<WeatherForecastController> logger)
+        
+        public WeatherForecastController(
+            IWeatherForecastRepository weatherForecastRepository, 
+            ILogger<WeatherForecastController> logger)
         {
             this.weatherForecastRepository = weatherForecastRepository;
             this.logger = logger;
