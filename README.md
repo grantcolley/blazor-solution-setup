@@ -8,5 +8,6 @@ I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor
 
 From the outset I want to consider both hosting models when writing classes and components and integrating authentication. In other words, before I start writing any application specific code I want a solution setup that includes all the necessary projects to support a system that looks like this:
 
-![Alt text](/readme-images/BlazorSolutionTemplate.sln.png?raw=true "BlazorSolutionTemplate Solution") 
+![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
+
 
