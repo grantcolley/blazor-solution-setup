@@ -95,7 +95,7 @@ Create an ASP.NET Core Web API for restricted access to our repository.
 Microsoft.AspNetCore.Authentication.Jwt
 ```
 
-3.4 Set the sslPort in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+3.4 Set the *sslPort* in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
 ```C#
   "sslPort": 5000
 ```
