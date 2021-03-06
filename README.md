@@ -199,6 +199,8 @@ Create a class library for services.
 4.4. Delete *Class1.cs*
 
 4.5. Create the class [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+  * Create two constructors. One accepting `HttpClient` which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp)The other accepting both `HttpClient` and `TokenProvider` which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp)
+  * In the `GetWeatherForecasts()` method, if `useAccessToken` is true then add it to the header of the request.
 
 ```C#
     public class WeatherForecastService : IWeatherForecastService
@@ -207,15 +209,17 @@ Create a class library for services.
         private readonly TokenProvider tokenProvider;
         private readonly bool useAccessToken;
 
-        public WeatherForecastService(HttpClient httpClient) : this(httpClient, null, false)
+        public WeatherForecastService(HttpClient httpClient)
         {
+            this.httpClient = httpClient;
+            useAccessToken = false;            
         }
 
-        public WeatherForecastService(HttpClient httpClient, TokenProvider tokenProvider, bool useAccessToken)
+        public WeatherForecastService(HttpClient httpClient, TokenProvider tokenProvider)
         {
             this.httpClient = httpClient;
             this.tokenProvider = tokenProvider;
-            this.useAccessToken = useAccessToken;
+            useAccessToken = true;
         }
 
         public async Task<IEnumerable<WeatherForecast>> GetWeatherForecasts()
@@ -234,6 +238,7 @@ Create a class library for services.
 
 > **_NOTE:_**
 > The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. 
-> `IHttpClientFactory` can be registered by calling `AddHttpClient`. Alternatively register a typed client to accept an HttpClient parameter in its constructor
+> 
+> `IHttpClientFactory` can be registered by calling `AddHttpClient`. Alternatively register a typed client to accept an HttpClient parameter in its constructor.
 >
 >             services.AddHttpClient(..) // registers IHttpClientFactory
