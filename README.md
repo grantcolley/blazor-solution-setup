@@ -17,7 +17,7 @@ From the outset I want to consider both hosting models when writing classes and 
 
 
 ## 1. Core Class Library
-First up we create a class library for core classes that will be shared across all projects. How we use these will become apparent later. 
+First up we create a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
 
 1.1. Create a Class Library called [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
@@ -41,7 +41,7 @@ First up we create a class library for core classes that will be shared across a
   * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
 
 ## 2. Repository Class Library
-Create a class library for the repository code.
+Create a Class Library for the repository code.
 
 2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
@@ -155,7 +155,7 @@ Microsoft.AspNetCore.Authentication.Jwt
 3.8. In the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
   * Delete the *Summaries* array field
   * Add an `[Authorize]` attribute at class level to restrict access to it 
-  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Core/Interface/IWeatherForecastRepository.cs) into the construcor and replace the contents of the `Get()` method as follows:
+  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Core/Interface/IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()` method as follows:
   
 ```C#
     [Authorize]
@@ -200,7 +200,40 @@ Create a class library for services.
 
 4.5. Create the class [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
 
+```C#
+    public class WeatherForecastService : IWeatherForecastService
+    {
+        private readonly HttpClient httpClient;
+        private readonly TokenProvider tokenProvider;
+        private readonly bool useAccessToken;
+
+        public WeatherForecastService(HttpClient httpClient) : this(httpClient, null, false)
+        {
+        }
+
+        public WeatherForecastService(HttpClient httpClient, TokenProvider tokenProvider, bool useAccessToken)
+        {
+            this.httpClient = httpClient;
+            this.tokenProvider = tokenProvider;
+            this.useAccessToken = useAccessToken;
+        }
+
+        public async Task<IEnumerable<WeatherForecast>> GetWeatherForecasts()
+        {
+            if (useAccessToken)
+            {
+                var token = tokenProvider.AccessToken;
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            }
+
+            return await JsonSerializer.DeserializeAsync<IEnumerable<WeatherForecast>>
+                (await httpClient.GetStreamAsync($"WeatherForecast"), new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        }
+    }
+```
+
 > **_NOTE:_**
-> The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. `IHttpClientFactory` can be registered by calling `AddHttpClient`.
+> The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. 
+> `IHttpClientFactory` can be registered by calling `AddHttpClient`. Alternatively register a typed client to accept an HttpClient parameter in its constructor
 >
 >             services.AddHttpClient(..) // registers IHttpClientFactory
