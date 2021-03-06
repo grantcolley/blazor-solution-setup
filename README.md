@@ -127,7 +127,6 @@ Microsoft.AspNetCore.Authentication.Jwt
                 });
                 
             // additional code removed for simplicity
-          
         }
 ```
 
