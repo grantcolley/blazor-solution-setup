@@ -35,3 +35,44 @@ First up we create a class library for core classes that will be shared across a
 1.6. In the *Model* folder create the following classes:
   * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/WeatherForecast.cs)
   * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
+
+### 2. Repository Class Library
+
+2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
+
+2.2. Double-click on the project and set the target framework to .NET 5.0
+```C#
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+```
+
+2.3. Delete *Class1.cs*
+
+2.4. Add a reference to [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
+
+2.5. Create a class called [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs) that implements [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs)
+
+```C#
+    public class WeatherForecastRepository : IWeatherForecastRepository
+    {
+        private static readonly string[] Summaries = new[]
+        {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        public IEnumerable<WeatherForecast> GetWeatherForecasts()
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+    }
+```
+
+
