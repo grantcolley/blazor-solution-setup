@@ -12,6 +12,8 @@ From the outset I want to consider both hosting models when writing classes and 
 
 #### Table of Contents
 * [Core Class Library](#core-class-library)
+* [Repository Class Library](#repository-class-library)
+
 
 ### 1. Core Class Library
 First up we create a class library for core classes that will be shared across all projects. How we use these will become apparent later. 
