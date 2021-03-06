@@ -11,8 +11,8 @@ From the outset I want to consider both hosting models when writing classes and 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
 #### Table of Contents
-* [Core Class Library](#1.-core-class-library)
-* [Repository Class Library](#2.-repository-class-library)
+* [Core Class Library](#1-core-class-library)
+* [Repository Class Library](#2-repository-class-library)
 
 
 ## 1. Core Class Library
