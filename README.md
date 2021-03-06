@@ -13,7 +13,7 @@ From the outset I want to consider both hosting models when writing classes and 
 #### Table of Contents
 * [Core Class Library](#1-core-class-library)
 * [Repository Class Library](#2-repository-class-library)
-* [ASP.NET Core Web API](3-asp-net-core-web-api)
+* [ASP.NET Core Web API](3-asp.net-core-web-api)
 
 
 ## 1. Core Class Library
@@ -93,6 +93,11 @@ Create an ASP.NET Core Web API
 
 ```C#
 Microsoft.AspNetCore.Authentication.Jwt
+```
+
+3.4 Set the sslPort in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+```C#
+  "sslPort": 5000
 ```
 
 3.4. Delete class *WeatherForecast.cs*
