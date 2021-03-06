@@ -52,7 +52,7 @@ Create a class library for the repository code.
   </PropertyGroup>
 ```
 
-2.3. Add a reference to [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
+2.3. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
 2.4. Delete *Class1.cs*
 
@@ -182,3 +182,25 @@ Microsoft.AspNetCore.Authentication.Jwt
     }
 ```
 
+### 4. Services Class Library
+Create a class library for services.
+
+4.1. Create a class library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+
+4.2. Double-click on the project and set the target framework to .NET 5.0
+```C#
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+```
+
+4.3. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+
+4.4. Delete *Class1.cs*
+
+4.5. Create the class [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+
+> **_NOTE:_**
+> The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. `IHttpClientFactory` can be registered by calling `AddHttpClient`.
+>
+>             services.AddHttpClient(..) // registers IHttpClientFactory
