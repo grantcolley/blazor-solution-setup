@@ -241,6 +241,8 @@ Create a class library for services.
 > **Blazor Web Assembly** applications allow you to add a message handler, `AuthorizationMessageHandler`, when registering the typed *IWeatherForecastService* `HttpClient`. This will automatically ensure the access token is added to the header of outgoing requests using it.
 >
 > **Blazor Server** applications don't have a message handler `AuthorizationMessageHandler`. Furthermore, you can't create a custom message handler to add the access token to outgoing requests because the `TokenProvider` is registered as *Scoped*. The reason it won't work is message handler lifetime is controlled by the `IHttpClientFactory`, which manages message handlers seperately from `HttpClient` instances. Message handlers are kept open for two minutes, regardless of whether your custom message handler was registered as *Transient*. You also can't inject a service provider in order to get the `TokenProvider` because the service provider is *scoped* to the message handler.
+>
+>LocalStorage doesnt work because you get the following error: javascript interop calls cannot be issued at this time. this is because the component is being statically rendered. when prerendering is enabled, javascript interop calls can only be performed during the onafterrenderasync lifecycle method.
 
 > **_NOTE:_**
 > The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. 
