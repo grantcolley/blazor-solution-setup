@@ -55,11 +55,11 @@ namespace IdentityProvider
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = { new Secret("blazorserverappsecret".Sha256()) },
                     RequirePkce = true,
-                    RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44331" },
-                    AllowedScopes = { "openid", "profile", "email", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44331/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44331/signout-oidc" },
+                    RequireClientSecret = true,
+                    AllowedCorsOrigins = { "https://localhost:44314" },
+                    AllowedScopes = { "openid", "profile", "weatherapiread" },
+                    RedirectUris = { "https://localhost:44314/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44314/signout-oidc" },
                 },
             };
     }

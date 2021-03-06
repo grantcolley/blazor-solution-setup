@@ -1,9 +1,16 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Authentication
+@using BlazorServerApp.Authentication
 @namespace BlazorServerApp.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using BlazorShared
 @{
     Layout = null;
+
+    var tokens = new InitialApplicationState
+    {
+        AccessToken = await HttpContext.GetTokenAsync("access_token"),
+        RefreshToken = await HttpContext.GetTokenAsync("refresh_token")
+    };
 }
 
 <!DOCTYPE html>
@@ -18,7 +25,7 @@
     <link href="BlazorServerApp.styles.css" rel="stylesheet" />
 </head>
 <body>
-    <component type="typeof(App)" render-mode="ServerPrerendered" />
+    <component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />
 
     <div id="blazor-error-ui">
         <environment include="Staging,Production">

@@ -9,17 +9,31 @@ namespace AppServices
 {
     public class WeatherForecastService : IWeatherForecastService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient httpClient;
+        private readonly TokenProvider tokenProvider;
+        private readonly bool useAccessToken;
 
-        public WeatherForecastService(HttpClient httpClient)
+        public WeatherForecastService(HttpClient httpClient) : this(httpClient, null, false)
         {
-            _httpClient = httpClient;
+        }
+
+        public WeatherForecastService(HttpClient httpClient, TokenProvider tokenProvider, bool useAccessToken)
+        {
+            this.httpClient = httpClient;
+            this.tokenProvider = tokenProvider;
+            this.useAccessToken = useAccessToken;
         }
 
         public async Task<IEnumerable<WeatherForecast>> GetWeatherForecasts()
         {
+            if (useAccessToken)
+            {
+                var token = tokenProvider.AccessToken;
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            }
+
             return await JsonSerializer.DeserializeAsync<IEnumerable<WeatherForecast>>
-                (await _httpClient.GetStreamAsync($"WeatherForecast"), new JsonSerializerOptions(JsonSerializerDefaults.Web));
+                (await httpClient.GetStreamAsync($"WeatherForecast"), new JsonSerializerOptions(JsonSerializerDefaults.Web));
         }
     }
 }

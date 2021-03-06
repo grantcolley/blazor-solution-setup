@@ -1,11 +1,15 @@
 using AppCore.Interface;
+using AppCore.Model;
 using AppServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Net.Http;
 
 namespace BlazorServerApp
 {
@@ -22,13 +26,44 @@ namespace BlazorServerApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+                {
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.Authority = "https://localhost:5001/";
+                    options.ClientId = "blazorserverapp";
+                    options.ClientSecret = "blazorserverappsecret";
+                    options.ResponseType = "code";
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("weatherapiread");
+                    options.SaveTokens = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.TokenValidationParameters.NameClaimType = "name";
+                });
+
+            services.AddHttpClient("webapi", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44303");
+            });
+            //}).AddHttpMessageHandler<AuthorizationMessageHandler>();
+
+            services.AddScoped<TokenProvider>();
+            services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
+            {
+                var tokenProvider = sp.GetRequiredService<TokenProvider>();
+                var httpClient = sp.GetRequiredService<IHttpClientFactory>();
+                var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
+                return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider, true);
+            });
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
-
-            services.AddHttpClient<IWeatherForecastService, WeatherForecastService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44303/");
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,8 +85,12 @@ namespace BlazorServerApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BlazorWebAssemblyApp
@@ -16,7 +17,7 @@ namespace BlazorWebAssemblyApp
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddHttpClient<IWeatherForecastService, WeatherForecastService>(client =>
+            builder.Services.AddHttpClient("webapi", (sp, client) =>
             {
                 client.BaseAddress = new Uri("https://localhost:44303");
             }).AddHttpMessageHandler(sp =>
@@ -26,6 +27,13 @@ namespace BlazorWebAssemblyApp
                     authorizedUrls: new[] { "https://localhost:44303" },
                     scopes: new[] { "weatherapiread" });
                 return handler;
+            });
+
+            builder.Services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
+            {
+                var httpClient = sp.GetRequiredService<IHttpClientFactory>();
+                var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
+                return new WeatherForecastService(weatherForecastServiceHttpClient);
             });
 
             builder.Services.AddOidcAuthentication(options =>
