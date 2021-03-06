@@ -199,7 +199,9 @@ Create a class library for services.
 4.4. Delete *Class1.cs*
 
 4.5. Create the class [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
-  * Create two constructors. One accepting `HttpClient` which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp)The other accepting both `HttpClient` and `TokenProvider` which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp)
+  * Create two constructors:
+    * One accepting `HttpClient` which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp).
+    * The other accepting `HttpClient` and `TokenProvider`, which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp).
   * In the `GetWeatherForecasts()` method, if `useAccessToken` is true then add it to the header of the request.
 
 ```C#
@@ -235,10 +237,14 @@ Create a class library for services.
         }
     }
 ```
+> **_NOTE:_**
+> **Blazor Web Assembly** applications allow you to add a message handler, `AuthorizationMessageHandler`, when registering the typed *IWeatherForecastService* `HttpClient`. This will automatically ensure the access token is added to the header of outgoing requests using it.
+>
+> **Blazor Server** applications don't have a message handler `AuthorizationMessageHandler`. Furthermore, you can't create a custom message handler to add the access token to outgoing requests because the `TokenProvider` is registered as *Scoped*. The reason it won't work is message handler lifetime is controlled by the `IHttpClientFactory`, which manages message handlers seperately from `HttpClient` instances. Message handlers are kept open for two minutes, regardless of whether your custom message handler was registered as *Transient*. You also can't inject a service provider in order to get the `TokenProvider` because the service provider is *scoped* to the message handler.
 
 > **_NOTE:_**
 > The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. 
 > 
-> `IHttpClientFactory` can be registered by calling `AddHttpClient`. Alternatively register a typed client to accept an HttpClient parameter in its constructor.
+> `IHttpClientFactory` can be registered by calling `AddHttpClient`. Alternatively register a typed client to accept an `HttpClient` parameter in its constructor.
 >
 >             services.AddHttpClient(..) // registers IHttpClientFactory
