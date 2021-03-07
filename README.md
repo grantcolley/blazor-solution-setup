@@ -236,7 +236,8 @@ Create a class library for services.
             }
 
             return await JsonSerializer.DeserializeAsync<IEnumerable<WeatherForecast>>
-                (await httpClient.GetStreamAsync($"WeatherForecast"), new JsonSerializerOptions(JsonSerializerDefaults.Web));
+                (await httpClient.GetStreamAsync($"WeatherForecast"), 
+                    new JsonSerializerOptions(JsonSerializerDefaults.Web));
         }
     }
 ```
