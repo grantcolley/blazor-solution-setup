@@ -17,7 +17,7 @@ The following steps will create a solution described above using the default pro
 2. [Repository Class Library](#2-repository-class-library)
 3. [ASP.NET Core Web API](#3-aspnet-core-web-api)
 4. [Services Class Library](#4-services-class-library)
-
+5. [Shared Blazor App Razor Class Library](#5-shared-blazor-app-razor-class-library)
 
 ## 1. Core Class Library
 First up we create a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
@@ -186,7 +186,7 @@ Microsoft.AspNetCore.Authentication.Jwt
 ```
 
 ### 4. Services Class Library
-Create a class library for services.
+Create a Class Library for services classes.
 
 4.1. Create a class library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
 
@@ -241,6 +241,62 @@ Create a class library for services.
         }
     }
 ```
+
+### 5. Blazor Shared Razor Class Library
+Create a library for shared Blazor application code and convert it to a Razor Class Library.
+
+5.1. Create a Blazor WebAssembly App called [BlazorShared](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorShared)
+
+5.2. Convert the project to a Razor Class Library (RCL) by double-clicking the project and setting the `Project Sdk` to 
+
+`<Project Sdk="Microsoft.NET.Sdk.Razor">`
+
+5.3. Remove all default installed nuget packages and add the following package:
+
+```C#
+Microsoft.Extensions.Http
+```
+
+5.4. Delete the files:
+  * *Properties/launchSettings.json*
+  * *wwwroot/index.html*
+  * *sample-data/weather.json*
+  * *App.razor*
+  * *Program.cs*
+  * *Imports.razor*
+
+5.5 Rename **MainLayout.razor** to **MainLayoutShared.razor** and replace the contents with the following:
+
+```C#
+@using BlazorComponents
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4 auth">
+            @LoginDisplayFragment
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>
+
+        <div class="content px-4">
+            @BodyFragment
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment LoginDisplayFragment { get; set; }
+
+    [Parameter]
+    public RenderFragment BodyFragment { get; set; }
+}
+```
+
+
 > **_NOTE:_**
 > **Blazor Web Assembly** applications allow you to add a message handler, `AuthorizationMessageHandler`, when registering the typed *IWeatherForecastService* `HttpClient`. This will automatically ensure the access token is added to the header of outgoing requests using it.
 >
