@@ -10,7 +10,7 @@ From the outset I want to consider both hosting models when writing classes and 
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
-The following steps will create a solution described above using the default project templates available in Visual Studio. The result will be a solition hosting both **Blazor WebAssembly** and **Blazor Server**, using common code and components in shared libraries. The WeatherForecast data will sit behind a **WebApi**, and only accessible to permissioned useres, while **IdentityServer4** will provide authentication.
+The following steps will create a solution described above using the default project templates available in Visual Studio. The result will be a solution hosting both **Blazor WebAssembly** and **Blazor Server**, using common code and components in shared libraries. The WeatherForecast data will sit behind a **WebApi**, and only accessible to permissioned useres, while **IdentityServer4** will provide authentication.
 
 #### Table of Contents
 1. [Core Class Library](#1-core-class-library)
