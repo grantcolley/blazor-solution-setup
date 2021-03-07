@@ -11,10 +11,10 @@ From the outset I want to consider both hosting models when writing classes and 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
 #### Table of Contents
-* [1. Core Class Library](#1-core-class-library)
-* [2. Repository Class Library](#2-repository-class-library)
-* [3. ASP.NET Core Web API](#3-aspnet-core-web-api)
-* [4. Services Class Library](#4-services-class-library)
+1. [Core Class Library](#1-core-class-library)
+2. [Repository Class Library](#2-repository-class-library)
+3. [ASP.NET Core Web API](#3-aspnet-core-web-api)
+4. [Services Class Library](#4-services-class-library)
 
 
 ## 1. Core Class Library
