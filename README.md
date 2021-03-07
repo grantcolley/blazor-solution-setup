@@ -14,6 +14,7 @@ From the outset I want to consider both hosting models when writing classes and 
 * [Core Class Library](#1-core-class-library)
 * [Repository Class Library](#2-repository-class-library)
 * [ASP.NET Core Web API](#3-aspnet-core-web-api)
+* [Services Class Library](#4-services-class-library)
 
 
 ## 1. Core Class Library
