@@ -13,15 +13,17 @@ namespace AppServices
         private readonly TokenProvider tokenProvider;
         private readonly bool useAccessToken;
 
-        public WeatherForecastService(HttpClient httpClient) : this(httpClient, null, false)
+        public WeatherForecastService(HttpClient httpClient)
         {
+            this.httpClient = httpClient;
+            useAccessToken = false;
         }
 
-        public WeatherForecastService(HttpClient httpClient, TokenProvider tokenProvider, bool useAccessToken)
+        public WeatherForecastService(HttpClient httpClient, TokenProvider tokenProvider)
         {
             this.httpClient = httpClient;
             this.tokenProvider = tokenProvider;
-            this.useAccessToken = useAccessToken;
+            useAccessToken = true;
         }
 
         public async Task<IEnumerable<WeatherForecast>> GetWeatherForecasts()

@@ -59,7 +59,7 @@ namespace BlazorServerApp
                 var tokenProvider = sp.GetRequiredService<TokenProvider>();
                 var httpClient = sp.GetRequiredService<IHttpClientFactory>();
                 var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
-                return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider, true);
+                return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider);
             });
 
             services.AddRazorPages();
