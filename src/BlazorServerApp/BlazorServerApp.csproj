@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
     <ProjectReference Include="..\AppServices\AppServices.csproj" />
-    <ProjectReference Include="..\BlazorShared\BlazorShared.csproj" />
+    <ProjectReference Include="..\BlazorComponents\BlazorComponents.csproj" />
   </ItemGroup>
 
 </Project>
