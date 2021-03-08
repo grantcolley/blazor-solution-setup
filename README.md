@@ -1,7 +1,7 @@
 # blazor-solution-setup
 
 ##### Technologies
-* ###### .NET 5.0, Blazor Server, Blazor WebAssembly, IdentityServer4, ASP.NET Core Web API 
+* ###### Blazor WebAssembl, Blazor Server, IdentityServer4, ASP.NET Core Web API, .NET 5.0 
 #####  
 
 I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are rub on the server and managed over a SignalR connection. I also want to use **IdentityServer4**, which is an OpenID Connect and OAuth 2.0 framework for authentication.
@@ -317,6 +317,30 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
     public RenderFragment BodyFragment { get; set; }
 }
 ```
+
+5.8. In *FetchData.razor* 
+  * Remove `@inject HttpClient Http` and add `@using Microsoft.AspNetCore.Authorization` and the `[Authorize]` attribute
+  * Change the `@code` block by injecting an instance of the *IWeatherForecastService* and getting the weather forecast in `OnInitializedAsync()` 
+
+```C#
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+
+// additional code removed for simplicity
+            
+@code {
+    protected IEnumerable<WeatherForecast> forecasts;
+
+    [Inject]
+    public IWeatherForecastService WeatherForecastService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await WeatherForecastService.GetWeatherForecasts();
+    }
+}
+```
+
 
 
 > **_NOTE:_**
