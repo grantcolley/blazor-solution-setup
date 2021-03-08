@@ -17,7 +17,7 @@ The following steps will create a solution described above using the default pro
 2. [Repository Class Library](#2-repository-class-library)
 3. [ASP.NET Core Web API](#3-aspnet-core-web-api)
 4. [Services Class Library](#4-services-class-library)
-5. [Shared Blazor App Razor Class Library](#5-shared-blazor-app-razor-class-library)
+5. [Components Razor Class Library](#5-components-razor-class-library)
 
 ## 1. Core Class Library
 First up we create a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
@@ -48,14 +48,15 @@ Create a Class Library for the repository code.
 
 2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
-2.2. Double-click on the project and set the target framework to .NET 5.0
+2.2. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+
+2.3. Double-click on the project and set the target framework to .NET 5.0
+
 ```C#
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 ```
-
-2.3. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
 2.4. Delete *Class1.cs*
 
@@ -190,14 +191,15 @@ Create a Class Library for services classes.
 
 4.1. Create a class library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
 
-4.2. Double-click on the project and set the target framework to .NET 5.0
+4.2. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+
+4.3. Double-click on the project and set the target framework to .NET 5.0
+
 ```C#
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 ```
-
-4.3. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
 4.4. Delete *Class1.cs*
 
@@ -242,34 +244,54 @@ Create a Class Library for services classes.
     }
 ```
 
-### 5. Blazor Shared Razor Class Library
-Create a library for shared Blazor application code and convert it to a Razor Class Library.
+### 5. Components Razor Class Library
+Create a Blazor WebAssembly project and convert it to a Razor Class Library for shared components.
 
-5.1. Create a Blazor WebAssembly App called [BlazorShared](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorShared)
+5.1. Create a Blazor WebAssembly App called [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
 
-5.2. Convert the project to a Razor Class Library (RCL) by double-clicking the project and setting the `Project Sdk` to 
+5.2 Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
-`<Project Sdk="Microsoft.NET.Sdk.Razor">`
+5.3. Remove all default installed nuget packages and add the package `Microsoft.AspNetCore.Components.Web`:
 
-5.3. Remove all default installed nuget packages and add the following package:
+5.4. Convert the project to a Razor Class Library (RCL) by double-clicking the project and setting the `Project Sdk`. The project file should look like this:
 
 ```C#
-Microsoft.Extensions.Http
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppCore\AppCore.csproj" />
+  </ItemGroup>
+
+</Project>
 ```
 
-5.4. Delete the files:
+5.5. Delete the files:
   * *Properties/launchSettings.json*
   * *wwwroot/index.html*
   * *sample-data/weather.json*
   * *App.razor*
   * *Program.cs*
-  * *Imports.razor*
 
-5.5 Rename **MainLayout.razor** to **MainLayoutShared.razor** and replace the contents with the following:
+5.6. Replace the content of the [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/_Imports.razor) as follows:
 
 ```C#
-@using BlazorComponents
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using AppCore.Interface
+@using AppCore.Model
+```
 
+5.7. Rename **MainLayout.razor** to **MainLayoutBase.razor** and replace the contents with the following:
+
+```C#
 <div class="page">
     <div class="sidebar">
         <NavMenu />
