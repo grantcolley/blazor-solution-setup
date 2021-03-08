@@ -1,7 +1,7 @@
 # blazor-solution-setup
 
 ##### Technologies
-* ###### .NET 5.0, Blazor Server, Blazor WebAssembly, IdentityServer4, ASP.NET Core Web API 
+* ###### Blazor WebAssembl, Blazor Server, IdentityServer4, ASP.NET Core Web API, .NET 5.0 
 #####  
 
 I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are rub on the server and managed over a SignalR connection. I also want to use **IdentityServer4**, which is an OpenID Connect and OAuth 2.0 framework for authentication.
@@ -15,9 +15,10 @@ The following steps will create a solution described above using the default pro
 #### Table of Contents
 1. [Core Class Library](#1-core-class-library)
 2. [Repository Class Library](#2-repository-class-library)
-3. [ASP.NET Core Web API](#3-aspnet-core-web-api)
-4. [Services Class Library](#4-services-class-library)
-5. [Shared Blazor App Razor Class Library](#5-shared-blazor-app-razor-class-library)
+3. [IdentityProvider](#3-identityprovider)
+4. [ASP.NET Core Web API](#4-aspnet-core-web-api)
+5. [Services Class Library](#5-services-class-library)
+6. [Components Razor Class Library](#6-components-razor-class-library)
 
 ## 1. Core Class Library
 First up we create a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
@@ -48,14 +49,15 @@ Create a Class Library for the repository code.
 
 2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
-2.2. Double-click on the project and set the target framework to .NET 5.0
+2.2. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+
+2.3. Double-click on the project and set the target framework to .NET 5.0
+
 ```C#
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 ```
-
-2.3. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
 2.4. Delete *Class1.cs*
 
@@ -83,29 +85,115 @@ Create a Class Library for the repository code.
     }
 ```
 
-## 3. ASP.NET Core Web API
+## 3. IdentityProvider
+3.1. Install IdentityServer4 templates
+
+`dotnet new -i IdentityServer4.Templates` 
+
+3.2. Create the IdentityProvider project from one of the templates and add it to the solution
+```C#
+dotnet new is4aspid -n IdentityProvider
+
+dotnet sln add IdentityProvider
+```
+
+3.3. In *Config.cs*:
+Add a new ApiScope called weatherapiread
+
+```C#
+        public static IEnumerable<ApiScope> ApiScopes =>
+            new ApiScope[]
+            {
+                new ApiScope("scope1"),
+                new ApiScope("scope2"),
+                new ApiScope("weatherapiread")
+            };
+```
+
+Create a list of ApiResources an add a weatherapi ApiReasource
+
+```C#
+        public static IEnumerable<ApiResource> ApiResources =>
+            new ApiResource[]
+            {
+                new ApiResource("weatherapi", "The Weather API")
+                {
+                    Scopes = new [] { "weatherapiread" }
+                }
+            };
+```
+
+Remove the defaults clients and replace them with new clients for BlazorWebAssemblyApp and BlazorServerApp
+
+```C#
+        public static IEnumerable<Client> Clients =>
+            new Client[]
+            {
+                new Client
+                {
+                    ClientId = "blazorwebassemblyapp",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AllowedCorsOrigins = { "https://localhost:44390" },
+                    AllowedScopes = { "openid", "profile", "weatherapiread" },
+                    RedirectUris = { "https://localhost:44390/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:44390/" },
+                    Enabled = true
+                },
+
+                new Client
+                {
+                    ClientId = "blazorserverapp",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    ClientSecrets = { new Secret("blazorserverappsecret".Sha256()) },
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AllowedCorsOrigins = { "https://localhost:44376" },
+                    AllowedScopes = { "openid", "profile", "weatherapiread" },
+                    RedirectUris = { "https://localhost:44376/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44376/signout-oidc" },
+                },
+            };
+```
+
+3.4. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add *Config.ApiResources* to the in memory resources of the IdentityServer service
+
+```C#
+            var builder = services.AddIdentityServer(options =>
+            {
+                // additional code removed for simplicity
+            })
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryApiResources(Config.ApiResources)
+                .AddInMemoryClients(Config.Clients)
+                .AddAspNetIdentity<ApplicationUser>();
+```
+
+## 4. ASP.NET Core Web API
 Create an ASP.NET Core Web API for restricted access to our repository.
 
-3.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
+4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
 
-3.2. Add a reference to the following projects:
+4.2. Add a reference to the following projects:
    * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
    * [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
-3.3 Add the following nuget package to enable the [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi) to receive an OpenID Connect bearer token:
+4.3 Add the following nuget package to enable the [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi) to receive an OpenID Connect bearer token:
 
 ```C#
 Microsoft.AspNetCore.Authentication.Jwt
 ```
 
-3.4 Set the *sslPort* in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+4.4 Set the *sslPort* in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
 ```C#
   "sslPort": 5000
 ```
 
-3.5. Delete class *WeatherForecast.cs*
+4.5. Delete class *WeatherForecast.cs*
 
-3.6 In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
+4.6 In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
   * Register [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) with the concrete implementation [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs)
   * Add a CORS policy to enable Cross-Origin Requests to allow requests from a different origin to the WebApi. See [Enable Cross-Origin Requests (CORS)](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0) for more details.
   * Add `AddAuthentication`
@@ -134,7 +222,7 @@ Microsoft.AspNetCore.Authentication.Jwt
         }
 ```
 
-3.7. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs) :
+4.7. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs) :
   * Add `UseAuthentication` before `app.UseAuthorization` 
   * Add a call to `UserCors` extension method to add the CORS middleware. This must be after `UseRouting`, but before `UseAuthentication`
 
@@ -155,7 +243,7 @@ Microsoft.AspNetCore.Authentication.Jwt
         }
 ```
 
-3.8. In the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
+4.8. In the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
   * Delete the *Summaries* array field
   * Add an `[Authorize]` attribute at class level to restrict access to it 
   * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Core/Interface/IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()` method as follows:
@@ -185,23 +273,24 @@ Microsoft.AspNetCore.Authentication.Jwt
     }
 ```
 
-### 4. Services Class Library
+### 5. Services Class Library
 Create a Class Library for services classes.
 
-4.1. Create a class library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+5.1. Create a class library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
 
-4.2. Double-click on the project and set the target framework to .NET 5.0
+5.2. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+
+5.3. Double-click on the project and set the target framework to .NET 5.0
+
 ```C#
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 ```
 
-4.3. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+5.4. Delete *Class1.cs*
 
-4.4. Delete *Class1.cs*
-
-4.5. Create the class [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+5.5. Create the class [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
   * Create two constructors:
     * One accepting `HttpClient` which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp).
     * The other accepting `HttpClient` and `TokenProvider`, which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp).
@@ -242,34 +331,54 @@ Create a Class Library for services classes.
     }
 ```
 
-### 5. Blazor Shared Razor Class Library
-Create a library for shared Blazor application code and convert it to a Razor Class Library.
+### 6. Components Razor Class Library
+Create a Blazor WebAssembly project and convert it to a Razor Class Library for shared components.
 
-5.1. Create a Blazor WebAssembly App called [BlazorShared](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorShared)
+6.1. Create a Blazor WebAssembly App called [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
 
-5.2. Convert the project to a Razor Class Library (RCL) by double-clicking the project and setting the `Project Sdk` to 
+6.2 Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
-`<Project Sdk="Microsoft.NET.Sdk.Razor">`
+6.3. Remove all default installed nuget packages and add the package `Microsoft.AspNetCore.Components.Web`:
 
-5.3. Remove all default installed nuget packages and add the following package:
+6.4. Convert the project to a Razor Class Library (RCL) by double-clicking the project and setting the `Project Sdk`. The project file should look like this:
 
 ```C#
-Microsoft.Extensions.Http
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppCore\AppCore.csproj" />
+  </ItemGroup>
+
+</Project>
 ```
 
-5.4. Delete the files:
+6.5. Delete the files:
   * *Properties/launchSettings.json*
   * *wwwroot/index.html*
   * *sample-data/weather.json*
   * *App.razor*
   * *Program.cs*
-  * *Imports.razor*
 
-5.5 Rename **MainLayout.razor** to **MainLayoutShared.razor** and replace the contents with the following:
+6.6. Replace the content of the [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/_Imports.razor) as follows:
 
 ```C#
-@using BlazorComponents
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using AppCore.Interface
+@using AppCore.Model
+```
 
+6.7. Rename **MainLayout.razor** to **MainLayoutBase.razor** and replace the contents with the following:
+
+```C#
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -295,6 +404,31 @@ Microsoft.Extensions.Http
     public RenderFragment BodyFragment { get; set; }
 }
 ```
+
+6.8. In *FetchData.razor* 
+  * Remove `@inject HttpClient Http` and add `@using Microsoft.AspNetCore.Authorization` and the `[Authorize]` attribute
+  * Change the `@code` block by injecting an instance of the *IWeatherForecastService* and getting the weather forecast in `OnInitializedAsync()` 
+
+```C#
+@page "/fetchdata"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+
+// additional code removed for simplicity
+            
+@code {
+    protected IEnumerable<WeatherForecast> forecasts;
+
+    [Inject]
+    public IWeatherForecastService WeatherForecastService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await WeatherForecastService.GetWeatherForecasts();
+    }
+}
+```
+
 
 
 > **_NOTE:_**
