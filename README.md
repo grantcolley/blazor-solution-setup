@@ -323,6 +323,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
   * Change the `@code` block by injecting an instance of the *IWeatherForecastService* and getting the weather forecast in `OnInitializedAsync()` 
 
 ```C#
+@page "/fetchdata"
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
 
