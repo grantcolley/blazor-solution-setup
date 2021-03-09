@@ -97,7 +97,7 @@ dotnet new is4aspid -n IdentityProvider
 dotnet sln add IdentityProvider
 ```
 
-3.3. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) as follows:
+3.3. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
 
 ```C#
 "applicationUrl": "https://localhost:5001"
