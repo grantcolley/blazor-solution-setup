@@ -246,7 +246,7 @@ Microsoft.AspNetCore.Authentication.Jwt
 4.8. In the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
   * Delete the *Summaries* array field
   * Add an `[Authorize]` attribute at class level to restrict access to it 
-  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Core/Interface/IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()` method as follows:
+  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()` method as follows:
   
 ```C#
     [Authorize]
@@ -273,7 +273,7 @@ Microsoft.AspNetCore.Authentication.Jwt
     }
 ```
 
-### 5. Services Class Library
+## 5. Services Class Library
 Create a Class Library for services classes.
 
 5.1. Create a class library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
@@ -331,7 +331,7 @@ Create a Class Library for services classes.
     }
 ```
 
-### 6. Components Razor Class Library
+## 6. Components Razor Class Library
 Create a Blazor WebAssembly project and convert it to a Razor Class Library for shared components.
 
 6.1. Create a Blazor WebAssembly App called [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
@@ -429,6 +429,126 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 }
 ```
 
+## 7. Blazor WebAssembly
+7.1. Create a **Blazor WebAssembly** project called [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp), setting the authentication type to **Individual User Accounts**
+
+![Alt text](/readme-images/BlazorWebAssemblyAuthenticationType.png?raw=true "BlazorWebAssembly Authentication Type") 
+
+7.2. Add a reference to the following projects:
+   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+   * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+   * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
+
+7.3. Add nuget package reference `Microsoft.Extensions.Http`
+
+7.4. In [_Imports.razor]() add the following using statement
+
+```C#
+@using BlazorComponents.Shared
+```
+
+7.5. In the [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
+  * Replace the scoped `HttpClient` services registration with a typed [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) `HttpClient` using `AddHttpClient` so an instance of `HttpClient` controlled by `IHttpClientFactory` will be injected into its constructor. Set the port of `client.BaseAddress` to the `sslPort` specified in [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)'s [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json) e.g. `"sslPort": 44303`
+
+> **_NOTE:_** services.AddHttpClient(..) uses IHttpClientFactory
+
+```C#
+            // additional code removed for simplicity
+
+            builder.Services.AddHttpClient("webapi", (sp, client) =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44303");
+            }).AddHttpMessageHandler(sp =>
+            {
+                var handler = sp.GetService<AuthorizationMessageHandler>()
+                .ConfigureHandler(
+                    authorizedUrls: new[] { "https://localhost:44303" },
+                    scopes: new[] { "weatherapiread" });
+                return handler;
+            });
+
+            builder.Services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
+            {
+                var httpClient = sp.GetRequiredService<IHttpClientFactory>();
+                var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
+                return new WeatherForecastService(weatherForecastServiceHttpClient);
+            });
+
+            builder.Services.AddOidcAuthentication(options =>
+            {
+                //// Configure your authentication provider options here.
+                //// For more information, see https://aka.ms/blazor-standalone-auth
+                //builder.Configuration.Bind("Local", options.ProviderOptions);
+                options.ProviderOptions.Authority = "https://localhost:5001/";
+                options.ProviderOptions.ClientId = "blazorwebassemblyapp";
+                options.ProviderOptions.DefaultScopes.Add("openid");
+                options.ProviderOptions.DefaultScopes.Add("profile");
+                options.ProviderOptions.DefaultScopes.Add("weatherapiread");
+                options.ProviderOptions.PostLogoutRedirectUri = "/";
+                options.ProviderOptions.ResponseType = "code";
+            });
+            
+            // additional code removed for simplicity
+```
+
+8.4. In [App.razor]() add **BlazorSolutionTemplate.Components** to the `AdditionalAssemblies` of the `Router` so it will be scanned for additional routable components. 
+
+```C#
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly" 
+            AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" PreferExactMatches="@true">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                
+                      // additional code removed for simplicity
+
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+```
+
+8.6 Replace the contents of **MainLayout.razor** with the following
+```C#
+@using BlazorShared.Shared
+@inherits LayoutComponentBase
+
+<MainLayoutShared>
+    <LoginDisplayFragment>
+        <LoginDisplay/>
+    </LoginDisplayFragment>
+    <BodyFragment>
+        @Body
+    </BodyFragment>
+</MainLayoutShared>
+```
+
+~~8.4. In the [Program.cs](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Client/Program.cs) set the root component
+`builder.RootComponents.Add<BlazorSolutionTemplate.App.App>("app");`~~
+
+~~8.5. In [index.html](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Client/wwwroot/index.html) replace `<div id="app">Loading...</div>` with `<app>Loading...</app>`~~
+
+~~8.6. Delete the following folders and all their contents:~~
+
+  ~~* *Shared*~~
+  
+  ~~* *Pages*~~
+  
+8.7. Delete files:
+  * *Pages/Counter.razor*
+  * *Pages/FetchData.razor*
+  * *Pages/Index.razor*
+  * *Shared/SurveyPromt.razor*
+  * *Shared/NavMenu.razor*
+  * *Shared/NavMenu.razor.css*
+ 
 
 
 > **_NOTE:_**
