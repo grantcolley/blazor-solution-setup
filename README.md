@@ -474,7 +474,11 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
                 var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
                 return new WeatherForecastService(weatherForecastServiceHttpClient);
             });
+```
 
+   *  Register and configure authintication with `AddOidcAuthentication`
+
+```C#
             builder.Services.AddOidcAuthentication(options =>
             {
                 //// Configure your authentication provider options here.
@@ -488,11 +492,9 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
                 options.ProviderOptions.PostLogoutRedirectUri = "/";
                 options.ProviderOptions.ResponseType = "code";
             });
-            
-            // additional code removed for simplicity
 ```
 
-8.4. In [App.razor]() add **BlazorSolutionTemplate.Components** to the `AdditionalAssemblies` of the `Router` so it will be scanned for additional routable components. 
+7.6. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents) assembly will be scanned for additional routable components. 
 
 ```C#
 <CascadingAuthenticationState>
@@ -501,9 +503,14 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                
-                      // additional code removed for simplicity
-
+                    @if (!context.User.Identity.IsAuthenticated)
+                    {
+                        <RedirectToLogin />
+                    }
+                    else
+                    {
+                        <p>You are not authorized to access this resource.</p>
+                    }
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>
@@ -516,33 +523,22 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 </CascadingAuthenticationState>
 ```
 
-8.6 Replace the contents of **MainLayout.razor** with the following
+7.7. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+
 ```C#
-@using BlazorShared.Shared
 @inherits LayoutComponentBase
 
-<MainLayoutShared>
+<MainLayoutBase>
     <LoginDisplayFragment>
         <LoginDisplay/>
     </LoginDisplayFragment>
     <BodyFragment>
         @Body
     </BodyFragment>
-</MainLayoutShared>
+</MainLayoutBase>
 ```
-
-~~8.4. In the [Program.cs](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Client/Program.cs) set the root component
-`builder.RootComponents.Add<BlazorSolutionTemplate.App.App>("app");`~~
-
-~~8.5. In [index.html](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Client/wwwroot/index.html) replace `<div id="app">Loading...</div>` with `<app>Loading...</app>`~~
-
-~~8.6. Delete the following folders and all their contents:~~
-
-  ~~* *Shared*~~
   
-  ~~* *Pages*~~
-  
-8.7. Delete files:
+7.8. Delete files:
   * *Pages/Counter.razor*
   * *Pages/FetchData.razor*
   * *Pages/Index.razor*
