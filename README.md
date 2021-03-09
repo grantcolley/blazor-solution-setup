@@ -448,13 +448,10 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 ```
 
 7.5. In the [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
-  * Replace the scoped `HttpClient` services registration with a typed [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) `HttpClient` using `AddHttpClient` so an instance of `HttpClient` controlled by `IHttpClientFactory` will be injected into its constructor. Set the port of `client.BaseAddress` to the `sslPort` specified in [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)'s [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json) e.g. `"sslPort": 44303`
-
-> **_NOTE:_** services.AddHttpClient(..) uses IHttpClientFactory
+  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to the `sslPort` specified in [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)'s [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json) e.g. `"sslPort": 44303`
+  * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests using the `webapi` client.
 
 ```C#
-            // additional code removed for simplicity
-
             builder.Services.AddHttpClient("webapi", (sp, client) =>
             {
                 client.BaseAddress = new Uri("https://localhost:44303");
@@ -466,7 +463,11 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
                     scopes: new[] { "weatherapiread" });
                 return handler;
             });
+```
 
+   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) injecting and instance of `HttpClient`, using the `IHttpClientFactory`, into its constructor.
+ 
+ ```C#
             builder.Services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
             {
                 var httpClient = sp.GetRequiredService<IHttpClientFactory>();
