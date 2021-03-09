@@ -97,7 +97,13 @@ dotnet new is4aspid -n IdentityProvider
 dotnet sln add IdentityProvider
 ```
 
-3.3. In *Config.cs*:
+3.3. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) as follows:
+
+```C#
+"applicationUrl": "https://localhost:5001"
+```
+
+3.4. In *Config.cs*:
 Add a new ApiScope called weatherapiread
 
 ```C#
@@ -157,7 +163,7 @@ Remove the defaults clients and replace them with new clients for BlazorWebAssem
             };
 ```
 
-3.4. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add *Config.ApiResources* to the in memory resources of the IdentityServer service
+3.5. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add *Config.ApiResources* to the in memory resources of the IdentityServer service
 
 ```C#
             var builder = services.AddIdentityServer(options =>
@@ -448,18 +454,18 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 ```
 
 7.5. In the [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
-  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to the `sslPort` specified in [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)'s [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json) e.g. `"sslPort": 44303`
+  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`
   * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests using the `webapi` client.
 
 ```C#
             builder.Services.AddHttpClient("webapi", (sp, client) =>
             {
-                client.BaseAddress = new Uri("https://localhost:44303");
+                client.BaseAddress = new Uri("https://localhost:5000");
             }).AddHttpMessageHandler(sp =>
             {
                 var handler = sp.GetService<AuthorizationMessageHandler>()
                 .ConfigureHandler(
-                    authorizedUrls: new[] { "https://localhost:44303" },
+                    authorizedUrls: new[] { "https://localhost:5000" },
                     scopes: new[] { "weatherapiread" });
                 return handler;
             });
