@@ -8,8 +8,6 @@
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
