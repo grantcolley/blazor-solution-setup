@@ -581,17 +581,13 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
    * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
 
-8.5. Delete the *Data* folder and it's content:
+8.5. In [_Imports.razor]() add the following using statement
 
-8.6. Delete files:
-  * *Pages/Counter.razor*
-  * *Pages/FetchData.razor*
-  * *Pages/Index.razor*
-  * *Shared/SurveyPromt.razor*
-  * *Shared/NavMenu.razor*
-  * *Shared/NavMenu.razor.css*
+```C#
+@using BlazorComponents.Shared
+```
   
-8.7. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
+8.6. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
 
   * Remove the following default configuration:
 
@@ -660,9 +656,67 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
         }
 ```
 
-8.8. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
+8.7. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
 
-9.7. In [App.razor]() add **BlazorSolutionTemplate.Components** to the `AdditionalAssemblies` of the `Router` so it will be scanned for additional routable components. 
+8.8. Create a folder called `Authentication` and inside create a class called `InitialApplicationState`
+
+```C#
+    public class InitialApplicationState
+    {
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+    }
+```
+
+8.9. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
+
+  * Add the following code to get the access token.
+  
+```C#
+@page "/"
+@using Microsoft.AspNetCore.Authentication
+@using BlazorServerApp.Authentication
+@namespace BlazorServerApp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+
+    var tokens = new InitialApplicationState
+    {
+        AccessToken = await HttpContext.GetTokenAsync("access_token"),
+        RefreshToken = await HttpContext.GetTokenAsync("refresh_token")
+    };
+}
+```
+
+  * Set the `InitialState` parameter of the `App` component to the `tokens`
+  
+`<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />`
+
+8.10. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
+
+   *  Inject the `TokenProvider`, create a parameter for `InitialApplicationState` and in `OnInitializedAsync` set the access token:
+
+```C#
+@using AppCore.Model
+@using BlazorServerApp.Authentication
+@inject TokenProvider TokenProvider
+
+@code {
+    [Parameter]
+    public InitialApplicationState InitialState { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        TokenProvider.AccessToken = InitialState.AccessToken;
+        TokenProvider.RefreshToken = InitialState.RefreshToken;
+
+        return base.OnInitializedAsync();
+    }
+}
+```
+
+   *  Add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents) assembly will be scanned for additional routable components.
 
 ```C#
 <CascadingAuthenticationState>
@@ -679,28 +733,22 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 </CascadingAuthenticationState>
 ```
 
-9.8. In [_Imports.razor]() add the following using statement
+8.11. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
 
 ```C#
-@using BlazorComponents
-```
-
-9.10. Replace the contents of **MainLayout.razor** with the following
-```C#
-@using BlazorShared.Shared
 @inherits LayoutComponentBase
 
-<MainLayoutShared>
+<MainLayoutBase>
     <LoginDisplayFragment>
-        <LoginDisplay/>
+        <LoginDisplay />
     </LoginDisplayFragment>
     <BodyFragment>
         @Body
     </BodyFragment>
-</MainLayoutShared>
+</MainLayoutBase>
 ```
 
-9.11. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and update the `OnGetAsync` as follows:
+8.12. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and update the `OnGetAsync` as follows:
 
 ```C#
     public class Login : PageModel
@@ -724,10 +772,20 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
     }
 ```
 
-9.12. Remove the following from the *LoginDisplay.cshtml*
+8.13. Remove the following from the *LoginDisplay.cshtml*
 
 `<a href="Identity/Account/Register">Register</a>`
 
+8.14. Delete the *Data* folder and it's content:
+
+8.15. Delete files:
+  * *Pages/Counter.razor*
+  * *Pages/FetchData.razor*
+  * *Pages/Index.razor*
+  * *Shared/SurveyPromt.razor*
+  * *Shared/NavMenu.razor*
+  * *Shared/NavMenu.razor.css*
+  
 
 > **_NOTE:_**
 > **Blazor Web Assembly** applications allow you to add a message handler, `AuthorizationMessageHandler`, when registering the typed *IWeatherForecastService* `HttpClient`. This will automatically ensure the access token is added to the header of outgoing requests using it.
