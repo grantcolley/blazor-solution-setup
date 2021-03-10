@@ -19,7 +19,9 @@ The following steps will create a solution described above using the default pro
 4. [ASP.NET Core Web API](#4-aspnet-core-web-api)
 5. [Services Class Library](#5-services-class-library)
 6. [Components Razor Class Library](#6-components-razor-class-library)
-
+7. [Blazor WebAssembly App](#7-blazor-webassembly-app)
+8. [Blazor Server App](#8-blazor-server-app)
+ 
 ## 1. Core Class Library
 First up we create a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
 
@@ -435,7 +437,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 }
 ```
 
-## 7. Blazor WebAssembly
+## 7. Blazor WebAssembly App
 7.1. Create a **Blazor WebAssembly** project called [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp), setting the authentication type to **Individual User Accounts**
 
 ![Alt text](/readme-images/BlazorWebAssemblyAuthenticationType.png?raw=true "BlazorWebAssembly Authentication Type") 
@@ -552,6 +554,155 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
  
+## 8. Blazor Server App
+8.1. Create a Blazor Server project called [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp)
+
+9.2. Uninstall the following packages:
+
+```
+    Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+    Microsoft.AspNetCore.Identity.EntityFrameworkCore
+    Microsoft.AspNetCore.Identity.UI
+    Microsoft.EntityFrameworkCore.SqlServer
+    Microsoft.EntityFrameworkCore.Tools
+```
+
+9.3. Install the following packages:
+
+```
+    Microsoft.AspNetCore.Authentication.OpenIdConnect
+```
+
+9.2. Add a reference to the following projects:
+  * **BlazorSolutionTemplate.Core**
+  * **BlazorSolutionTemplate.Services**
+  * **BlazorSolutionTemplate.App**
+  
+9.3. Delete the *Data* folder and it's content:
+
+9.4. Delete files:
+  * *Pages/Counter.razor*
+  * *Pages/Error.cshtml*
+  * *Pages/Error.cshtml.cs*
+  * *Pages/FetchData.razor*
+  * *Pages/Index.razor*
+  * *Shared/SurveyPromt.razor*
+  * *Shared/NavMenu.razor*
+  * *Shared/NavMenu.razor.css*
+  
+9.5. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Server/Startup.cs):
+  * remove the following
+    * singleton registration for *WeatherForecastService*
+    * entry for *AddDbContext*
+    * entry for *AddDefaultIdentity*
+    * entry for *AddDatabaseDeveloperPageExceptionFilter* 
+  * Add the following
+    * a typed HttpClient registration for *IWeatherForecastService* and *WeatherForecastService*
+    * entry for *AddAuthentication*
+
+`ConfigureServices` should look like this:
+```C#
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+                {
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.Authority = "https://localhost:5000/";
+                    options.ClientId = "blazorserver";
+                    options.ClientSecret = "blazorserversectret";
+                    options.ResponseType = "code";
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("email");
+                    options.Scope.Add("weatherapiread");
+                    options.SaveTokens = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.TokenValidationParameters.NameClaimType = "name";
+                });
+
+            services.AddHttpClient<IWeatherForecastService, WeatherForecastService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44303");
+            });
+            
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+        }
+```
+
+9.6. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-template/blob/master/src/BlazorSolutionTemplate.Server/Startup.cs) remove the following `app.UseMigrationsEndPoint();`
+
+9.7. In [App.razor]() add **BlazorSolutionTemplate.Components** to the `AdditionalAssemblies` of the `Router` so it will be scanned for additional routable components. 
+
+```C#
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" PreferExactMatches="@true">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+```
+
+9.8. In [_Imports.razor]() add the following using statement
+
+```C#
+@using BlazorComponents
+```
+
+9.10. Replace the contents of **MainLayout.razor** with the following
+```C#
+@using BlazorShared.Shared
+@inherits LayoutComponentBase
+
+<MainLayoutShared>
+    <LoginDisplayFragment>
+        <LoginDisplay/>
+    </LoginDisplayFragment>
+    <BodyFragment>
+        @Body
+    </BodyFragment>
+</MainLayoutShared>
+```
+
+9.11. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and update the `OnGetAsync` as follows:
+
+```C#
+    public class Login : PageModel
+    {
+        public async Task OnGetAsync(string redirectUri)
+        {
+            if(string.IsNullOrWhiteSpace(redirectUri))
+            {
+                redirectUri = Url.Content("~/");
+            }
+
+            if(HttpContext.User.Identity.IsAuthenticated)
+            {
+                Response.Redirect(redirectUri);
+            }
+
+            await HttpContext.ChallengeAsync(
+                OpenIdConnectDefaults.AuthenticationScheme,
+                new AuthenticationProperties { RedirectUri = redirectUri });
+        }
+    }
+```
+
+9.12. Remove the following from the *LoginDisplay.cshtml*
+
+`<a href="Identity/Account/Register">Register</a>`
 
 
 > **_NOTE:_**
