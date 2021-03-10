@@ -720,7 +720,8 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 ```C#
 <CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" PreferExactMatches="@true">
+    <Router AppAssembly="@typeof(Program).Assembly" 
+            AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" PreferExactMatches="@true">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         </Found>
