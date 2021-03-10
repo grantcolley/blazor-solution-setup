@@ -557,7 +557,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 ## 8. Blazor Server App
 8.1. Create a Blazor Server project called [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp)
 
-9.2. Uninstall the following packages:
+8.2. Uninstall the following packages:
 
 ```
     Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
@@ -567,18 +567,19 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
     Microsoft.EntityFrameworkCore.Tools
 ```
 
-9.3. Install the following packages:
+8.3. Install the following packages:
 
 ```
+    IdentityModel
     Microsoft.AspNetCore.Authentication.OpenIdConnect
 ```
 
-9.2. Add a reference to the following projects:
-  * **BlazorSolutionTemplate.Core**
-  * **BlazorSolutionTemplate.Services**
-  * **BlazorSolutionTemplate.App**
-  
-9.3. Delete the *Data* folder and it's content:
+8.4. Add a reference to the following projects:
+   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+   * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+   * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
+
+8.5. Delete the *Data* folder and it's content:
 
 9.4. Delete files:
   * *Pages/Counter.razor*
