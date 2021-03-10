@@ -440,7 +440,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 ## 7. Blazor WebAssembly App
 7.1. Create a **Blazor WebAssembly** project called [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp), setting the authentication type to **Individual User Accounts**
 
-![Alt text](/readme-images/BlazorWebAssemblyAuthenticationType.png?raw=true "BlazorWebAssembly Authentication Type") 
+![Alt text](/readme-images/BlazorWebAssemblyAuthenticationType.png?raw=true "Blazor WebAssembly Authentication Type") 
 
 7.2. Add a reference to the following projects:
    * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
@@ -555,7 +555,9 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
   * *Shared/NavMenu.razor.css*
  
 ## 8. Blazor Server App
-8.1. Create a Blazor Server project called [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp)
+8.1. Create a Blazor Server project called [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp), setting the authentication type to **Individual User Accounts**
+
+![Alt text](/readme-images/BlazorServerAuthenticationType.png?raw=true "Blazor Server Authentication Type")
 
 8.2. Uninstall the following packages:
 
