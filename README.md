@@ -6,7 +6,7 @@
 
 I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. I want my data repositories sitting behind an **ASP.NET Core Web API**. I also want to use **IdentityServer4**, which is an OpenID Connect and OAuth 2.0 framework for authentication.
 
-From the outset I want to consider both hosting models when writing classes and components and integrating authentication. In other words, before I start writing any application specific code I want a solution setup that includes all the necessary projects to support a system that looks like this:
+From the outset I want to consider both hosting models, **Blazor WebAssembly** and **Blazor Server**, when writing classes and components and integrating authentication. In other words, before I start writing any application specific code I want a solution setup that includes all the necessary projects to support a system that looks like this:
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
