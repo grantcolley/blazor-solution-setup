@@ -23,7 +23,7 @@ The following steps will create a solution and its projects, using the default p
 8. [Blazor Server App](#8-blazor-server-app)
  
 ## 1. Core Class Library
-First up we create a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
+First up we create a solution with a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
 
 1.1. Create a Class Library called [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
