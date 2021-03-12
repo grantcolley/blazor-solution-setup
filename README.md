@@ -4,13 +4,13 @@
 * ###### Blazor WebAssembl, Blazor Server, IdentityServer4, ASP.NET Core Web API, .NET 5.0 
 #####  
 
-I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. I want my data repositories sitting behind an **ASP.NET Core Web API**. I also want to use **IdentityServer4**, which is an OpenID Connect and OAuth 2.0 framework for authentication.
+I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. I want my data repositories sitting behind an **ASP.NET Core Web API** and I want to use **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework, for authentication.
 
-From the outset I want to consider both hosting models, **Blazor WebAssembly** and **Blazor Server**, when writing classes and components and integrating authentication. In other words, before I start writing any application specific code I want a solution setup that includes all the necessary projects to support a system that looks like this:
+From the outset I want to consider both hosting models, **Blazor WebAssembly** and **Blazor Server**, when writing code and creating components and integrating authentication. In other words, before I start writing any application specific code I want a solution setup that includes all the necessary projects to support a system that looks like this:
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
-The following steps will create a solution described above using the default project templates available in Visual Studio. The result will be a solution hosting both **Blazor WebAssembly** and **Blazor Server**, using common code and components in shared libraries. The WeatherForecast data will sit behind a **WebApi**, and only accessible to permissioned useres, while **IdentityServer4** will provide authentication.
+The following steps will create a solution and its projects, using the default project templates available in Visual Studio, to give me the system descibed above. The result will be a solution hosting both **Blazor WebAssembly** and **Blazor Server**, libraries for shared code and components, and a **WebApi** only accessible to users authenticated using **IdentityServer4**.
 
 #### Table of Contents
 1. [Core Class Library](#1-core-class-library)
