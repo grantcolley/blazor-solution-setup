@@ -29,24 +29,52 @@ First up we create a solution with a Class Library for core classes that will be
 
 1.2. Rename the solution to [BlazorSolutionSetup](https://github.com/grantcolley/blazor-solution-setup/tree/main/src)
 
-1.3. Double-click on the project and set the target framework to .NET 5.0
+1.3. Delete *Class1.cs*
+
+1.4. Create two folders called *Interface* and *Model*
+
+1.5. In the *Model* folder create the following classes:
+  * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/WeatherForecast.cs)
+  * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
+
 ```C#
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+    public class TokenProvider
+    {
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+    }
 ```
 
-1.4. Delete *Class1.cs*
+```C#
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
 
-1.5. Create two folders called *Interface* and *Model*
+        public int TemperatureC { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+
+        public string Summary { get; set; }
+    }
+```
 
 1.6. In the *Interface* folder create the following interfaces:
   * [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs)
   * [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
 
-1.7. In the *Model* folder create the following classes:
-  * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/WeatherForecast.cs)
-  * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
+```C#
+    public interface IWeatherForecastRepository
+    {
+        IEnumerable<WeatherForecast> GetWeatherForecasts();
+    }
+```
+
+```C#   
+    public interface IWeatherForecastService
+    {
+        Task<IEnumerable<WeatherForecast>> GetWeatherForecasts();
+    }
+```
 
 ## 2. Repository Class Library
 Create a Class Library for the repository code.
