@@ -27,7 +27,7 @@ First up we create a solution with a Class Library for core classes that will be
 
 1.1. Create a Class Library called [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
-1.2. Rename the solution to [BlazorSolutionSetup]((https://github.com/grantcolley/blazor-solution-setup/tree/main/src)
+1.2. Rename the solution to [BlazorSolutionSetup](https://github.com/grantcolley/blazor-solution-setup/tree/main/src)
 
 1.3. Double-click on the project and set the target framework to .NET 5.0
 ```C#
