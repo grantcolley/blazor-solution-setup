@@ -77,7 +77,7 @@ First up we create a solution with a Class Library for core classes that will be
 ```
 
 ## 2. Repository Class Library
-Now create a Class Library for the repository code.
+Now create a Class Library for the data repository code.
 
 2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
@@ -205,7 +205,7 @@ dotnet sln add IdentityProvider
 ```
 
 ## 4. ASP.NET Core Web API
-Create an ASP.NET Core Web API for restricted access to our repository.
+Create an ASP.NET Core Web API for restricted access to the data repository.
 
 4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
 
@@ -216,20 +216,20 @@ Create an ASP.NET Core Web API for restricted access to our repository.
 4.3 Add the following nuget package to enable the [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi) to receive an OpenID Connect bearer token:
 
 ```C#
-Microsoft.AspNetCore.Authentication.Jwt
+Microsoft.AspNetCore.Authentication.JwtBearer
 ```
 
-4.4 Set the *sslPort* in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+4.4 Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
 ```C#
   "sslPort": 5000
 ```
 
-4.5. Delete class *WeatherForecast.cs*
+4.5. Delete the *WeatherForecast.cs* class
 
-4.6 In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
-  * Register [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) with the concrete implementation [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs)
+4.6 In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
+  * Register a scoped [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) with the concrete implementation [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs)
   * Add a CORS policy to enable Cross-Origin Requests to allow requests from a different origin to the WebApi. See [Enable Cross-Origin Requests (CORS)](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0) for more details.
-  * Add `AddAuthentication`
+  * Add and configure authentication with `AddAuthentication`, setting the authority to that of the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) and an audience of *weatherapi*
 
 ```C#
         public void ConfigureServices(IServiceCollection services)
