@@ -359,11 +359,11 @@ Create a Class Library for services classes.
 ## 6. Razor Class Library for Shared Components
 Create a Blazor WebAssembly project and convert it to a Razor Class Library for shared components.
 
-6.1. Create a Blazor WebAssembly App called [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
+6.1. Create a Blazor WebAssembly App called [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
-6.2 Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+6.2 Add a project reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
-6.3. Remove all default installed nuget packages and add the package `Microsoft.AspNetCore.Components.Web`:
+6.3. Remove all default installed nuget packages and add the package `Microsoft.AspNetCore.Components.Web`
 
 6.4. Convert the project to a Razor Class Library (RCL) by double-clicking the project and setting the `Project Sdk`. The project file should look like this:
 
@@ -375,7 +375,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -399,9 +399,11 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 @using Microsoft.AspNetCore.Components.Web
 @using AppCore.Interface
 @using AppCore.Model
+@using RazorComponents
+@using RazorComponents.Shared
 ```
 
-6.7. Rename **MainLayout.razor** to **MainLayoutBase.razor** and replace the contents with the following:
+6.7. Rename *MainLayout.razor* to [MainLayoutBase.razor]() and replace the contents with the following:
 
 ```C#
 <div class="page">
@@ -431,8 +433,9 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 ```
 
 6.8. In *FetchData.razor* 
-  * Remove `@inject HttpClient Http` and add `@using Microsoft.AspNetCore.Authorization` and the `[Authorize]` attribute
-  * Change the `@code` block by injecting an instance of the *IWeatherForecastService* and getting the weather forecast in `OnInitializedAsync()` 
+  * Remove `@inject HttpClient Http` 
+  * Add `@using Microsoft.AspNetCore.Authorization` and the `[Authorize]` attribute
+  * Change the `@code` block by injecting an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs) and getting the weather forecast in `OnInitializedAsync()` 
 
 ```C#
 @page "/fetchdata"
