@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore", "AppCore\AppCore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRepository", "AppRepository\AppRepository.csproj", "{EFCF6BB8-3125-460D-B968-B57607D63C4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityProvider", "IdentityProvider\IdentityProvider.csproj", "{971CF6E6-6551-46AE-A062-BBC190C72C98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EFCF6BB8-3125-460D-B968-B57607D63C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFCF6BB8-3125-460D-B968-B57607D63C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFCF6BB8-3125-460D-B968-B57607D63C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971CF6E6-6551-46AE-A062-BBC190C72C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971CF6E6-6551-46AE-A062-BBC190C72C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971CF6E6-6551-46AE-A062-BBC190C72C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971CF6E6-6551-46AE-A062-BBC190C72C98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
