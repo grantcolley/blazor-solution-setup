@@ -365,7 +365,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 6.3. Remove all default installed nuget packages and add the package `Microsoft.AspNetCore.Components.Web`
 
-6.4. Convert the project to a Razor Class Library (RCL) by double-clicking the project and setting the `Project Sdk`. The project file should look like this:
+6.4. Convert the project to a **Razor Class Library (RCL)** by double-clicking the project and setting the `Project Sdk` to `Microsoft.NET.Sdk.Razor`. The project file should look like this:
 
 ```C#
 <Project Sdk="Microsoft.NET.Sdk.Razor">
@@ -392,7 +392,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
   * *App.razor*
   * *Program.cs*
 
-6.6. Replace the content of the [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/_Imports.razor) as follows:
+6.6. Replace the content of the [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/_Imports.razor) as follows:
 
 ```C#
 @using Microsoft.AspNetCore.Components.Routing
@@ -403,7 +403,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 @using RazorComponents.Shared
 ```
 
-6.7. Rename *MainLayout.razor* to [MainLayoutBase.razor]() and replace the contents with the following:
+6.7. Rename *MainLayout.razor* to [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) and replace the contents with the following:
 
 ```C#
 <div class="page">
@@ -432,7 +432,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 }
 ```
 
-6.8. In *FetchData.razor* 
+6.8. In [FetchData.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Pages/FetchData.razor) 
   * Remove `@inject HttpClient Http` 
   * Add `@using Microsoft.AspNetCore.Authorization` and the `[Authorize]` attribute
   * Change the `@code` block by injecting an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs) and getting the weather forecast in `OnInitializedAsync()` 
