@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppRepository", "AppReposit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityProvider", "IdentityProvider\IdentityProvider.csproj", "{971CF6E6-6551-46AE-A062-BBC190C72C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{B38EF8A7-F6A6-439C-A09C-8C542ADE824A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{B38EF8A7-F6A6-439C-A09C-8C542ADE824A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppServices", "AppServices\AppServices.csproj", "{ED2F0944-4D85-424E-93F5-A56522E1ACC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppServices", "AppServices\AppServices.csproj", "{ED2F0944-4D85-424E-93F5-A56522E1ACC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorComponents", "RazorComponents\RazorComponents.csproj", "{798A1A5D-8B99-4259-B55E-B1A527269F3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{ED2F0944-4D85-424E-93F5-A56522E1ACC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED2F0944-4D85-424E-93F5-A56522E1ACC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED2F0944-4D85-424E-93F5-A56522E1ACC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798A1A5D-8B99-4259-B55E-B1A527269F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798A1A5D-8B99-4259-B55E-B1A527269F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798A1A5D-8B99-4259-B55E-B1A527269F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798A1A5D-8B99-4259-B55E-B1A527269F3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
