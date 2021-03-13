@@ -18,7 +18,7 @@ The following steps will create a solution and its projects, using the default p
 3. [IdentityProvider](#3-identityprovider)
 4. [ASP.NET Core Web API](#4-aspnet-core-web-api)
 5. [Services Class Library](#5-services-class-library)
-6. [Components Razor Class Library](#6-components-razor-class-library)
+6. [Razor Class Library for Shared Components](#6-razor-class-library-for-shared-components)
 7. [Blazor WebAssembly App](#7-blazor-webassembly-app)
 8. [Blazor Server App](#8-blazor-server-app)
  
@@ -356,7 +356,7 @@ Create a Class Library for services classes.
     }
 ```
 
-## 6. Components Razor Class Library
+## 6. Razor Class Library for Shared Components
 Create a Blazor WebAssembly project and convert it to a Razor Class Library for shared components.
 
 6.1. Create a Blazor WebAssembly App called [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
