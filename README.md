@@ -111,11 +111,11 @@ Now create a Class Library for the repository code.
 ```
 
 ## 3. IdentityProvider
-Install the **IdentityServer4** templates and create a project for the identity provider that will provide authentication. 
+Install the **IdentityServer4** templates and create a project to provide authentication. 
 
 3.1 Open the **Visual Studio Developer Command Prompt** and change directory to the solution file [BlazorSolutionSetup](https://github.com/grantcolley/blazor-solution-setup/tree/main/src).
 
-3.2. Install IdentityServer4 templates
+3.2. Install **IdentityServer4** templates
 
 `dotnet new -i IdentityServer4.Templates` 
 
@@ -156,7 +156,7 @@ dotnet sln add IdentityProvider
             };
 ```
 
-  * Replace the default client credentials with new credentials for [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
+  * Replace the default client credentials with new client credentials for [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
 
 ```C#
         public static IEnumerable<Client> Clients =>
@@ -190,7 +190,7 @@ dotnet sln add IdentityProvider
             };
 ```
 
-3.6. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service `services.AddIdentityServer`.
+3.6. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
 
 ```C#
             var builder = services.AddIdentityServer(options =>
