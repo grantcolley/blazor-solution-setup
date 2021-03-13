@@ -209,7 +209,7 @@ Create an ASP.NET Core Web API for restricted access to the data repository.
 
 4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
 
-4.2. Add a reference to the following projects:
+4.2. Add project references to the following projects:
    * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
    * [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
@@ -311,7 +311,7 @@ Create a Class Library for services classes.
 
 5.1. Create a Class Library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
 
-5.2. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+5.2. Add a project reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
 5.3. Delete *Class1.cs*
 
