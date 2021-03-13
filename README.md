@@ -133,19 +133,17 @@ dotnet sln add IdentityProvider
 ```
 
 3.5. In *Config.cs*:
-Add a new `ApiScope`called *weatherapiread*
+  * Replace the default scopes with a new `ApiScope`called *weatherapiread*
 
 ```C#
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("scope1"),
-                new ApiScope("scope2"),
                 new ApiScope("weatherapiread")
             };
 ```
 
-Create a list of `ApiResources` an add a *weatherapi* `ApiReasource`
+  * Create a list of `ApiResources` an add a *weatherapi* `ApiReasource`
 
 ```C#
         public static IEnumerable<ApiResource> ApiResources =>
@@ -158,7 +156,7 @@ Create a list of `ApiResources` an add a *weatherapi* `ApiReasource`
             };
 ```
 
-Replace the defaults clients with new clients for [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
+  * Replace the default client credentials with new credentials for [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
 
 ```C#
         public static IEnumerable<Client> Clients =>
@@ -192,7 +190,7 @@ Replace the defaults clients with new clients for [BlazorWebAssemblyApp](https:/
             };
 ```
 
-3.6. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add *Config.ApiResources* to the in memory resources of the IdentityServer service
+3.6. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service `services.AddIdentityServer`.
 
 ```C#
             var builder = services.AddIdentityServer(options =>
