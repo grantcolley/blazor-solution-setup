@@ -77,7 +77,7 @@ First up we create a solution with a Class Library for core classes that will be
 ```
 
 ## 2. Repository Class Library
-Create a Class Library for the repository code.
+Now create a Class Library for the repository code.
 
 2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
 
@@ -111,25 +111,29 @@ Create a Class Library for the repository code.
 ```
 
 ## 3. IdentityProvider
-3.1. Install IdentityServer4 templates
+Install the **IdentityServer4** templates and create a project for the identity provider that will provide authentication. 
+
+3.1 Open the **Visual Studio Developer Command Prompt** and change directory to the solution file [BlazorSolutionSetup](https://github.com/grantcolley/blazor-solution-setup/tree/main/src).
+
+3.2. Install IdentityServer4 templates
 
 `dotnet new -i IdentityServer4.Templates` 
 
-3.2. Create the IdentityProvider project from one of the templates and add it to the solution
+3.3. Create the IdentityProvider project from one of the templates and add it to the solution
 ```C#
 dotnet new is4aspid -n IdentityProvider
 
 dotnet sln add IdentityProvider
 ```
 
-3.3. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
+3.4. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
 
 ```C#
 "applicationUrl": "https://localhost:5001"
 ```
 
-3.4. In *Config.cs*:
-Add a new ApiScope called weatherapiread
+3.5. In *Config.cs*:
+Add a new `ApiScope`called *weatherapiread*
 
 ```C#
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -141,7 +145,7 @@ Add a new ApiScope called weatherapiread
             };
 ```
 
-Create a list of ApiResources an add a weatherapi ApiReasource
+Create a list of `ApiResources` an add a *weatherapi* `ApiReasource`
 
 ```C#
         public static IEnumerable<ApiResource> ApiResources =>
@@ -154,7 +158,7 @@ Create a list of ApiResources an add a weatherapi ApiReasource
             };
 ```
 
-Remove the defaults clients and replace them with new clients for BlazorWebAssemblyApp and BlazorServerApp
+Replace the defaults clients with new clients for [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
 
 ```C#
         public static IEnumerable<Client> Clients =>
@@ -166,10 +170,10 @@ Remove the defaults clients and replace them with new clients for BlazorWebAssem
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44390" },
+                    AllowedCorsOrigins = { "https://localhost:44500" },
                     AllowedScopes = { "openid", "profile", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44390/authentication/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:44390/" },
+                    RedirectUris = { "https://localhost:44500/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:44500/" },
                     Enabled = true
                 },
 
@@ -180,15 +184,15 @@ Remove the defaults clients and replace them with new clients for BlazorWebAssem
                     ClientSecrets = { new Secret("blazorserverappsecret".Sha256()) },
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44376" },
+                    AllowedCorsOrigins = { "https://localhost:44600" },
                     AllowedScopes = { "openid", "profile", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44376/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44376/signout-oidc" },
+                    RedirectUris = { "https://localhost:44600/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44600/signout-oidc" },
                 },
             };
 ```
 
-3.5. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add *Config.ApiResources* to the in memory resources of the IdentityServer service
+3.6. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add *Config.ApiResources* to the in memory resources of the IdentityServer service
 
 ```C#
             var builder = services.AddIdentityServer(options =>
