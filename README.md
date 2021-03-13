@@ -277,7 +277,9 @@ Microsoft.AspNetCore.Authentication.JwtBearer
         }
 ```
 
-4.8. Change the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs), adding the `[Authorize]` attribute to restrict access, and injecting an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()` method as follows:
+4.8. Change the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
+  * Add the `[Authorize]` attribute to restrict access.
+  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()`
   
 ```C#
     [Authorize]
