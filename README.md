@@ -309,25 +309,17 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 ## 5. Services Class Library
 Create a Class Library for services classes.
 
-5.1. Create a class library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+5.1. Create a Class Library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
 
 5.2. Add a reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
-5.3. Double-click on the project and set the target framework to .NET 5.0
+5.3. Delete *Class1.cs*
 
-```C#
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
-```
-
-5.4. Delete *Class1.cs*
-
-5.5. Create the class [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+5.4. Create a [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) class that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
   * Create two constructors:
-    * One accepting `HttpClient` which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp).
-    * The other accepting `HttpClient` and `TokenProvider`, which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp).
-  * In the `GetWeatherForecasts()` method, if `useAccessToken` is true then add it to the header of the request.
+    * One constructor accepting `HttpClient`, which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp).
+    * The other constructor accepting `HttpClient` and `TokenProvider`, which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp).
+  * In the `GetWeatherForecasts()` method, if `useAccessToken` is true then add the `Bearer` token to the `Authorization` header of the outgoing request.
 
 ```C#
     public class WeatherForecastService : IWeatherForecastService
