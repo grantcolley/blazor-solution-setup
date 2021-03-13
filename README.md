@@ -405,6 +405,8 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 6.7. Rename *MainLayout.razor* to [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) and replace the contents with the following:
 
+> A RenderFragment represents a segment of UI content, implemented as a delegate. Here we let the consumers of [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) to provide UI content for the LoginDisplayFragment and BodyFragment. The consumers will be [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
+
 ```C#
 <div class="page">
     <div class="sidebar">
