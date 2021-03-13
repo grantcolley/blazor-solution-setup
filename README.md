@@ -812,6 +812,12 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
   
+> **TODO**
+> Restrict CORS requests to WebApi by configuring clients
+> IdentityServer - seed database if necessary
+> Look into a Policy Server
+> Additional notes below
+
 
 > **_NOTE:_**
 > **Blazor Web Assembly** applications allow you to add a message handler, `AuthorizationMessageHandler`, when registering the typed *IWeatherForecastService* `HttpClient`. This will automatically ensure the access token is added to the header of outgoing requests using it.
