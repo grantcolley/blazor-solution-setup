@@ -132,7 +132,7 @@ dotnet sln add IdentityProvider
 "applicationUrl": "https://localhost:5001"
 ```
 
-3.5. In *Config.cs*:
+3.5. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
   * Replace the default scopes with a new `ApiScope`called *weatherapiread*
 
 ```C#
