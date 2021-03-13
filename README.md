@@ -817,6 +817,9 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 > IdentityServer - seed database if necessary
 > Look into a Policy Server
 > Additional notes below
+> Instructions for setting startup projects and logging in using IdentityProvider default login name/pwd
+> Check login / logout re-directs
+> CHeck unauthorised re-directs to login page
 
 
 > **_NOTE:_**
