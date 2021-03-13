@@ -1,7 +1,7 @@
 # blazor-solution-setup
 
 ##### Technologies
-* ###### Blazor WebAssembl, Blazor Server, IdentityServer4, ASP.NET Core Web API, .NET 5.0 
+* ###### .NET 5.0, Blazor WebAssembly, Blazor Server, IdentityServer4, ASP.NET Core Web API 
 #####  
 
 I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. I want my data repositories sitting behind an **ASP.NET Core Web API** and I want to use **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework, for authentication.
