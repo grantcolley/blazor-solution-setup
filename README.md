@@ -255,8 +255,8 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 ```
 
 4.7. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs) :
-  * First add the authentication middleware `app.UseAuthentication` after `app.UseRouting` 
-  * Then add the CORS middleware `app.UserCors` after `UseRouting`, but before `UseAuthentication`.
+  * First add the authentication middleware `app.UseAuthentication()` after `app.UseRouting()`, but before `app.UseAuthorization()`
+  * Then add the CORS middleware `app.UserCors()` after `app.UseRouting()`, but before `app.UseAuthentication()`.
 
 > Middleware order is important. See [middleware order](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-5.0#middleware-order) for more information.
 
