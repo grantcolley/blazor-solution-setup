@@ -615,7 +615,7 @@ Microsoft.Extensions.Http
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
    * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
-8.5. In [_Imports.razor]() add the following using statement
+8.5. In [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/_Imports.razor) add the following using statement
 
 ```C#
 @using RazorComponents.Shared
