@@ -4,13 +4,17 @@
 * ###### .NET 5.0, Blazor WebAssembly, Blazor Server, IdentityServer4, ASP.NET Core Web API 
 #####  
 
-I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. I want my data repositories sitting behind an **ASP.NET Core Web API** and I want to use **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework, for authentication.
+Setup a solution for a *Blazor* app supported by both hosting models, a *WebApi* for accessing data and an *Identity Provider* for authentication:
+ * **Blazor WebAssembly**, running client-side on the browser.
+ * **Blazor Server**, where updates and event handling are run on the server and managed over a SignalR connection. 
+ * **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework for authentication. 
+ * **ASP.NET Core Web API**, for accessing data repositories by authenticated users.
+ * **Razor Class Library** for shared *Razor* components.
+ * Class Libraries for shared code, models and interfaces.
 
-From the outset I want to consider both hosting models, **Blazor WebAssembly** and **Blazor Server**, when writing code and creating components and integrating authentication. In other words, before I start writing any application specific code I want a solution setup that includes all the necessary projects to support a system that looks like this:
+The following steps will setup the solution and its projects, using default project templates (and ubiquitous *WeatherForecast* example), available in Visual Studio.
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
-
-The following steps will create a solution and its projects, using the default project templates available in Visual Studio, to give me the system descibed above. The result will be a solution hosting both **Blazor WebAssembly** and **Blazor Server**, libraries for shared code and components, and a **WebApi** only accessible to users authenticated using **IdentityServer4**.
 
 #### Table of Contents
 1. [Core Class Library](#1-core-class-library)
@@ -363,7 +367,11 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 6.2 Add a project reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
-6.3. Remove all default installed nuget packages and add the package `Microsoft.AspNetCore.Components.Web`
+6.3. Remove all the nuget packages installed by default and add the following package:
+
+```C#
+Microsoft.AspNetCore.Components.Web
+```
 
 6.4. Convert the project to a **Razor Class Library (RCL)** by double-clicking the project and setting the `Project Sdk` to `Microsoft.NET.Sdk.Razor`. The project file should look like this:
 
@@ -460,26 +468,38 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 ```
 
 ## 7. Blazor WebAssembly App
-7.1. Create a **Blazor WebAssembly** project called [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp), setting the authentication type to **Individual User Accounts**
+7.1. Create a **Blazor WebAssembly** project called [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp), setting the authentication type to *Individual Accounts*.
 
 ![Alt text](/readme-images/BlazorWebAssemblyAuthenticationType.png?raw=true "Blazor WebAssembly Authentication Type") 
 
 7.2. Add a reference to the following projects:
    * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
-   * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
+   * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
-7.3. Add nuget package reference `Microsoft.Extensions.Http`
+7.3. Add the following nuget package:
+
+```C#
+Microsoft.Extensions.Http
+```
 
 7.4. In [_Imports.razor]() add the following using statement
 
 ```C#
-@using BlazorComponents.Shared
+@using RazorComponents.Shared
 ```
 
-7.5. In the [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
-  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`
-  * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests using the `webapi` client.
+7.5. Delete files:
+  * *Pages/Counter.razor*
+  * *Pages/FetchData.razor*
+  * *Pages/Index.razor*
+  * *Shared/SurveyPromt.razor*
+  * *Shared/NavMenu.razor*
+  * *Shared/NavMenu.razor.css*
+
+7.6. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
+  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port of the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+  * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests when using the `webapi` client.
 
 ```C#
             builder.Services.AddHttpClient("webapi", (sp, client) =>
@@ -495,7 +515,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
             });
 ```
 
-   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) injecting and instance of `HttpClient`, using the `IHttpClientFactory`, into its constructor.
+   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs), injecting and instance of `HttpClient` using the `IHttpClientFactory`, into its constructor.
  
  ```C#
             builder.Services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
@@ -506,7 +526,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
             });
 ```
 
-   *  Register and configure authentication with `AddOidcAuthentication`. Set the port number of the `options.ProviderOptions.Authority` to `5001`
+   *  Register and configure authentication replacing `builder.Services.AddOidcAuthentication`. Set the port number of the `options.ProviderOptions.Authority` to `5001`, which is the port of the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
 
 ```C#
             builder.Services.AddOidcAuthentication(options =>
@@ -523,8 +543,8 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
                 options.ProviderOptions.ResponseType = "code";
             });
 ```
-
-7.6. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents) assembly will be scanned for additional routable components. 
+  
+7.7. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
 
 ```C#
 <CascadingAuthenticationState>
@@ -553,7 +573,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 </CascadingAuthenticationState>
 ```
 
-7.7. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+7.8. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -567,17 +587,9 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
     </BodyFragment>
 </MainLayoutBase>
 ```
-  
-7.8. Delete files:
-  * *Pages/Counter.razor*
-  * *Pages/FetchData.razor*
-  * *Pages/Index.razor*
-  * *Shared/SurveyPromt.razor*
-  * *Shared/NavMenu.razor*
-  * *Shared/NavMenu.razor.css*
  
 ## 8. Blazor Server App
-8.1. Create a Blazor Server project called [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp), setting the authentication type to **Individual User Accounts**
+8.1. Create a Blazor Server project called [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp), setting the authentication type to *Individual Accounts*.
 
 ![Alt text](/readme-images/BlazorServerAuthenticationType.png?raw=true "Blazor Server Authentication Type")
 
@@ -591,7 +603,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
     Microsoft.EntityFrameworkCore.Tools
 ```
 
-8.3. Install the following packages:
+8.3. Install the following nuget packages:
 
 ```
     IdentityModel
@@ -601,12 +613,12 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 8.4. Add a reference to the following projects:
    * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
-   * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
+   * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
 8.5. In [_Imports.razor]() add the following using statement
 
 ```C#
-@using BlazorComponents.Shared
+@using RazorComponents.Shared
 ```
   
 8.6. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
@@ -738,7 +750,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 }
 ```
 
-   *  Add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents) assembly will be scanned for additional routable components.
+   *  Add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components.
 
 ```C#
 <CascadingAuthenticationState>
@@ -756,7 +768,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 </CascadingAuthenticationState>
 ```
 
-8.11. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+8.11. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
 
 ```C#
 @inherits LayoutComponentBase
