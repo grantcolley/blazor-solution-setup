@@ -4,18 +4,16 @@
 * ###### .NET 5.0, Blazor WebAssembly, Blazor Server, IdentityServer4, ASP.NET Core Web API 
 #####  
 
-I want a Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. I want my data repositories sitting behind an **ASP.NET Core Web API** and I want to use **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework, for authentication.
-
-From the outset I want to consider both hosting models, **Blazor WebAssembly** and **Blazor Server**, when writing code and creating components and integrating authentication. In other words, before I start writing any application specific code I want a solution setup that includes all the necessary projects to support a system that looks like this:
+A solution setup providing:
+ * A Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. 
+ * Libraries for shared code.
+ * A library for shared *Razor* components.
+ * An *Identity Provider* providing authentication using **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework.
+ * A **ASP.NET Core Web API** only accessible to authenticated users, for accessing data repositories.
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
-The following steps will create a solution and its projects, using the default project templates available in Visual Studio, to build the system descibed above. The result will be a solution:
-  * That hosting both **Blazor WebAssembly** and **Blazor Server**
-  * Libraries for shared code
-  * A library for shared *Razor* components
-  * A *Identity Provider* implemented using **IdentityServer4**
-  * A **WebApi** only accessible to users that have been authenticated using **IdentityServer4**.
+The following steps will create a solution and its projects, using the default project templates available in Visual Studio.
 
 #### Table of Contents
 1. [Core Class Library](#1-core-class-library)
