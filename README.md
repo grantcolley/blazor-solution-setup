@@ -792,10 +792,10 @@ Microsoft.Extensions.Http
 </MainLayoutBase>
 ```
 
-8.14. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and update the `OnGetAsync` as follows:
+8.14. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs]() update the `OnGetAsync` as follows:
 
 ```C#
-    public class Login : PageModel
+    public class LoginModel : PageModel
     {
         public async Task OnGetAsync(string redirectUri)
         {
