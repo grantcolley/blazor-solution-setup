@@ -725,9 +725,12 @@ Microsoft.Extensions.Http
         RefreshToken = await HttpContext.GetTokenAsync("refresh_token")
     };
 }
+
+// Additional code not shown for simplicity
+
 ```
 
-  * Set the `InitialState` parameter of the `App` component to the `tokens`
+  * Set the `param-InitialState` parameter of the `App` component to the `tokens`
   
 `<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />`
 
@@ -737,8 +740,10 @@ Microsoft.Extensions.Http
 
 ```C#
 @using AppCore.Model
-@using BlazorServerApp.Authentication
+@using BlazorServerApp.Model
 @inject TokenProvider TokenProvider
+
+// Additional code not shown for simplicity
 
 @code {
     [Parameter]
