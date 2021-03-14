@@ -483,7 +483,7 @@ Microsoft.AspNetCore.Components.Web
 Microsoft.Extensions.Http
 ```
 
-7.4. In [_Imports.razor]() add the following using statement
+7.4. In [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/_Imports.razor) add the following using statement
 
 ```C#
 @using RazorComponents.Shared
@@ -573,7 +573,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-7.8. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
+7.8. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
 
 ```C#
 @inherits LayoutComponentBase
