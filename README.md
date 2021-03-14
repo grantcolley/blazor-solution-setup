@@ -10,7 +10,12 @@ From the outset I want to consider both hosting models, **Blazor WebAssembly** a
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
-The following steps will create a solution and its projects, using the default project templates available in Visual Studio, to give me the system descibed above. The result will be a solution hosting both **Blazor WebAssembly** and **Blazor Server**, libraries for shared code and components, and a **WebApi** only accessible to users authenticated using **IdentityServer4**.
+The following steps will create a solution and its projects, using the default project templates available in Visual Studio, to build the system descibed above. The result will be a solution:
+  * That hosting both **Blazor WebAssembly** and **Blazor Server**
+  * Libraries for shared code
+  * A library for shared *Razor* components
+  * A *Identity Provider* implemented using **IdentityServer4**
+  * A **WebApi** only accessible to users that have been authenticated using **IdentityServer4**.
 
 #### Table of Contents
 1. [Core Class Library](#1-core-class-library)
