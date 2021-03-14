@@ -489,7 +489,13 @@ Microsoft.Extensions.Http
 @using RazorComponents.Shared
 ```
 
-7.5. Delete files:
+7.5. Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Properties/launchSettings.json) to the following:
+
+```C#
+"sslPort": 44500
+```
+
+7.6. Delete files:
   * *Pages/Counter.razor*
   * *Pages/FetchData.razor*
   * *Pages/Index.razor*
@@ -497,7 +503,7 @@ Microsoft.Extensions.Http
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
 
-7.6. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
+7.7. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
   * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
   * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests when using the `webapi` client.
 
@@ -544,7 +550,7 @@ Microsoft.Extensions.Http
             });
 ```
   
-7.7. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
+7.8. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
 
 ```C#
 <CascadingAuthenticationState>
@@ -573,7 +579,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-7.8. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
+7.9. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -621,9 +627,15 @@ Microsoft.Extensions.Http
 @using RazorComponents.Shared
 ```
 
-8.6. Delete the *Data* folder and it's content:
+8.6. Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Properties/launchSettings.json) to the following:
 
-8.7. Delete files:
+```C#
+"sslPort": 44600
+```
+
+8.7. Delete the *Data* folder and it's content:
+
+8.8. Delete files:
   * *Pages/Counter.razor*
   * *Pages/FetchData.razor*
   * *Pages/Index.razor*
@@ -631,7 +643,7 @@ Microsoft.Extensions.Http
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
   
-8.8. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
+8.9. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
 
   * Remove the following default configuration:
 
@@ -694,9 +706,9 @@ Microsoft.Extensions.Http
             });
 ```
 
-8.9. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
+8.10. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
 
-8.10. Create a folder called `Model` and inside create a class called `InitialApplicationState`
+8.11. Create a folder called `Model` and inside create a class called `InitialApplicationState`
 
 ```C#
     public class InitialApplicationState
@@ -706,7 +718,7 @@ Microsoft.Extensions.Http
     }
 ```
 
-8.11. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
+8.12. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
 
   * Add the following code to get the access token.
   
@@ -734,7 +746,7 @@ Microsoft.Extensions.Http
   
 `<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />`
 
-8.12. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
+8.13. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
 
    *  Inject the `TokenProvider`, create a parameter for `InitialApplicationState` and in `OnInitializedAsync` set the access token:
 
@@ -777,7 +789,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-8.13. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+8.14. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -792,7 +804,7 @@ Microsoft.Extensions.Http
 </MainLayoutBase>
 ```
 
-8.14. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Areas/Identity/Pages/Account/Login.cshtml.cs) update the `OnGetAsync` as follows:
+8.15. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Areas/Identity/Pages/Account/Login.cshtml.cs) update the `OnGetAsync` as follows:
 
 ```C#
     public class LoginModel : PageModel
@@ -816,7 +828,7 @@ Microsoft.Extensions.Http
     }
 ```
 
-8.15. Remove the following from the *LoginDisplay.cshtml*
+8.16. Remove the following from the *LoginDisplay.cshtml*
 
 `<a href="Identity/Account/Register">Register</a>`
   
