@@ -11,6 +11,7 @@ A solution setup providing:
  * An *Identity Provider* providing authentication using **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework.
  * A **ASP.NET Core Web API** only accessible to authenticated users, for accessing data repositories.
 
+
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
 The following steps will create a solution and its projects, using the default project templates available in Visual Studio.
