@@ -363,7 +363,11 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 6.2 Add a project reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
 
-6.3. Remove all default installed nuget packages and add the package `Microsoft.AspNetCore.Components.Web`
+6.3. Remove all the nuget packages installed by default and add the following package:
+
+```C#
+Microsoft.AspNetCore.Components.Web
+```
 
 6.4. Convert the project to a **Razor Class Library (RCL)** by double-clicking the project and setting the `Project Sdk` to `Microsoft.NET.Sdk.Razor`. The project file should look like this:
 
@@ -469,7 +473,11 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
    * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
 
-7.3. Add nuget package reference `Microsoft.Extensions.Http`
+7.3. Add the following nuget package:
+
+```C#
+Microsoft.Extensions.Http
+```
 
 7.4. In [_Imports.razor]() add the following using statement
 
@@ -591,7 +599,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
     Microsoft.EntityFrameworkCore.Tools
 ```
 
-8.3. Install the following packages:
+8.3. Install the following nuget packages:
 
 ```
     IdentityModel
