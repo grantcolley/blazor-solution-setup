@@ -6,11 +6,11 @@
 
 A solution setup providing:
  * A Blazor app that can run seamlessly on both hosting models i.e. **Blazor WebAssembly** running client-side on the browser, and **Blazor Server** running server-side, where updates and event handling are run on the server and managed over a SignalR connection. 
- * Libraries for shared code.
- * A library for shared *Razor* components.
  * An *Identity Provider* providing authentication using **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework.
- * A **ASP.NET Core Web API** only accessible to authenticated users, for accessing data repositories.
- 
+ * An **ASP.NET Core Web API** only accessible to authenticated users, for accessing data repositories.
+ * A library for shared *Razor* components.
+ * Libraries for shared code.
+
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
 The following steps will create a solution and its projects, using the default project templates available in Visual Studio.
