@@ -507,7 +507,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) injecting and instance of `HttpClient`, using the `IHttpClientFactory`, into its constructor.
+   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs), injecting and instance of `HttpClient` using the `IHttpClientFactory`, into its constructor.
  
  ```C#
             builder.Services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
@@ -518,7 +518,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-   *  Register and configure authentication with `AddOidcAuthentication`. Set the port number of the `options.ProviderOptions.Authority` to `5001`
+   *  Register and configure authentication replacing `builder.Services.AddOidcAuthentication`. Set the port number of the `options.ProviderOptions.Authority` to `5001`, which is the port of the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
 
 ```C#
             builder.Services.AddOidcAuthentication(options =>
