@@ -489,7 +489,15 @@ Microsoft.Extensions.Http
 @using RazorComponents.Shared
 ```
 
-7.5. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
+7.5. Delete files:
+  * *Pages/Counter.razor*
+  * *Pages/FetchData.razor*
+  * *Pages/Index.razor*
+  * *Shared/SurveyPromt.razor*
+  * *Shared/NavMenu.razor*
+  * *Shared/NavMenu.razor.css*
+
+7.6. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
   * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port of the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
   * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests when using the `webapi` client.
 
@@ -535,8 +543,8 @@ Microsoft.Extensions.Http
                 options.ProviderOptions.ResponseType = "code";
             });
 ```
-
-7.6. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
+  
+7.7. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
 
 ```C#
 <CascadingAuthenticationState>
@@ -565,7 +573,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-7.7. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
+7.8. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -579,14 +587,6 @@ Microsoft.Extensions.Http
     </BodyFragment>
 </MainLayoutBase>
 ```
-  
-7.8. Delete files:
-  * *Pages/Counter.razor*
-  * *Pages/FetchData.razor*
-  * *Pages/Index.razor*
-  * *Shared/SurveyPromt.razor*
-  * *Shared/NavMenu.razor*
-  * *Shared/NavMenu.razor.css*
  
 ## 8. Blazor Server App
 8.1. Create a Blazor Server project called [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp), setting the authentication type to *Individual Accounts*.
