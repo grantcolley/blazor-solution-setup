@@ -13,7 +13,7 @@ A Blazor solution setup for:
  * **Razor Class Library** for shared *Razor* components.
  * Class Libraries for shared code, models and interfaces.
 
-The following steps will setup the solution and its projects, using the default project templates (and ubiquitous WeatherForecast example), available in Visual Studio.
+The following steps will setup the solution and its projects, using the default project templates (and ubiquitous *WeatherForecast* example), available in Visual Studio.
 
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
