@@ -615,7 +615,7 @@ Microsoft.Extensions.Http
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
    * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
-8.5. In [_Imports.razor]() add the following using statement
+8.5. In [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/_Imports.razor) add the following using statement
 
 ```C#
 @using RazorComponents.Shared
@@ -777,7 +777,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-8.13. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+8.13. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -792,7 +792,7 @@ Microsoft.Extensions.Http
 </MainLayoutBase>
 ```
 
-8.14. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs]() update the `OnGetAsync` as follows:
+8.14. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Areas/Identity/Pages/Account/Login.cshtml.cs) update the `OnGetAsync` as follows:
 
 ```C#
     public class LoginModel : PageModel
