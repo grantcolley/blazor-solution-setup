@@ -460,7 +460,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 ```
 
 ## 7. Blazor WebAssembly App
-7.1. Create a **Blazor WebAssembly** project called [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp), setting the authentication type to **Individual User Accounts**
+7.1. Create a **Blazor WebAssembly** project called [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp), setting the authentication type to *Individual User Accounts*.
 
 ![Alt text](/readme-images/BlazorWebAssemblyAuthenticationType.png?raw=true "Blazor WebAssembly Authentication Type") 
 
