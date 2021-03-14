@@ -393,14 +393,7 @@ Microsoft.AspNetCore.Components.Web
 </Project>
 ```
 
-6.5. Delete the files:
-  * *Properties/launchSettings.json*
-  * *wwwroot/index.html*
-  * *sample-data/weather.json*
-  * *App.razor*
-  * *Program.cs*
-
-6.6. Replace the content of the [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/_Imports.razor) as follows:
+6.5. Replace the content of the [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/_Imports.razor) as follows:
 
 ```C#
 @using Microsoft.AspNetCore.Components.Routing
@@ -411,6 +404,13 @@ Microsoft.AspNetCore.Components.Web
 @using RazorComponents.Shared
 ```
 
+6.6. Delete the files:
+  * *Properties/launchSettings.json*
+  * *wwwroot/index.html*
+  * *sample-data/weather.json*
+  * *App.razor*
+  * *Program.cs*
+  
 6.7. Rename *MainLayout.razor* to [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) and replace the contents with the following:
 
 > A RenderFragment represents a segment of UI content, implemented as a delegate. Here we let the consumers of [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) to provide UI content for the LoginDisplayFragment and BodyFragment. The consumers will be [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
@@ -599,7 +599,12 @@ Microsoft.Extensions.Http
 
 ![Alt text](/readme-images/BlazorServerAuthenticationType.png?raw=true "Blazor Server Authentication Type")
 
-8.2. Uninstall the following packages:
+8.2. Add a reference to the following projects:
+   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+   * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+   * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
+   
+8.3. Uninstall the following packages:
 
 ```
     Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
@@ -609,17 +614,12 @@ Microsoft.Extensions.Http
     Microsoft.EntityFrameworkCore.Tools
 ```
 
-8.3. Install the following nuget packages:
+8.4. Install the following nuget packages:
 
 ```
     IdentityModel
     Microsoft.AspNetCore.Authentication.OpenIdConnect
 ```
-
-8.4. Add a reference to the following projects:
-   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
-   * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
-   * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
 8.5. In [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/_Imports.razor) add the following using statement
 
