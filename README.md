@@ -498,7 +498,7 @@ Microsoft.Extensions.Http
   * *Shared/NavMenu.razor.css*
 
 7.6. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
-  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port of the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
   * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests when using the `webapi` client.
 
 ```C#
@@ -526,7 +526,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-   *  Register and configure authentication replacing `builder.Services.AddOidcAuthentication`. Set the port number of the `options.ProviderOptions.Authority` to `5001`, which is the port of the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
+   *  Register and configure authentication replacing `builder.Services.AddOidcAuthentication`. Set the port number of the `options.ProviderOptions.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
 
 ```C#
             builder.Services.AddOidcAuthentication(options =>
@@ -620,8 +620,18 @@ Microsoft.Extensions.Http
 ```C#
 @using RazorComponents.Shared
 ```
+
+8.6. Delete the *Data* folder and it's content:
+
+8.7. Delete files:
+  * *Pages/Counter.razor*
+  * *Pages/FetchData.razor*
+  * *Pages/Index.razor*
+  * *Shared/SurveyPromt.razor*
+  * *Shared/NavMenu.razor*
+  * *Shared/NavMenu.razor.css*
   
-8.6. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
+8.8. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
 
   * Remove the following default configuration:
 
@@ -637,11 +647,9 @@ Microsoft.Extensions.Http
             services.AddSingleton<WeatherForecastService>();
 ```
 
-   *  Register and configure authentication with `AddAuthentication`. Set the port number of the `options.Authority` to `5001`
+   *  Register and configure authentication with `AddAuthentication`. Set the port number of the `options.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
   
 ```C#            
-        public void ConfigureServices(IServiceCollection services)
-        {
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -662,10 +670,9 @@ Microsoft.Extensions.Http
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.TokenValidationParameters.NameClaimType = "name";
                 });
-        }
 ```
 
-  * Add a named `HttpClient` called `webapi`. Set the port number of the `client.BaseAddress` to `5000`
+  * Add a named `HttpClient` called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
 
 ```C#            
             services.AddHttpClient("webapi", client =>
@@ -677,8 +684,6 @@ Microsoft.Extensions.Http
    *  Register a scoped service for [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs) then register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) injecting and instance of the `TokenProvider` and the `HttpClient` from the `IHttpClientFactory`, into its constructor.
    
 ```C#            
-        public void ConfigureServices(IServiceCollection services)
-        {
             services.AddScoped<TokenProvider>();
             services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
             {
@@ -687,12 +692,11 @@ Microsoft.Extensions.Http
                 var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
                 return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider);
             });
-        }
 ```
 
-8.7. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
+8.9. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
 
-8.8. Create a folder called `Authentication` and inside create a class called `InitialApplicationState`
+8.10. Create a folder called `Model` and inside create a class called `InitialApplicationState`
 
 ```C#
     public class InitialApplicationState
@@ -702,14 +706,14 @@ Microsoft.Extensions.Http
     }
 ```
 
-8.9. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
+8.11. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
 
   * Add the following code to get the access token.
   
 ```C#
 @page "/"
 @using Microsoft.AspNetCore.Authentication
-@using BlazorServerApp.Authentication
+@using BlazorServerApp.Model
 @namespace BlazorServerApp.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
@@ -721,20 +725,25 @@ Microsoft.Extensions.Http
         RefreshToken = await HttpContext.GetTokenAsync("refresh_token")
     };
 }
+
+// Additional code not shown for simplicity
+
 ```
 
-  * Set the `InitialState` parameter of the `App` component to the `tokens`
+  * Set the `param-InitialState` parameter of the `App` component to the `tokens`
   
 `<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />`
 
-8.10. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
+8.12. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
 
    *  Inject the `TokenProvider`, create a parameter for `InitialApplicationState` and in `OnInitializedAsync` set the access token:
 
 ```C#
 @using AppCore.Model
-@using BlazorServerApp.Authentication
+@using BlazorServerApp.Model
 @inject TokenProvider TokenProvider
+
+// Additional code not shown for simplicity
 
 @code {
     [Parameter]
@@ -768,7 +777,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-8.11. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+8.13. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -783,10 +792,10 @@ Microsoft.Extensions.Http
 </MainLayoutBase>
 ```
 
-8.12. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and update the `OnGetAsync` as follows:
+8.14. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs]() update the `OnGetAsync` as follows:
 
 ```C#
-    public class Login : PageModel
+    public class LoginModel : PageModel
     {
         public async Task OnGetAsync(string redirectUri)
         {
@@ -807,19 +816,9 @@ Microsoft.Extensions.Http
     }
 ```
 
-8.13. Remove the following from the *LoginDisplay.cshtml*
+8.15. Remove the following from the *LoginDisplay.cshtml*
 
 `<a href="Identity/Account/Register">Register</a>`
-
-8.14. Delete the *Data* folder and it's content:
-
-8.15. Delete files:
-  * *Pages/Counter.razor*
-  * *Pages/FetchData.razor*
-  * *Pages/Index.razor*
-  * *Shared/SurveyPromt.razor*
-  * *Shared/NavMenu.razor*
-  * *Shared/NavMenu.razor.css*
   
 > **TODO**
 > Restrict CORS requests to WebApi by configuring clients
