@@ -482,7 +482,7 @@ Microsoft.Extensions.Http
 7.4. In [_Imports.razor]() add the following using statement
 
 ```C#
-@using BlazorComponents.Shared
+@using RazorComponents.Shared
 ```
 
 7.5. In the [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
