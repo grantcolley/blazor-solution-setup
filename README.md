@@ -471,7 +471,7 @@ Microsoft.AspNetCore.Components.Web
 7.2. Add a reference to the following projects:
    * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
-   * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
+   * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
 7.3. Add the following nuget package:
 
@@ -532,7 +532,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-7.6. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents) assembly will be scanned for additional routable components. 
+7.6. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
 
 ```C#
 <CascadingAuthenticationState>
@@ -561,7 +561,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-7.7. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+7.7. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -609,12 +609,12 @@ Microsoft.Extensions.Http
 8.4. Add a reference to the following projects:
    * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
    * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
-   * [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents)
+   * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
 8.5. In [_Imports.razor]() add the following using statement
 
 ```C#
-@using BlazorComponents.Shared
+@using RazorComponents.Shared
 ```
   
 8.6. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
@@ -746,7 +746,7 @@ Microsoft.Extensions.Http
 }
 ```
 
-   *  Add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents) assembly will be scanned for additional routable components.
+   *  Add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components.
 
 ```C#
 <CascadingAuthenticationState>
@@ -764,7 +764,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-8.11. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [BlazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+8.11. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
 
 ```C#
 @inherits LayoutComponentBase
