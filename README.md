@@ -696,7 +696,7 @@ Microsoft.Extensions.Http
 
 8.9. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
 
-8.10. Create a folder called `Authentication` and inside create a class called `InitialApplicationState`
+8.10. Create a folder called `Model` and inside create a class called `InitialApplicationState`
 
 ```C#
     public class InitialApplicationState
@@ -713,7 +713,7 @@ Microsoft.Extensions.Http
 ```C#
 @page "/"
 @using Microsoft.AspNetCore.Authentication
-@using BlazorServerApp.Authentication
+@using BlazorServerApp.Model
 @namespace BlazorServerApp.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
