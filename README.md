@@ -855,6 +855,8 @@ Microsoft.Extensions.Http
 
 > `**TODO**`
 > 
+> Rename projects and redraw diagram
+> 
 > Restrict CORS requests to WebApi by configuring clients
 > 
 > IdentityServer - seed database if necessary
