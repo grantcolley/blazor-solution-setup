@@ -25,6 +25,7 @@ The following steps will setup the solution and its projects, using default proj
 6. [Razor Class Library for Shared Components](#6-razor-class-library-for-shared-components)
 7. [Blazor WebAssembly App](#7-blazor-webassembly-app)
 8. [Blazor Server App](#8-blazor-server-app)
+9. [Running the Solution](#9-running-the-solution)
  
 ## 1. Core Class Library
 First up we create a solution with a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
