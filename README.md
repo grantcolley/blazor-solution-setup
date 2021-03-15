@@ -123,7 +123,9 @@ Install the **IdentityServer4** templates and create a project to provide authen
 
 `dotnet new -i IdentityServer4.Templates` 
 
-3.3. Create the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) project and add it to the solution
+3.3. Create the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) project and add it to the solution. 
+
+`Note: Opt to seed the database when prompted`
 ```C#
 dotnet new is4aspid -n IdentityProvider
 
