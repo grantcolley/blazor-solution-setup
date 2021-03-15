@@ -844,11 +844,14 @@ Microsoft.Extensions.Http
 
 ![Alt text](/readme-images/BlazorSetupProperties.png?raw=true "Blazor Solution Setup Properties")
 
-9.2. Run the solution. Login using IdentityServer4 default users, **bob** or **alice**:
+9.2. Run the solution.
+
+![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
+
+9.3. Login using IdentityServer4 default users, **bob** or **alice**.
 
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
-![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
 
 > `**TODO**`
 > 
