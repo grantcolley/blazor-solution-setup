@@ -833,15 +833,28 @@ Microsoft.Extensions.Http
 8.16. Remove the following from the *LoginDisplay.cshtml*
 
 `<a href="Identity/Account/Register">Register</a>`
-  
-> **TODO**
+
+## 9. Running the Solution
+9.1. In the solution's properties window select Multiple startup projects and set the Action of the following projects to Startup:
+ * [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider)
+ * [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
+ * [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp)
+ * [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp)
+
+![Alt text](/readme-images/BlazorSetupProperties.png?raw=true "Blazor Solution Setup Properties")
+
+9.2. Run the solution...
+
+![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
+
+> `**TODO**`
 > Restrict CORS requests to WebApi by configuring clients
 > IdentityServer - seed database if necessary
 > Look into a Policy Server
 > Additional notes below
 > Instructions for setting startup projects and logging in using IdentityProvider default login name/pwd
 > Check login / logout re-directs
-> CHeck unauthorised re-directs to login page
+> Check unauthorised re-directs to login page
 
 
 > **_NOTE:_**
