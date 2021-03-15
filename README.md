@@ -119,26 +119,24 @@ Install the **IdentityServer4** templates and create a project to provide authen
 
 3.1 Open the **Visual Studio Developer Command Prompt** and change directory to the solution file [BlazorSolutionSetup](https://github.com/grantcolley/blazor-solution-setup/tree/main/src).
 
-3.2. Install **IdentityServer4** templates
-
-`dotnet new -i IdentityServer4.Templates` 
-
-3.3. Create the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) project and add it to the solution. 
+3.2. Install **IdentityServer4** templates, create the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) project and add it to the solution.
 
 `Note: Opt to seed the database when prompted`
 ```C#
+dotnet new -i IdentityServer4.Templates
+
 dotnet new is4aspid -n IdentityProvider
 
 dotnet sln add IdentityProvider
 ```
 
-3.4. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
+3.3. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
 
 ```C#
 "applicationUrl": "https://localhost:5001"
 ```
 
-3.5. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
+3.4. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
   * Replace the default scopes with a new `ApiScope`called *weatherapiread*
 
 ```C#
@@ -196,7 +194,7 @@ dotnet sln add IdentityProvider
             };
 ```
 
-3.6. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
+3.5. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
 
 ```C#
             var builder = services.AddIdentityServer(options =>
