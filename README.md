@@ -844,20 +844,22 @@ Microsoft.Extensions.Http
 
 ![Alt text](/readme-images/BlazorSetupProperties.png?raw=true "Blazor Solution Setup Properties")
 
-9.2. Run the solution...
+9.2. Run the solution. Login using IdentityServer4 default users, **bob** or **alice**:
+
+![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
 ![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
 
 > `**TODO**`
+> 
 > Restrict CORS requests to WebApi by configuring clients
+> 
 > IdentityServer - seed database if necessary
-> Look into a Policy Server
-> Additional notes below
-> Instructions for setting startup projects and logging in using IdentityProvider default login name/pwd
+> 
 > Check login / logout re-directs
 > Check unauthorised re-directs to login page
-
-
+> 
+> 
 > **_NOTE:_**
 > **Blazor Web Assembly** applications allow you to add a message handler, `AuthorizationMessageHandler`, when registering the typed *IWeatherForecastService* `HttpClient`. This will automatically ensure the access token is added to the header of outgoing requests using it.
 >
