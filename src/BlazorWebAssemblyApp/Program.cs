@@ -22,12 +22,12 @@ namespace BlazorWebAssemblyApp
 
             builder.Services.AddHttpClient("webapi", (sp, client) =>
             {
-                client.BaseAddress = new Uri("https://localhost:5000");
+                client.BaseAddress = new Uri("https://localhost:44320");
             }).AddHttpMessageHandler(sp =>
             {
                 var handler = sp.GetService<AuthorizationMessageHandler>()
                 .ConfigureHandler(
-                    authorizedUrls: new[] { "https://localhost:5000" },
+                    authorizedUrls: new[] { "https://localhost:44320" },
                     scopes: new[] { "weatherapiread" });
                 return handler;
             });

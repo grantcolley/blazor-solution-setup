@@ -40,10 +40,10 @@ namespace IdentityProvider
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44500" },
+                    AllowedCorsOrigins = { "https://localhost:44310" },
                     AllowedScopes = { "openid", "profile", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44500/authentication/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:44500/" },
+                    RedirectUris = { "https://localhost:44310/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:44310/" },
                     Enabled = true
                 },
 
@@ -54,10 +54,10 @@ namespace IdentityProvider
                     ClientSecrets = { new Secret("blazorserverappsecret".Sha256()) },
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44600" },
+                    AllowedCorsOrigins = { "https://localhost:44300" },
                     AllowedScopes = { "openid", "profile", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44600/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44600/signout-oidc" },
+                    RedirectUris = { "https://localhost:44300/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44300/signout-oidc" },
                 },
             };
     }

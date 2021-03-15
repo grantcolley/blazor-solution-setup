@@ -49,7 +49,7 @@ namespace BlazorServerApp
 
             services.AddHttpClient("webapi", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5000");
+                client.BaseAddress = new Uri("https://localhost:44320");
             });
 
             services.AddScoped<TokenProvider>();
