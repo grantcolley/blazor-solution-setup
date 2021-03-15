@@ -1,5 +1,5 @@
-﻿using AppCore.Interface;
-using AppCore.Model;
+﻿using Core.Interface;
+using Core.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

@@ -1,10 +1,10 @@
-﻿using AppCore.Interface;
-using AppCore.Model;
+﻿using Core.Interface;
+using Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AppRepository
+namespace Repository
 {
     public class WeatherForecastRepository : IWeatherForecastRepository
     {

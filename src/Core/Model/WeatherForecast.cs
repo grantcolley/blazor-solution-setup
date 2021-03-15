@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppCore.Model
+namespace Core.Model
 {
     public class WeatherForecast
     {

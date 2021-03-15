@@ -1,8 +1,8 @@
-﻿using AppCore.Model;
+﻿using Core.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AppCore.Interface
+namespace Core.Interface
 {
     public interface IWeatherForecastService
     {

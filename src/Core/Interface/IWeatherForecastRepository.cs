@@ -1,7 +1,7 @@
-﻿using AppCore.Model;
+﻿using Core.Model;
 using System.Collections.Generic;
 
-namespace AppCore.Interface
+namespace Core.Interface
 {
     public interface IWeatherForecastRepository
     {

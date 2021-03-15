@@ -1,5 +1,5 @@
-using AppCore.Interface;
-using AppServices;
+using Core.Interface;
+using Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;

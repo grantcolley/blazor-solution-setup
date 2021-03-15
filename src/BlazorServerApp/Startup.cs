@@ -1,6 +1,6 @@
-using AppCore.Interface;
-using AppCore.Model;
-using AppServices;
+using Core.Interface;
+using Core.Model;
+using Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;

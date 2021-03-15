@@ -1,11 +1,11 @@
-﻿using AppCore.Interface;
-using AppCore.Model;
+﻿using Core.Interface;
+using Core.Model;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace AppServices
+namespace Services
 {
     public class WeatherForecastService : IWeatherForecastService
     {

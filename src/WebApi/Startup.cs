@@ -1,5 +1,5 @@
-using AppCore.Interface;
-using AppRepository;
+using Core.Interface;
+using Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

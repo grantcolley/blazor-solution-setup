@@ -1,4 +1,4 @@
-﻿namespace AppCore.Model
+﻿namespace Core.Model
 {
     public class TokenProvider
     {
