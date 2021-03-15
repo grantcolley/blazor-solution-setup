@@ -25,6 +25,7 @@ The following steps will setup the solution and its projects, using default proj
 6. [Razor Class Library for Shared Components](#6-razor-class-library-for-shared-components)
 7. [Blazor WebAssembly App](#7-blazor-webassembly-app)
 8. [Blazor Server App](#8-blazor-server-app)
+9. [Running the Solution](#9-running-the-solution)
  
 ## 1. Core Class Library
 First up we create a solution with a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
@@ -119,24 +120,24 @@ Install the **IdentityServer4** templates and create a project to provide authen
 
 3.1 Open the **Visual Studio Developer Command Prompt** and change directory to the solution file [BlazorSolutionSetup](https://github.com/grantcolley/blazor-solution-setup/tree/main/src).
 
-3.2. Install **IdentityServer4** templates
+3.2. Install **IdentityServer4** templates, create the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) project and add it to the solution.
 
-`dotnet new -i IdentityServer4.Templates` 
-
-3.3. Create the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) project and add it to the solution
+`Note: Opt to seed the database when prompted`
 ```C#
+dotnet new -i IdentityServer4.Templates
+
 dotnet new is4aspid -n IdentityProvider
 
 dotnet sln add IdentityProvider
 ```
 
-3.4. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
+3.3. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
 
 ```C#
 "applicationUrl": "https://localhost:5001"
 ```
 
-3.5. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
+3.4. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
   * Replace the default scopes with a new `ApiScope`called *weatherapiread*
 
 ```C#
@@ -194,7 +195,7 @@ dotnet sln add IdentityProvider
             };
 ```
 
-3.6. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
+3.5. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
 
 ```C#
             var builder = services.AddIdentityServer(options =>
@@ -833,15 +834,28 @@ Microsoft.Extensions.Http
 8.16. Remove the following from the *LoginDisplay.cshtml*
 
 `<a href="Identity/Account/Register">Register</a>`
-  
-> **TODO**
+
+## 9. Running the Solution
+9.1. In the solution's properties window select Multiple startup projects and set the Action of the following projects to Startup:
+ * [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider)
+ * [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
+ * [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp)
+ * [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp)
+
+![Alt text](/readme-images/BlazorSetupProperties.png?raw=true "Blazor Solution Setup Properties")
+
+9.2. Run the solution...
+
+![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
+
+> `**TODO**`
 > Restrict CORS requests to WebApi by configuring clients
 > IdentityServer - seed database if necessary
 > Look into a Policy Server
 > Additional notes below
 > Instructions for setting startup projects and logging in using IdentityProvider default login name/pwd
 > Check login / logout re-directs
-> CHeck unauthorised re-directs to login page
+> Check unauthorised re-directs to login page
 
 
 > **_NOTE:_**
