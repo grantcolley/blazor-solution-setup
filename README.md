@@ -172,10 +172,10 @@ dotnet sln add IdentityProvider
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44500" },
+                    AllowedCorsOrigins = { "https://localhost:44310" },
                     AllowedScopes = { "openid", "profile", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44500/authentication/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:44500/" },
+                    RedirectUris = { "https://localhost:44310/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:44310/" },
                     Enabled = true
                 },
 
@@ -186,10 +186,10 @@ dotnet sln add IdentityProvider
                     ClientSecrets = { new Secret("blazorserverappsecret".Sha256()) },
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44600" },
+                    AllowedCorsOrigins = { "https://localhost:44300" },
                     AllowedScopes = { "openid", "profile", "weatherapiread" },
-                    RedirectUris = { "https://localhost:44600/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44600/signout-oidc" },
+                    RedirectUris = { "https://localhost:44300/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44300/signout-oidc" },
                 },
             };
 ```
@@ -225,7 +225,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
 4.4 Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
 ```C#
-  "sslPort": 5000
+  "sslPort": 44320
 ```
 
 4.5. Delete the *WeatherForecast.cs* class
@@ -492,7 +492,7 @@ Microsoft.Extensions.Http
 7.5. Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Properties/launchSettings.json) to the following:
 
 ```C#
-"sslPort": 44500
+"sslPort": 44310
 ```
 
 7.6. Delete files:
@@ -504,18 +504,18 @@ Microsoft.Extensions.Http
   * *Shared/NavMenu.razor.css*
 
 7.7. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
-  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+  * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `44320`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
   * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests when using the `webapi` client.
 
 ```C#
             builder.Services.AddHttpClient("webapi", (sp, client) =>
             {
-                client.BaseAddress = new Uri("https://localhost:5000");
+                client.BaseAddress = new Uri("https://localhost:44320");
             }).AddHttpMessageHandler(sp =>
             {
                 var handler = sp.GetService<AuthorizationMessageHandler>()
                 .ConfigureHandler(
-                    authorizedUrls: new[] { "https://localhost:5000" },
+                    authorizedUrls: new[] { "https://localhost:44320" },
                     scopes: new[] { "weatherapiread" });
                 return handler;
             });
@@ -630,7 +630,7 @@ Microsoft.Extensions.Http
 8.6. Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Properties/launchSettings.json) to the following:
 
 ```C#
-"sslPort": 44600
+"sslPort": 44300
 ```
 
 8.7. Delete the *Data* folder and it's content:
@@ -651,10 +651,12 @@ Microsoft.Extensions.Http
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => 
+                options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddScoped<AuthenticationStateProvider, 
+                   RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<WeatherForecastService>();
 ```
@@ -684,12 +686,12 @@ Microsoft.Extensions.Http
                 });
 ```
 
-  * Add a named `HttpClient` called `webapi`. Set the port number of the `client.BaseAddress` to `5000`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+  * Add a named `HttpClient` called `webapi`. Set the port number of the `client.BaseAddress` to `44320`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
 
 ```C#            
             services.AddHttpClient("webapi", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5000");
+                client.BaseAddress = new Uri("https://localhost:44320");
             });
 ```
 
