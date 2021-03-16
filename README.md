@@ -14,7 +14,7 @@ Setup a solution for a *Blazor* app supported by both hosting models, a *WebApi*
 
 The following steps will setup the solution and its projects, using default project templates (and ubiquitous *WeatherForecast* example), available in Visual Studio.
 
-![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
+![Alt text](/readme-images/BhlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
 #### Table of Contents
 1. [Core Class Library](#1-core-class-library)
