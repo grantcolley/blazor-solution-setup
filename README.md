@@ -320,7 +320,7 @@ Create a Class Library for services classes.
 
 5.3. Delete *Class1.cs*
 
-5.4. Create a [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) class that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+5.4. Create a [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs) class that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
   * Create two constructors:
     * One constructor accepting an instance of `HttpClient`, which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp).
     * The other constructor accepting `HttpClient` and `TokenProvider` instances, which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp).
@@ -708,6 +708,13 @@ Microsoft.Extensions.Http
                 return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider);
             });
 ```
+> Unlike **Blazor WebAssemby**, **Blazor Server** applications doesn't have the message handler `AuthorizationMessageHandler` to add the `access_token` to outgoing requests.
+> So we have to do this ourselves by injecting an instance of `HttpClient` and `TokenProvider` into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).
+> 
+> which will handle . Furthermore, you can't create a custom message handler to add the access token to outgoing requests because the `TokenProvider` is registered as *Scoped*. The reason it won't work is message handler lifetime is controlled by the `IHttpClientFactory`, which manages message handlers seperately from `HttpClient` instances. Message handlers are kept open for two minutes, regardless of whether your custom message handler was registered as *Transient*. You also can't inject a service provider in order to get the `TokenProvider` because the service provider is *scoped* to the message handler.
+>
+>LocalStorage doesnt work because you get the following error: javascript interop calls cannot be issued at this time. this is because the component is being statically rendered. when prerendering is enabled, javascript interop calls can only be performed during the onafterrenderasync lifecycle method.
+
 
 8.10. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
 
@@ -855,23 +862,11 @@ Microsoft.Extensions.Http
 
 > `**TODO**`
 > 
-> Rename projects and redraw diagram
-> 
 > Restrict CORS requests to WebApi by configuring clients
-> 
-> IdentityServer - seed database if necessary
 > 
 > Check login / logout re-directs
 > Check unauthorised re-directs to login page
 > 
-> 
-> **_NOTE:_**
-> **Blazor Web Assembly** applications allow you to add a message handler, `AuthorizationMessageHandler`, when registering the typed *IWeatherForecastService* `HttpClient`. This will automatically ensure the access token is added to the header of outgoing requests using it.
->
-> **Blazor Server** applications don't have a message handler `AuthorizationMessageHandler`. Furthermore, you can't create a custom message handler to add the access token to outgoing requests because the `TokenProvider` is registered as *Scoped*. The reason it won't work is message handler lifetime is controlled by the `IHttpClientFactory`, which manages message handlers seperately from `HttpClient` instances. Message handlers are kept open for two minutes, regardless of whether your custom message handler was registered as *Transient*. You also can't inject a service provider in order to get the `TokenProvider` because the service provider is *scoped* to the message handler.
->
->LocalStorage doesnt work because you get the following error: javascript interop calls cannot be issued at this time. this is because the component is being statically rendered. when prerendering is enabled, javascript interop calls can only be performed during the onafterrenderasync lifecycle method.
-
 > **_NOTE:_**
 > The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. 
 > 
