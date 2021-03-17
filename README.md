@@ -30,7 +30,7 @@ The following steps will setup the solution and its projects, using default proj
 ## 1. Core Class Library
 First up we create a solution with a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
 
-1.1. Create a Class Library called [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+1.1. Create a Class Library called [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
 
 1.2. Rename the solution to [BlazorSolutionSetup](https://github.com/grantcolley/blazor-solution-setup/tree/main/src)
 
@@ -39,8 +39,8 @@ First up we create a solution with a Class Library for core classes that will be
 1.4. Create two folders called *Interface* and *Model*
 
 1.5. In the *Model* folder create the following classes:
-  * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/WeatherForecast.cs)
-  * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs)
+  * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/WeatherForecast.cs)
+  * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/TokenProvider.cs)
 
 ```C#
     public class TokenProvider
@@ -64,8 +64,8 @@ First up we create a solution with a Class Library for core classes that will be
 ```
 
 1.6. In the *Interface* folder create the following interfaces:
-  * [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs)
-  * [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+  * [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs)
+  * [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs)
 
 ```C#
     public interface IWeatherForecastRepository
@@ -84,9 +84,9 @@ First up we create a solution with a Class Library for core classes that will be
 ## 2. Repository Class Library
 Now create a Class Library for the data repository code.
 
-2.1. Create a Class Library called [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
+2.1. Create a Class Library called [Repository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Repository)
 
-2.2. Add a project reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+2.2. Add a project reference to [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
 
 2.3. Delete *Class1.cs*
 
@@ -215,8 +215,8 @@ Create an ASP.NET Core Web API for restricted access to the data repository.
 4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
 
 4.2. Add project references to the following projects:
-   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
-   * [AppRepository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppRepository)
+   * [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
+   * [Repository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Repository)
 
 4.3 Add the following nuget package to enable the [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi) to receive an OpenID Connect bearer token:
 
@@ -232,7 +232,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 4.5. Delete the *WeatherForecast.cs* class
 
 4.6 In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs):
-  * Register a scoped [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) with the concrete implementation [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppRepository/WeatherForecastRepository.cs)
+  * Register a scoped [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs) with the concrete implementation [WeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Repository/WeatherForecastRepository.cs)
 
 ```C#
             services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
@@ -284,7 +284,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
 4.8. Change the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
   * Add the `[Authorize]` attribute to restrict access.
-  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()`
+  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()`
   
 ```C#
     [Authorize]
@@ -314,13 +314,13 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 ## 5. Services Class Library
 Create a Class Library for services classes.
 
-5.1. Create a Class Library called [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+5.1. Create a Class Library called [Services](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Services)
 
-5.2. Add a project reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+5.2. Add a project reference to [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
 
 5.3. Delete *Class1.cs*
 
-5.4. Create a [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs) class that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs)
+5.4. Create a [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs) class that implements [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs)
   * Create two constructors:
     * One constructor accepting an instance of `HttpClient`, which will be called from [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp).
     * The other constructor accepting `HttpClient` and `TokenProvider` instances, which will be called from [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp).
@@ -366,7 +366,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 6.1. Create a Blazor WebAssembly App called [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
-6.2 Add a project reference to [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
+6.2 Add a project reference to [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
 
 6.3. Remove all the nuget packages installed by default and add the following package:
 
@@ -446,7 +446,7 @@ Microsoft.AspNetCore.Components.Web
 6.8. In [FetchData.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Pages/FetchData.razor) 
   * Remove `@inject HttpClient Http` 
   * Add `@using Microsoft.AspNetCore.Authorization` and the `[Authorize]` attribute
-  * Change the `@code` block by injecting an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface//IWeatherForecastService.cs) and getting the weather forecast in `OnInitializedAsync()` 
+  * Change the `@code` block by injecting an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs) and getting the weather forecast in `OnInitializedAsync()` 
 
 ```C#
 @page "/fetchdata"
@@ -474,8 +474,8 @@ Microsoft.AspNetCore.Components.Web
 ![Alt text](/readme-images/BlazorWebAssemblyAuthenticationType.png?raw=true "Blazor WebAssembly Authentication Type") 
 
 7.2. Add a reference to the following projects:
-   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
-   * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+   * [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
+   * [Services](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Services)
    * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
 
 7.3. Add the following nuget package:
@@ -522,7 +522,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs), injecting and instance of `HttpClient` using the `IHttpClientFactory`, into its constructor.
+   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs), injecting and instance of `HttpClient` using the `IHttpClientFactory`, into its constructor.
  
  ```C#
             builder.Services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
@@ -601,8 +601,8 @@ Microsoft.Extensions.Http
 ![Alt text](/readme-images/BlazorServerAuthenticationType.png?raw=true "Blazor Server Authentication Type")
 
 8.2. Add a reference to the following projects:
-   * [AppCore](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppCore)
-   * [AppServices](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/AppServices)
+   * [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
+   * [Services](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Services)
    * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
    
 8.3. Uninstall the following packages:
@@ -696,7 +696,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-   *  Register a scoped service for [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs) then register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppServices/WeatherForecastService.cs) injecting and instance of the `TokenProvider` and the `HttpClient` from the `IHttpClientFactory`, into its constructor.
+   *  Register a scoped service for [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/AppCore/Model/TokenProvider.cs) then register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs) injecting and instance of the `TokenProvider` and the `HttpClient` from the `IHttpClientFactory`, into its constructor.
    
 ```C#            
             services.AddScoped<TokenProvider>();
