@@ -259,7 +259,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 ```
 
 4.7. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Startup.cs) :
-  * First add the authentication middleware `app.UseAuthentication()` after `app.UseRouting()`, but before `app.UseAuthorization()`
+  * First add the authentication middleware `app.UseAuthentication()` after `app.UseRouting()`, but before `app.UseAuthorization()`.
   * Then add the CORS middleware `app.UserCors()` after `app.UseRouting()`, but before `app.UseAuthentication()`.
 
 > Middleware order is important. See [middleware order](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-5.0#middleware-order) for more information.
@@ -283,7 +283,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
 4.8. Change the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
   * Add the `[Authorize]` attribute to restrict access.
-  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs) into the constructor and replace the contents of the `Get()`
+  * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs) into the constructor and call `weatherForecastRepository.GetWeatherForecasts()` from inside the `Get()` method.
   
 ```C#
     [Authorize]
