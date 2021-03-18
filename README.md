@@ -764,7 +764,7 @@ Microsoft.Extensions.Http
 
 ```
 
-  * Set the `param-InitialState` parameter of the `App` component to the `tokens`
+  * Set the `param-InitialState` parameter of the `App` component to the `tokens`. See [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml) for full code listing.
   
 `<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />`
 
