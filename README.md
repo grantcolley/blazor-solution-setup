@@ -373,7 +373,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 Microsoft.AspNetCore.Components.Web
 ```
 
-6.4. Convert the project to a **Razor Class Library (RCL)** by double-clicking the project and setting the `Project Sdk` to `Microsoft.NET.Sdk.Razor`. The project file should look like this:
+6.4. Convert the project to a **Razor Class Library (RCL)** by double-clicking the project and setting the `Project Sdk` to `Microsoft.NET.Sdk.Razor`. The [project file](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/RazorComponents.csproj) should look like this:
 
 ```C#
 <Project Sdk="Microsoft.NET.Sdk.Razor">
@@ -387,7 +387,7 @@ Microsoft.AspNetCore.Components.Web
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AppCore\AppCore.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>
@@ -398,8 +398,8 @@ Microsoft.AspNetCore.Components.Web
 ```C#
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
-@using AppCore.Interface
-@using AppCore.Model
+@using Core.Interface
+@using Core.Model
 @using RazorComponents
 @using RazorComponents.Shared
 ```
@@ -413,7 +413,7 @@ Microsoft.AspNetCore.Components.Web
   
 6.7. Rename *MainLayout.razor* to [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) and replace the contents with the following:
 
-> A RenderFragment represents a segment of UI content, implemented as a delegate. Here we let the consumers of [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) to provide UI content for the LoginDisplayFragment and BodyFragment. The consumers will be [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp) which we will create later.
+> A RenderFragment represents a segment of UI content, implemented as a delegate. Here we let the consumers of [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) provide UI content for the LoginDisplayFragment and BodyFragment. The consumers will be the Blazor apps, [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp), which we will create later.
 
 ```C#
 <div class="page">
