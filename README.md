@@ -662,7 +662,7 @@ Microsoft.Extensions.Http
             services.AddSingleton<WeatherForecastService>();
 ```
 
-   *  Register and configure authentication with `AddAuthentication`. Set the port number of the `options.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
+   *  Configure authentication with `AddAuthentication`. Set the port number of the `options.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
   
 ```C#            
             services.AddAuthentication(options =>
@@ -696,7 +696,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-   *  Register a scoped service for [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/TokenProvider.cs) then register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs) injecting and instance of the `TokenProvider` and the `HttpClient` from the `IHttpClientFactory`, into its constructor.
+   *  Register a scoped service for [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/TokenProvider.cs).
    
 ```C#            
             services.AddScoped<TokenProvider>();
@@ -708,6 +708,18 @@ Microsoft.Extensions.Http
                 return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider);
             });
 ```
+
+   *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs), with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs). Inject into its constructor an instance of the `TokenProvider` and the named `HttpClient` called `webapi`.
+```C#            
+            services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
+            {
+                var tokenProvider = sp.GetRequiredService<TokenProvider>();
+                var httpClient = sp.GetRequiredService<IHttpClientFactory>();
+                var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
+                return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider);
+            });
+```
+
 > Unlike **Blazor WebAssemby**, **Blazor Server** applications doesn't have the message handler `AuthorizationMessageHandler` to add the `access_token` to outgoing requests.
 > So we have to do this ourselves by injecting an instance of `HttpClient` and `TokenProvider` into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).
 > 
