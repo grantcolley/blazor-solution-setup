@@ -2,7 +2,7 @@
 
 ##### Technologies
 ###### .NET 5.0, Blazor WebAssembly, Blazor Server, IdentityServer4, ASP.NET Core Web API
-
+\
 Setup a solution for a *Blazor* app supported by both hosting models, *Blazor WebAssembly* and *Blazor Server*, a *WebApi* for accessing data and an *Identity Provider* for authentication:
  * **Blazor WebAssembly** - running client-side on the browser.
  * **Blazor Server** - where updates and event handling are run on the server and managed over a SignalR connection. 
