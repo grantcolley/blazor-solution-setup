@@ -5,11 +5,11 @@
 #####  
 
 Setup a solution for a *Blazor* app supported by both hosting models, *Blazor WebAssembly* and *Blazor Server*, a *WebApi* for accessing data and an *Identity Provider* for authentication:
- * **Blazor WebAssembly**, running client-side on the browser.
- * **Blazor Server**, where updates and event handling are run on the server and managed over a SignalR connection. 
- * **IdentityServer4**, an OpenID Connect and OAuth 2.0 framework for authentication. 
- * **ASP.NET Core Web API**, for accessing data repositories by authenticated users.
- * **Razor Class Library** for shared *Razor* components.
+ * **Blazor WebAssembly** - running client-side on the browser.
+ * **Blazor Server** - where updates and event handling are run on the server and managed over a SignalR connection. 
+ * **IdentityServer4** - an OpenID Connect and OAuth 2.0 framework for authentication. 
+ * **ASP.NET Core Web API** - for accessing data repositories by authenticated users.
+ * **Razor Class Library** - for shared *Razor* components.
  * Class Libraries for shared code, models and interfaces.
 
 The following steps will setup the solution and its projects, using default project templates (and ubiquitous *WeatherForecast* example), available in Visual Studio.
