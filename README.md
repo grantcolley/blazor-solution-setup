@@ -29,7 +29,7 @@ The following steps will setup the solution and its projects, using their defaul
 9. [Running the Solution](#9-running-the-solution)
  
 ## 1. Core Class Library
-First up we create a solution with a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
+First we create a solution with a Class Library for core classes that will be shared across all projects. How we use these will become apparent later. 
 
 1.1. Create a Class Library called [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
 
