@@ -10,7 +10,9 @@ Setup a solution for a *Blazor* app supported by both hosting models, *Blazor We
  * **IdentityServer4** - an OpenID Connect and OAuth 2.0 framework for authentication. 
  * **ASP.NET Core Web API** - for accessing data repositories by authenticated users.
  * **Razor Class Library** - for shared *Razor* components.
- * Class Libraries - a core library for shared classes and interfaces, a services library and a repository library.
+ * **Class Library** - for shared classes and interfaces.
+ * **Class Library** - a services library for calling the *WebApi*.
+ * **Class Library** - a repository library for access to data behind the *WebApi*.
 
 The following steps will setup the solution and its projects, using default project templates (and ubiquitous *WeatherForecast* example), available in Visual Studio.
 
