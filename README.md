@@ -37,9 +37,7 @@ First create a solution with a Class Library for core classes and interfaces tha
 
 1.3. Delete *Class1.cs*
 
-1.4. Create two folders called *Interface* and *Model*
-
-1.5. In the *Model* folder create the following classes:
+1.4. Create a folder called *Model* and inside it create the following classes:
   * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/WeatherForecast.cs)
   * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/TokenProvider.cs)
 
@@ -64,7 +62,7 @@ First create a solution with a Class Library for core classes and interfaces tha
     }
 ```
 
-1.6. In the *Interface* folder create the following interfaces:
+1.5. Create a folder called *Interface* and inside it create the following interfaces:
   * [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs)
   * [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs)
 
