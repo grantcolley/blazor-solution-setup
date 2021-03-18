@@ -209,7 +209,7 @@ dotnet sln add IdentityProvider
 ```
 
 ## 4. ASP.NET Core Web API
-Create an ASP.NET Core Web API for restricted access to the data repository.
+Create an ASP.NET Core Web API for accessing the data repository and restrict access to authenticated users.
 
 4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
 
@@ -217,7 +217,7 @@ Create an ASP.NET Core Web API for restricted access to the data repository.
    * [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
    * [Repository](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Repository)
 
-4.3 Add the following nuget package to enable the [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi) to receive an OpenID Connect bearer token:
+4.3 Add the following nuget package to enable the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/WebApi.csproj) to receive an OpenID Connect bearer token:
 
 ```C#
 Microsoft.AspNetCore.Authentication.JwtBearer
