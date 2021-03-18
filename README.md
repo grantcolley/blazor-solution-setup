@@ -13,6 +13,7 @@ Setup a solution for a *Blazor* app supported by both hosting models, *Blazor We
  * **Class Library** - a services library for calling the *WebApi*.
  * **Class Library** - a repository library for access to data behind the *WebApi*.
 \
+
 ![Alt text](/readme-images/BlazorSolutionSetup.png?raw=true "BlazorSolutionTemplate Solution") 
 
 The following steps will setup the solution and its projects, using their default project templates (and the ubiquitous *WeatherForecast* example), available in Visual Studio.
