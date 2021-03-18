@@ -714,9 +714,9 @@ Microsoft.Extensions.Http
             services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
             {
                 var tokenProvider = sp.GetRequiredService<TokenProvider>();
-                var httpClient = sp.GetRequiredService<IHttpClientFactory>();
-                var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
-                return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider);
+                var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+                var httpClient = httpClientFactory.CreateClient("webapi");
+                return new WeatherForecastService(httpClient, tokenProvider);
             });
 ```
 
