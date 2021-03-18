@@ -721,12 +721,14 @@ Microsoft.Extensions.Http
 ```
 
 > **_Note:_ Why we can't create a custom message handler to add the `access_token` to outgoing requests.**
+>
 > Unlike **Blazor WebAssemby** which has `AuthorizationMessageHandler`, **Blazor Server** doesn't have a message handler to add the `access_token` to outgoing requests.
 > The reason we can't create a custom message handler to add the access token from `TokenProvider` to outgoing requests is because `TokenProvider` is registered as *Scoped*, while the message handler lifetime is controlled by the `IHttpClientFactory`.
+>We can't inject a service provider into the custom message handler in order to get the `TokenProvider`, because the service provider is *scoped* to the message handler, so it will create a new instance of the `TokenProvider`, which does't have the `access_token`.
+>
 > `IHttpClientFactory` keeps message handlers open for two minutes. Even if we register a custom message handler as *Transient*, it's lifetime is still managed by the `IHttpClientFactory` and will be kept open for two minutes.
-> `IHttpClientFactory` manages the lifetime of message handlers seperately from instances of `HttpClient` it creates.
-> We also can't inject a service provider into the custom message handler in order to get the `TokenProvider`, because the service provider is *scoped* to the message handler, so it will create a new instance of the `TokenProvider`, which does't have the `access_token`.
-> `IHttpClientFactory` does, howvevr, manage the lifetime of message handlers seperately from instances of `HttpClient` that it creates. This allows us to inject an instance of `HttpClient` and the scoped `TokenProvider`, which has the `access_token`, into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).`IHttpClientFactory`.
+> 
+> `IHttpClientFactory` does, however, manage the lifetime of message handlers seperately from instances of `HttpClient` that it creates. This allows us to inject an instance of `HttpClient` and the scoped `TokenProvider`, which has the `access_token`, into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).`IHttpClientFactory`.
 >
 >It is also worth noting we can't use **LocalStorage** to store the `access_token` and try retrieve it in the custom message handler because it will result in the error : *javascript interop calls cannot be issued at this time*.
 >This is because the component is being statically rendered. When prerendering is enabled, javascript interop calls can only be performed during the onafterrenderasync lifecycle method.
