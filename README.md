@@ -211,7 +211,7 @@ dotnet sln add IdentityProvider
 ## 4. ASP.NET Core Web API
 Create an ASP.NET Core Web API for accessing the data repository and restrict access to authenticated users.
 
-4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi)
+4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi).
 
 4.2. Add project references to the following projects:
    * [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
@@ -223,7 +223,8 @@ Create an ASP.NET Core Web API for accessing the data repository and restrict ac
 Microsoft.AspNetCore.Authentication.JwtBearer
 ```
 
-4.4 Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
+4.4 Set the `sslPort` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json).
+
 ```C#
   "sslPort": 44320
 ```
@@ -367,7 +368,7 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 6.2 Add a project reference to [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
 
-6.3. Remove all the nuget packages installed by default and add the following package:
+6.3. Remove all the nuget packages installed by default and add the following nuget package:
 
 ```C#
 Microsoft.AspNetCore.Components.Web
@@ -604,7 +605,7 @@ Microsoft.Extensions.Http
    * [Services](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Services)
    * [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents)
    
-8.3. Uninstall the following packages:
+8.3. Uninstall the following nuget packages:
 
 ```
     Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
