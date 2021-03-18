@@ -247,7 +247,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
             });
 ```
 
-  * Add and configure authentication with `AddAuthentication`, setting the authority to that of the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) and an audience of *weatherapi*
+  * Configure authentication with `AddAuthentication`. Set the authority to that of the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json), and set the audience to *weatherapi*
 
 ```C#
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
