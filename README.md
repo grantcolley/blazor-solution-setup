@@ -286,11 +286,13 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
 4.8. Change the [WeatherForecastController.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Controllers/WeatherForecastController.cs):
   * Add the `[Authorize]` attribute to restrict access.
+  * Add the `[EnableCors("local")]` attribute to enable cross origin requests for our blazor apps. 
   * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs) into the constructor and call `weatherForecastRepository.GetWeatherForecasts()` from inside the `Get()` method.
   
 ```C#
     [Authorize]
     [ApiController]
+    [EnableCors("local")]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
