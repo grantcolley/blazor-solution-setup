@@ -1,6 +1,7 @@
 ﻿using Core.Interface;
 using Core.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace WebApi.Controllers
 {
     [Authorize]
     [ApiController]
+    [EnableCors("local")]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {

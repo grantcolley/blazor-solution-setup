@@ -26,8 +26,10 @@ namespace WebApi
 
             services.AddCors(options =>
             {
-                options.AddPolicy("Open",
-                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+                options.AddPolicy("local",
+                    builder => 
+                        builder.WithOrigins("https://localhost:44300", "https://localhost:44310")
+                               .AllowAnyHeader());
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -58,7 +60,7 @@ namespace WebApi
 
             app.UseRouting();
 
-            app.UseCors("Open");
+            app.UseCors("local");
 
             app.UseAuthentication();
 
