@@ -526,6 +526,7 @@ Microsoft.Extensions.Http
             });
 ```
 > **_Note:_** Advantage of using [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) to configure and create HttpClient instances.
+>
 >  [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) manages the pooling and lifetime of underlying HttpClientMessageHandler instances. Automatic management avoids common DNS (Domain Name System) problems that occur when manually managing HttpClient lifetimes.
 
    *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs), injecting and instance of `HttpClient` using the `IHttpClientFactory`, into its constructor.
@@ -885,7 +886,3 @@ Microsoft.Extensions.Http
 > 
 > **_NOTE:_**
 > The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. 
-> 
-> `IHttpClientFactory` can be registered by calling `AddHttpClient`. Alternatively register a typed client to accept an `HttpClient` parameter in its constructor.
->
->             services.AddHttpClient(..) // registers IHttpClientFactory
