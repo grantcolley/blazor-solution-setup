@@ -884,7 +884,7 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
 `IHttpClientFactory` does, however, manage the lifetime of message handlers seperately from instances of `HttpClient` that it creates. We can inject an instance of `HttpClient` and the HTTP *scoped* `TokenProvider`, which has the `access_token`, into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs). We can then add the `access_token` to outgoing requests from within the [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).
 \
 \
-\
+
 > `**TODO**`
 > 
 > Check login / logout re-directs
