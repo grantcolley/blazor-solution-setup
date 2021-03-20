@@ -27,7 +27,7 @@ The following steps will setup the solution and its projects, using their defaul
 7. [Blazor WebAssembly App](#7-blazor-webassembly-app)
 8. [Blazor Server App](#8-blazor-server-app)
 9. [Running the Solution](#9-running-the-solution)
-10. [Notes](#notes)
+10. [Notes](#notes:)
  
 ## 1. Core Class Library
 First create a solution with a Class Library for core classes and interfaces that will be shared across all projects. How we use these will become apparent later. 
@@ -870,7 +870,7 @@ Microsoft.Extensions.Http
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
 
-> **_Notes:_** 
+## Notes: 
 > 
 > ###### Advantage of using [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) to configure and create HttpClient instances:
 >
