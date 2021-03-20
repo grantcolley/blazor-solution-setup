@@ -868,7 +868,7 @@ Microsoft.Extensions.Http
 
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
-\
+
 > **_Notes:_** 
 > 
 > **Advantage of using [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) to configure and create HttpClient instances:**
@@ -876,10 +876,10 @@ Microsoft.Extensions.Http
 >  [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) manages the pooling and lifetime of underlying `HttpClientMessageHandler` instances. Automatic management avoids common DNS (Domain Name System) problems that occur when manually managing HttpClient lifetimes, including:
 >   * **socket exhuastion** - each `HTTPClient` instance creates a new socket instance which isn't released immediately, even inside a `using` statement, and may lead to socket exceptions.
 >   * **Stale DNS (Domain Name System)** - when a computer is removed from the domain or is unable to update its DNS record in the DNS Server, the DNS record of that Windows computer remains in the DNS database and is considered to be a stale DNS record.
-\
-\
-\
-> **Adding the `access_token` to outgoing requests in Blazor Server.**
+>
+>
+>
+> **Adding the `access_token` to outgoing requests in Blazor Server:**
 >
 > Unlike **Blazor WebAssemby**, which has `AuthorizationMessageHandler`, **Blazor Server** doesn't have a built in message handler for adding a `access_token` to outgoing requests.
 > 
