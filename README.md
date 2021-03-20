@@ -525,9 +525,6 @@ Microsoft.Extensions.Http
                 return handler;
             });
 ```
-> **_Note:_** Advantage of using [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) to configure and create HttpClient instances.
->
->  [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) manages the pooling and lifetime of underlying HttpClientMessageHandler instances. Automatic management avoids common DNS (Domain Name System) problems that occur when manually managing HttpClient lifetimes.
 
    *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs) with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs), injecting and instance of `HttpClient` using the `IHttpClientFactory`, into its constructor.
  
@@ -877,6 +874,14 @@ Microsoft.Extensions.Http
 9.3. Login using IdentityServer4 default users, **bob** or **alice**.
 
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
+
+> **_Notes:_** 
+> 
+> Advantage of using [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) to configure and create HttpClient instances:
+>
+>  [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) manages the pooling and lifetime of underlying `HttpClientMessageHandler` instances. Automatic management avoids common DNS (Domain Name System) problems that occur when manually managing HttpClient lifetimes, including:
+>   * **socket exhuastion** - each `HTTPClient` instance creates a new socket instance which isn't released immediately, even inside a `using` statement, and may lead to socket exceptions.
+>   * **Stale DNS (Domain Name System)** - when a computer is removed from the domain or is unable to update its DNS record in the DNS Server, the DNS record of that Windows computer remains in the DNS database and is considered to be a stale DNS record.
 
 
 > `**TODO**`
