@@ -243,8 +243,10 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 ```C#
             services.AddCors(options =>
             {
-                options.AddPolicy("Open",
-                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+                options.AddPolicy("local",
+                    builder => 
+                        builder.WithOrigins("https://localhost:44300", "https://localhost:44310")
+                               .AllowAnyHeader());
             });
 ```
 
@@ -272,7 +274,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
             
             app.UseRouting();
 
-            app.UseCors("Open");
+            app.UseCors("local");
 
             app.UseAuthentication();
 
@@ -873,8 +875,6 @@ Microsoft.Extensions.Http
 
 
 > `**TODO**`
-> 
-> Restrict CORS requests to WebApi by configuring clients
 > 
 > Check login / logout re-directs
 > Check unauthorised re-directs to login page
