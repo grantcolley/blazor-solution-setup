@@ -741,7 +741,8 @@ Microsoft.Extensions.Http
 
 8.12. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
 
-  * Add the following code to get the access token.
+  * Add code to get the access token into an instance of `InitialApplicationState` called `tokens`.
+  * Pass the tokens into the `App` component by setting it's `param-InitialState` to the `tokens`.
   
 ```C#
 @page "/"
@@ -761,22 +762,66 @@ Microsoft.Extensions.Http
 
 // Additional code not shown for simplicity
 
+<body>
+    <component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />
+
+    // Additional code not shown for simplicity
+
+</body>
+</html>
 ```
 
-  * Set the `param-InitialState` parameter of the `App` component to the `tokens`. See [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml) for full code listing.
-  
-`<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />`
+8.13. In the *Shared* folder create a razor component called [RedirectToLogin](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Shared/RedirectToLogin.razor):
 
-8.13. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
-
-   *  Inject the `TokenProvider`, create a parameter for `InitialApplicationState` and in `OnInitializedAsync` set the access token:
+> Note: the optional `forceLoad` parameter in `Navigation.NavigateTo` must be `true`
 
 ```C#
-@using AppCore.Model
+@inject NavigationManager Navigation
+
+@code {
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo($"Identity/Account/Login?redirectUri={Uri.EscapeDataString(Navigation.Uri)}", true);
+    }
+}
+```
+
+8.14. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
+
+   *  Inject the `TokenProvider`, create a parameter for `InitialApplicationState` and in `OnInitializedAsync` set the access token:
+   *  Add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components.
+   *  Add `<RedirectToLogin />` inside the `<NotAuthorized>` of the `<AuthorizeRouteView>`.
+
+```C#
+@using Core.Model
 @using BlazorServerApp.Model
 @inject TokenProvider TokenProvider
 
-// Additional code not shown for simplicity
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly" 
+            AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" 
+            PreferExactMatches="@true">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    @if (!context.User.Identity.IsAuthenticated)
+                    {
+                        <RedirectToLogin />
+                    }
+                    else
+                    {
+                        <p>You are not authorized to access this resource.</p>
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
 
 @code {
     [Parameter]
@@ -792,25 +837,7 @@ Microsoft.Extensions.Http
 }
 ```
 
-   *  Add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components.
-
-```C#
-<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly" 
-            AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" PreferExactMatches="@true">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        </Found>
-        <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p>Sorry, there's nothing at this address.</p>
-            </LayoutView>
-        </NotFound>
-    </Router>
-</CascadingAuthenticationState>
-```
-
-8.14. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
+8.15. Replace the contents of **MainLayout.razor** with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as RenderFragment delegates.
 
 ```C#
 @inherits LayoutComponentBase
@@ -825,7 +852,7 @@ Microsoft.Extensions.Http
 </MainLayoutBase>
 ```
 
-8.15. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Areas/Identity/Pages/Account/Login.cshtml.cs) update the `OnGetAsync` as follows:
+8.16. Add a Razor page called Login.chtml in the folder *\Areas\Identity\Pages\Account\Login.chtml* and in [Login.cshtml.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Areas/Identity/Pages/Account/Login.cshtml.cs) update the `OnGetAsync` as follows:
 
 ```C#
     public class LoginModel : PageModel
@@ -849,7 +876,7 @@ Microsoft.Extensions.Http
     }
 ```
 
-8.16. In [LoginDisplay.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Shared/LoginDisplay.razor):
+8.17. In [LoginDisplay.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Shared/LoginDisplay.razor):
    *  remove the hyperlink `<a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>` around the user's name.
    *  remove `<a href="Identity/Account/Register">Register</a>`
 
