@@ -849,9 +849,23 @@ Microsoft.Extensions.Http
     }
 ```
 
-8.16. Remove the following from the *LoginDisplay.cshtml*
+8.16. In [LoginDisplay.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Shared/LoginDisplay.razor):
+   *  remove the hyperlink `<a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>` around the user's name.
+   *  remove `<a href="Identity/Account/Register">Register</a>`
 
-`<a href="Identity/Account/Register">Register</a>`
+```C
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+        <form method="post" action="Identity/Account/LogOut">
+            <button type="submit" class="nav-link btn btn-link">Log out</button>
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Identity/Account/Login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+```
 
 ## 9. Running the Solution
 9.1. In the solution's properties window select Multiple startup projects and set the Action of the following projects to Startup:
