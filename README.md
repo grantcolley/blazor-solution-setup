@@ -741,7 +741,8 @@ Microsoft.Extensions.Http
 
 8.12. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
 
-  * Add the following code to get the access token.
+  * Add code to get the access token.
+  * Set the `param-InitialState` parameter of the `App` component to the `tokens`.
   
 ```C#
 @page "/"
@@ -759,13 +760,35 @@ Microsoft.Extensions.Http
     };
 }
 
-// Additional code not shown for simplicity
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlazorServerApp</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="BlazorServerApp.styles.css" rel="stylesheet" />
+</head>
+<body>
+    <component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />
 
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>
 ```
-
-  * Set the `param-InitialState` parameter of the `App` component to the `tokens`. See [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml) for full code listing.
-  
-`<component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />`
 
 8.13. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/App.razor):
 
