@@ -741,8 +741,8 @@ Microsoft.Extensions.Http
 
 8.12. In the [_Host.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Pages/_Host.cshtml):
 
-  * Add code to get the access token.
-  * Set the `param-InitialState` parameter of the `App` component to the `tokens`.
+  * Add code to get the access token into an instance of `InitialApplicationState` called `tokens`.
+  * Pass the tokens into the `App` component by setting it's `param-InitialState` to the `tokens`.
   
 ```C#
 @page "/"
