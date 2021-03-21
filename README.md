@@ -798,7 +798,9 @@ Microsoft.Extensions.Http
 @inject TokenProvider TokenProvider
 
 <CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" PreferExactMatches="@true">
+    <Router AppAssembly="@typeof(Program).Assembly" 
+            AdditionalAssemblies="new[] { typeof(NavMenu).Assembly}" 
+            PreferExactMatches="@true">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
