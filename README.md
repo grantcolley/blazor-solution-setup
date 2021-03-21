@@ -27,6 +27,8 @@ The following steps will setup the solution and its projects, using their defaul
 7. [Blazor WebAssembly App](#7-blazor-webassembly-app)
 8. [Blazor Server App](#8-blazor-server-app)
 9. [Running the Solution](#9-running-the-solution)
+ * [Notes](#notes)
+   * [IHttpClientFactory](#ihttpclientfactory)
  
 ## 1. Core Class Library
 First create a solution with a Class Library for core classes and interfaces that will be shared across all projects. How we use these will become apparent later. 
@@ -714,6 +716,7 @@ Microsoft.Extensions.Http
 ```
 
    *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs), with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs). Inject into its constructor an instance of the `TokenProvider` and the named `HttpClient` called `webapi`.
+
 ```C#            
             services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
             {
@@ -723,14 +726,6 @@ Microsoft.Extensions.Http
                 return new WeatherForecastService(httpClient, tokenProvider);
             });
 ```
-
-> **_Note:_ Adding the `access_token` to outgoing requests in Blazor Server.**
->
-> Unlike **Blazor WebAssemby**, which has `AuthorizationMessageHandler`, **Blazor Server** doesn't have a built in message handler for adding a `access_token` to outgoing requests.
-> 
-> The lifetime of a message handler is controlled by the `IHttpClientFactory`, which keeps it open for two minutes even, even if we register a custom message handler as *Transient*. Everything we inject into a custom message handler will be *scoped* to the message handler, rather than *scoped* to the HTTP request. This is why we can't inject into the custom message handler the HTTP *scoped* `TokenProvider`, in order to add the `access_token` to outgoing requests.
-> 
-> `IHttpClientFactory` does, however, manage the lifetime of message handlers seperately from instances of `HttpClient` that it creates. We can inject an instance of `HttpClient` and the HTTP *scoped* `TokenProvider`, which has the `access_token`, into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs). We can then add the `access_token` to outgoing requests from within the [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).
 
 8.10. In the `Configure` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs) remove `app.UseMigrationsEndPoint();`
 
@@ -876,14 +871,20 @@ Microsoft.Extensions.Http
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
 
+## Notes
+
+#### IHttpClientFactory
+Use [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) to configure and create HttpClient instances because it manages the pooling and lifetime of underlying `HttpClientMessageHandler` instances. Automatic management avoids common DNS (Domain Name System) problems that occur when manually managing HttpClient lifetimes, including:
+  * **Socket exhuastion** - each `HTTPClient` instance creates a new socket instance which isn't released immediately, even inside a `using` statement, and may lead to socket exceptions.
+  * **Stale DNS (Domain Name System)** - when a computer is removed from the domain or is unable to update its DNS record in the DNS Server, the DNS record of that Windows computer remains in the DNS database and is considered to be a stale DNS record.
+
+Unlike **Blazor WebAssemby**, which has `AuthorizationMessageHandler`, **Blazor Server** doesn't have a built in message handler for adding a `access_token` to outgoing requests. 
+The lifetime of a message handler is controlled by the `IHttpClientFactory`, which keeps it open for two minutes even, even if we register a custom message handler as *Transient*. Everything we inject into a custom message handler will be *scoped* to the message handler, rather than *scoped* to the HTTP request. This is why we can't inject into the custom message handler the HTTP *scoped* `TokenProvider`, in order to add the `access_token` to outgoing requests.
+
+`IHttpClientFactory` does, however, manage the lifetime of message handlers seperately from instances of `HttpClient` that it creates. We can inject an instance of `HttpClient` and the HTTP *scoped* `TokenProvider`, which has the `access_token`, into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs). We can then add the `access_token` to outgoing requests from within the [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).
+
+
 > `**TODO**`
 > 
 > Check login / logout re-directs
 > Check unauthorised re-directs to login page
-> 
-> **_NOTE:_**
-> The **_WeatherForecastService_** service uses the `IHttpClientFactory` interface to ensure the sockets associated with each `HttpClient` instance are shared, thus preventing the issue of socket exhaustion. 
-> 
-> `IHttpClientFactory` can be registered by calling `AddHttpClient`. Alternatively register a typed client to accept an `HttpClient` parameter in its constructor.
->
->             services.AddHttpClient(..) // registers IHttpClientFactory
