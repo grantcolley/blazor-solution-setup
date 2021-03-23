@@ -6,7 +6,7 @@
 @{
     Layout = null;
 
-    var tokens = new InitialApplicationState
+    var initialState = new InitialApplicationState
     {
         AccessToken = await HttpContext.GetTokenAsync("access_token"),
         RefreshToken = await HttpContext.GetTokenAsync("refresh_token")
@@ -25,7 +25,7 @@
     <link href="BlazorServerApp.styles.css" rel="stylesheet" />
 </head>
 <body>
-    <component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />
+    <component type="typeof(App)" param-InitialState="initialState" render-mode="ServerPrerendered" />
 
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
