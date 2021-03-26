@@ -650,7 +650,9 @@ Microsoft.Extensions.Http
   * *Shared/SurveyPromt.razor*
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
-  
+  * *Areas/Identity/Pages/RevalidatingIdentityAuthenticationStateProvider.cs*
+  * *Areas/Identity/Pages/Shared/_LoginPartial.cshtml*
+
 8.9. In the `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Startup.cs):
 
   * Remove the following default configuration:
