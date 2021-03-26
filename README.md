@@ -48,6 +48,7 @@ First create a solution with a Class Library for core classes and interfaces tha
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
+        public string IdToken { get; set; }
     }
 ```
 
@@ -736,6 +737,7 @@ Microsoft.Extensions.Http
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
+        public string IdToken { get; set; }
     }
 ```
 
@@ -753,17 +755,18 @@ Microsoft.Extensions.Http
 @{
     Layout = null;
 
-    var tokens = new InitialApplicationState
+    var initialState = new InitialApplicationState
     {
         AccessToken = await HttpContext.GetTokenAsync("access_token"),
-        RefreshToken = await HttpContext.GetTokenAsync("refresh_token")
+        RefreshToken = await HttpContext.GetTokenAsync("refresh_token"),
+        IdToken = await HttpContext.GetTokenAsync("id_token")
     };
 }
 
 // Additional code not shown for simplicity
 
 <body>
-    <component type="typeof(App)" param-InitialState="tokens" render-mode="ServerPrerendered" />
+    <component type="typeof(App)" param-InitialState="initialState" render-mode="ServerPrerendered" />
 
     // Additional code not shown for simplicity
 
@@ -831,6 +834,7 @@ Microsoft.Extensions.Http
     {
         TokenProvider.AccessToken = InitialState.AccessToken;
         TokenProvider.RefreshToken = InitialState.RefreshToken;
+        TokenProvider.IdToken = InitialState.IdToken;
 
         return base.OnInitializedAsync();
     }
