@@ -898,6 +898,28 @@ Microsoft.Extensions.Http
 </AuthorizeView>
 ```
 
+8.18. Change [LogOut.cshtml](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorServerApp/Areas/Identity/Pages/Account/LogOut.cshtml) to explicitly sign out using `HttpContext.SignOutAsync()` and send a request to end the session with the identity provider, passing the `id_token` and `postLogoutRedirectUri`:
+
+```C#
+@page
+@using IdentityModel.Client;
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@attribute [IgnoreAntiforgeryToken]
+
+@functions {
+    public async Task<IActionResult> OnPost()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        var idToken = await HttpContext.GetTokenAsync("id_token");
+        var requestUrl = new RequestUrl("https://localhost:5001/connect/endsession");
+        var url = requestUrl.CreateEndSessionUrl(idTokenHint: idToken, postLogoutRedirectUri: "https://localhost:44300/");
+        return Redirect(url);        
+    }
+}
+```
+
+
 ## 9. Running the Solution
 9.1. In the solution's properties window select Multiple startup projects and set the Action of the following projects to Startup:
  * [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider)
