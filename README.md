@@ -31,6 +31,7 @@ The following steps will setup the solution and its projects, using their defaul
     * [IHttpClientFactory](#ihttpclientfactory)
     * [IdentityServer4](#identityserver4)
     * [Cross-Origin Requests (CORS)](#cross-origin-requests-cors)
+    * [Middleware](#middleware)
 
 ## 1. Core Class Library
 First create a solution with a Class Library for core classes and interfaces that will be shared across all projects. How we use these will become apparent later. 
@@ -961,3 +962,6 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
 
 #### Cross-Origin Requests (CORS)
  * [CORS](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0)
+
+#### Middleware
+ * [Middleware Order](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-5.0#middleware-order)
