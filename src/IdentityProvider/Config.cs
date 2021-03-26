@@ -57,7 +57,8 @@ namespace IdentityProvider
                     AllowedCorsOrigins = { "https://localhost:44300" },
                     AllowedScopes = { "openid", "profile", "weatherapiread" },
                     RedirectUris = { "https://localhost:44300/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44300/signout-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44300/" },
+                    Enabled = true
                 },
             };
     }
