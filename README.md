@@ -951,9 +951,3 @@ Unlike **Blazor WebAssemby**, which has `AuthorizationMessageHandler`, **Blazor 
 The lifetime of a message handler is controlled by the `IHttpClientFactory`, which keeps it open for two minutes even, even if we register a custom message handler as *Transient*. Everything we inject into a custom message handler will be *scoped* to the message handler, rather than *scoped* to the HTTP request. This is why we can't inject into the custom message handler the HTTP *scoped* `TokenProvider`, in order to add the `access_token` to outgoing requests.
 
 `IHttpClientFactory` does, however, manage the lifetime of message handlers seperately from instances of `HttpClient` that it creates. We can inject an instance of `HttpClient` and the HTTP *scoped* `TokenProvider`, which has the `access_token`, into [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs). We can then add the `access_token` to outgoing requests from within the [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs).
-
-
-> `**TODO**`
-> 
-> Check login / logout re-directs
-> Check unauthorised re-directs to login page
