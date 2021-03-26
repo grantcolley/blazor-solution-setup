@@ -1,15 +1,16 @@
 ﻿@page
-@using Microsoft.AspNetCore.Identity
+@using IdentityModel.Client;
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authentication.Cookies;
 @attribute [IgnoreAntiforgeryToken]
-@inject SignInManager<IdentityUser> SignInManager
+
 @functions {
     public async Task<IActionResult> OnPost()
     {
-        if (SignInManager.IsSignedIn(User))
-        {
-            await SignInManager.SignOutAsync();
-        }
-
-        return Redirect("~/");
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        var idToken = await HttpContext.GetTokenAsync("id_token");
+        var requestUrl = new RequestUrl("https://localhost:5001/connect/endsession");
+        var url = requestUrl.CreateEndSessionUrl(idTokenHint: idToken, postLogoutRedirectUri: "https://localhost:44300/");
+        return Redirect(url);        
     }
 }
