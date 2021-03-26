@@ -28,7 +28,6 @@ The following steps will setup the solution and its projects, using their defaul
 8. [Blazor Server App](#8-blazor-server-app)
 9. [Running the Solution](#9-running-the-solution)
  * [Notes](#notes)
-   * [IHttpClientFactory](#ihttpclientfactory)
  
 ## 1. Core Class Library
 First create a solution with a Class Library for core classes and interfaces that will be shared across all projects. How we use these will become apparent later. 
@@ -942,7 +941,6 @@ Microsoft.Extensions.Http
 
 ## Notes
 
-#### IHttpClientFactory
 Use [IHttpClientFactory](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0) to configure and create HttpClient instances because it manages the pooling and lifetime of underlying `HttpClientMessageHandler` instances. Automatic management avoids common DNS (Domain Name System) problems that occur when manually managing HttpClient lifetimes, including:
   * **Socket exhuastion** - each `HTTPClient` instance creates a new socket instance which isn't released immediately, even inside a `using` statement, and may lead to socket exceptions.
   * **Stale DNS (Domain Name System)** - when a computer is removed from the domain or is unable to update its DNS record in the DNS Server, the DNS record of that Windows computer remains in the DNS database and is considered to be a stale DNS record.
