@@ -259,7 +259,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
   * Configure authentication with `AddAuthentication`. Set the authority to that of the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json), and set the audience to *weatherapi*
 
-> [JWT bearer authentication](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0) performs authentication by extracting and validating a JWT token from the Authorization request header. Here we configure authentication to to require a JWT bearer token in the header.
+> By calling `AddJwtBearer` we configure authentication to to require a [JWT bearer token](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0) in the header.
 
 ```C#
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
