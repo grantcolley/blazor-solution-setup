@@ -259,7 +259,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
   * Configure authentication with `AddAuthentication`. Set the authority to that of the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json), and set the audience to *weatherapi*
 
-> By calling `AddJwtBearer` we configure authentication to to require a [JWT bearer token](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0) in the header.
+> By calling `AddJwtBearer` we configure authentication to to require a [JWT bearer token](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0) in the header. Authentication is performed by extracting and validating the JWT token from the Authorization request header
 
 ```C#
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -964,7 +964,8 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
  * [Terminology](https://identityserver4.readthedocs.io/en/latest/intro/terminology.html)
 
 #### Authentication
-[JWT bearer authentication](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0) performs authentication by extracting and validating a JWT token from the Authorization request header.
+ * [Securing a Blazor App with Identity Server](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#name-and-role-claim-with-api-authorization)
+ * [JWT bearer authentication](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0)
 
 #### Cross-Origin Requests (CORS)
  * [CORS](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0)
