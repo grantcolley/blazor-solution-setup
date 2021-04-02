@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace WebApi.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "weatheruser")]
     [ApiController]
     [EnableCors("local")]
     [Route("[controller]")]
