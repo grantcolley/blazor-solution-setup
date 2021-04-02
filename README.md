@@ -499,9 +499,10 @@ Create a Blazor WebAssembly project and convert it to a Razor Class Library for 
 
 6.2 Add a project reference to [Core](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/Core)
 
-6.3. Remove all the nuget packages installed by default and add the following nuget package:
+6.3. Remove all the nuget packages installed by default and add the following nuget packages:
 
 ```C#
+Microsoft.AspNetCore.Components.Authorization
 Microsoft.AspNetCore.Components.Web
 ```
 
@@ -515,6 +516,7 @@ Microsoft.AspNetCore.Components.Web
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.4" />
   </ItemGroup>
 
@@ -528,6 +530,7 @@ Microsoft.AspNetCore.Components.Web
 6.5. Replace the content of the [_Imports.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/_Imports.razor) as follows:
 
 ```C#
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 @using Core.Interface
@@ -597,6 +600,30 @@ Microsoft.AspNetCore.Components.Web
         forecasts = await WeatherForecastService.GetWeatherForecasts();
     }
 }
+```
+
+6.9. Create [User.razor](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents/Pages/User.razor) razor component in the */Pages* folder to show the logged in users claims.
+
+```C#
+@page "/user"
+
+<AuthorizeView>
+    <Authorized>
+        <h2>
+            Hello @context.User.Identity.Name,
+            here's the list of your claims:
+        </h2>
+        <ul>
+            @foreach (var claim in context.User.Claims)
+            {
+                <li><b>@claim.Type</b>: @claim.Value</li>
+            }
+        </ul>
+    </Authorized>
+    <NotAuthorized>
+        <p>I'm sorry, I can't display anything until you log in</p>
+    </NotAuthorized>
+</AuthorizeView>
 ```
 
 ## 7. Blazor WebAssembly App
