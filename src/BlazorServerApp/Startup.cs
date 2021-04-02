@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace BlazorServerApp
 {
@@ -26,6 +29,8 @@ namespace BlazorServerApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -44,7 +49,12 @@ namespace BlazorServerApp
                     options.Scope.Add("weatherapiread");
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
-                    options.TokenValidationParameters.NameClaimType = "name";
+                    options.ClaimActions.Add(new JsonKeyClaimAction("role", "role", "role"));
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
                 });
 
             services.AddHttpClient("webapi", client =>
