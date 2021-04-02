@@ -865,7 +865,12 @@ Microsoft.Extensions.Http
                     options.Scope.Add("weatherapiread");
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
-                    options.TokenValidationParameters.NameClaimType = "name";
+                    options.ClaimActions.Add(new JsonKeyClaimAction("role", "role", "role"));
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
                 });
 ```
 
