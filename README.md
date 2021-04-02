@@ -834,6 +834,16 @@ Microsoft.Extensions.Http
             services.AddSingleton<WeatherForecastService>();
 ```
 
+   *  Clear the default claim mapping so the claims don't get mapped to different claims
+
+```C#
+        public void ConfigureServices(IServiceCollection services)
+        {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            
+            // additional code removed
+```
+
    *  Configure authentication with `AddAuthentication`. Set the port number of the `options.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
   
 ```C#            
@@ -1124,6 +1134,8 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
  * [Securing a Blazor App with Identity Server](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#name-and-role-claim-with-api-authorization)
  * [Custom Implementation of IProfileService](http://docs.identityserver.io/en/latest/reference/profileservice.html)
  * [JWT bearer authentication](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0)
+ * [IdentityServer4 Authorization and Working with Claims](https://code-maze.com/identityserver4-authorization/)
+ * [Additional Claims](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/additional-claims?view=aspnetcore-5.0)
 
 #### Cross-Origin Requests (CORS)
  * [CORS](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0)
