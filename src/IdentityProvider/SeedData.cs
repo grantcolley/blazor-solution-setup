@@ -100,6 +100,72 @@ namespace IdentityProvider
                     {
                         Log.Debug("bob already exists");
                     }
+
+                    var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                    var weatherUser = roleMgr.FindByNameAsync("weatheruser").Result;
+                    if (weatherUser == null)
+                    {
+                        weatherUser = new IdentityRole
+                        {
+                            Id = "weatheruser",
+                            Name = "weatheruser",
+                            NormalizedName = "weatheruser"
+                        };
+
+                        var weatherUserResult = roleMgr.CreateAsync(weatherUser).Result;
+                        if (!weatherUserResult.Succeeded)
+                        {
+                            throw new Exception(weatherUserResult.Errors.First().Description);
+                        }
+
+                        var aliceRoleResult = userMgr.AddToRoleAsync(alice, weatherUser.Name).Result;
+                        if (!aliceRoleResult.Succeeded)
+                        {
+                            throw new Exception(aliceRoleResult.Errors.First().Description);
+                        }
+
+                        Log.Debug("weatheruser created");
+                    }
+                    else
+                    {
+                        Log.Debug("weatheruser already exists");
+                    }
+
+                    var blazorUser = roleMgr.FindByNameAsync("blazoruser").Result;
+                    if (blazorUser == null)
+                    {
+                        blazorUser = new IdentityRole
+                        {
+                            Id = "blazoruser",
+                            Name = "blazoruser",
+                            NormalizedName = "blazoruser"
+                        };
+
+                        var blazorUserResult = roleMgr.CreateAsync(blazorUser).Result;
+                        if (!blazorUserResult.Succeeded)
+                        {
+                            throw new Exception(blazorUserResult.Errors.First().Description);
+                        }
+
+                        var aliceRoleResult = userMgr.AddToRoleAsync(alice, blazorUser.Name).Result;
+                        if (!aliceRoleResult.Succeeded)
+                        {
+                            throw new Exception(aliceRoleResult.Errors.First().Description);
+                        }
+
+                        var bobRoleResult = userMgr.AddToRoleAsync(bob, blazorUser.Name).Result;
+                        if (!bobRoleResult.Succeeded)
+                        {
+                            throw new Exception(bobRoleResult.Errors.First().Description);
+                        }
+
+                        Log.Debug("blazoruser created");
+                    }
+                    else
+                    {
+                        Log.Debug("blazoruser already exists");
+                    }
                 }
             }
         }

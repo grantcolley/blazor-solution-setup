@@ -14,6 +14,7 @@ namespace IdentityProvider
                    {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource("roles", "User role(s)", new List<string> { "role" })
                    };
 
         public static IEnumerable<ApiScope> ApiScopes =>
