@@ -137,7 +137,7 @@ dotnet new is4aspid -n IdentityProvider
 dotnet sln add IdentityProvider
 ```
 
-3.3. Add the following code to [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs), after the code for creating defaults users *alice* and *bob*. This will create the roles `weatheruser` and `blazoruser`. It will also give default user *alice* both roles, while default user *bob* will only be given the role of `blazoruser`. 
+3.3. Add the following code to [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs), after the code for creating default users *alice* and *bob*. This will create the roles `weatheruser` and `blazoruser`. It will also give *alice* both roles, while *bob* will only be given the role of `blazoruser`. 
 
 ```C#
                     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -207,11 +207,11 @@ dotnet sln add IdentityProvider
                     }
 ```
 
-3.4. Compile and rune the code with the `/seed` arg ensuring the code to seed the data is executed.
+3.4. Compile and run the code with the `/seed` arg, ensuring the code to seed the data is executed.
 
->Alternatively you can open the CMD console, navigate to the output directory and run `IdentityProvider.exe \seed`.
+>Alternatively, you can open the CMD console, navigate to the output directory and run `IdentityProvider.exe \seed`.
 >
->If you opted to seed the database when installing the `IdentityServer4.Templates` you can install [sqlite]() and insert the roles into the `AspNetRoles` table, and add *alice* and *bob* to the appropriate roles by inserting their UserId and the appropriate RoleId into the `AspNetUserRoles` table.
+>Or if you opted to seed the database when installing the `IdentityServer4.Templates` you can install [sqlite](https://www.sqlite.org/download.html) and insert the roles into the `AspNetRoles` table, and add *alice* and *bob* to the appropriate roles by inserting their UserId and the appropriate RoleId into the `AspNetUserRoles` table.
 
 3.5. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
 
