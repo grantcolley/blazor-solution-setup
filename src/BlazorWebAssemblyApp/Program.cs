@@ -1,3 +1,4 @@
+using BlazorWebAssemblyApp.Account;
 using Core.Interface;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -47,7 +48,8 @@ namespace BlazorWebAssemblyApp
                 options.ProviderOptions.DefaultScopes.Add("weatherapiread");
                 options.ProviderOptions.PostLogoutRedirectUri = "/";
                 options.ProviderOptions.ResponseType = "code";
-            });
+                options.UserOptions.RoleClaim = "role";
+            }).AddAccountClaimsPrincipalFactory<UserAccountFactory>();
 
             await builder.Build().RunAsync();
         }
