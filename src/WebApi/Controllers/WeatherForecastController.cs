@@ -8,10 +8,10 @@ using System.Collections.Generic;
 
 namespace WebApi.Controllers
 {
-    [Authorize(Roles = "weatheruser")]
     [ApiController]
     [EnableCors("local")]
     [Route("[controller]")]
+    [Authorize(Roles = "weatheruser")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> logger;
