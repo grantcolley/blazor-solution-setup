@@ -674,7 +674,59 @@ Microsoft.Extensions.Http
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
 
-7.7. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
+7.7. Create a folder called **Account** and inside create [UserAccountFactory.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Account/UserAccountFactory.cs), inheriting AccountClaimsPrincipalFactory<RemoteUserAccount>. It will be registered when configuring authentication in [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs).
+
+> Identity Server sends multiple roles as a JSON array in a single role claim and the factory creates an individual role claim for each of the user's roles.
+> https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#custom-user-factory
+
+```C#
+    public class UserAccountFactory : AccountClaimsPrincipalFactory<RemoteUserAccount>
+    {
+        public UserAccountFactory(IAccessTokenProviderAccessor accessor) : base(accessor)
+        {
+        }
+
+        public async override ValueTask<ClaimsPrincipal> CreateUserAsync(RemoteUserAccount account, RemoteAuthenticationUserOptions options)
+        {
+            var user = await base.CreateUserAsync(account, options);
+
+            if (user.Identity.IsAuthenticated)
+            {
+                var identity = (ClaimsIdentity)user.Identity;
+                var roleClaims = identity.FindAll(identity.RoleClaimType).ToArray();
+
+                if (roleClaims != null && roleClaims.Any())
+                {
+                    foreach (var existingClaim in roleClaims)
+                    {
+                        identity.RemoveClaim(existingClaim);
+                    }
+
+                    var rolesElem = account.AdditionalProperties[identity.RoleClaimType];
+
+                    if (rolesElem is JsonElement roles)
+                    {
+                        if (roles.ValueKind == JsonValueKind.Array)
+                        {
+                            foreach (var role in roles.EnumerateArray())
+                            {
+                                identity.AddClaim(new Claim(options.RoleClaim, role.GetString()));
+                            }
+                        }
+                        else
+                        {
+                            identity.AddClaim(new Claim(options.RoleClaim, roles.GetString()));
+                        }
+                    }
+                }
+            }
+
+            return user;
+        }
+    }
+```
+
+7.8. In [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs)
   * Replace the scoped `HttpClient` services registration with a named client called `webapi`. Set the port number of the `client.BaseAddress` to `44320`, which is the port for the [WebApi](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/WebApi/Properties/launchSettings.json)
   * Add message handler `AuthorizationMessageHandler` using `AddHttpMessageHandler` and configure it for the scope `weatherapiread`. This will ensure the `access_token` with `weatherapiread` is added to outgoing requests when using the `webapi` HttpClient.
 
@@ -718,10 +770,11 @@ Microsoft.Extensions.Http
                 options.ProviderOptions.DefaultScopes.Add("weatherapiread");
                 options.ProviderOptions.PostLogoutRedirectUri = "/";
                 options.ProviderOptions.ResponseType = "code";
-            });
+                options.UserOptions.RoleClaim = "role";
+            }).AddAccountClaimsPrincipalFactory<UserAccountFactory>();
 ```
   
-7.8. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
+7.9. In [App.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/App.razor) add `typeof(NavMenu).Assembly` to the `AdditionalAssemblies` of the `Router` so the [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents) assembly will be scanned for additional routable components. 
 
 ```C#
 <CascadingAuthenticationState>
@@ -750,7 +803,7 @@ Microsoft.Extensions.Http
 </CascadingAuthenticationState>
 ```
 
-7.9. Replace the contents of [MainLayout.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Shared/MainLayout.razor) with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
+7.10. Replace the contents of [MainLayout.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Shared/MainLayout.razor) with the following. This uses the shared [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) in [RazorComponents](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/RazorComponents), passing in UI contents `LoginDisplay` and `@Body` as `RenderFragment` delegates.
 
 ```C#
 @inherits LayoutComponentBase
