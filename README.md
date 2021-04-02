@@ -417,10 +417,10 @@ Microsoft.AspNetCore.Authentication.JwtBearer
   * Inject an instance of [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs) into the constructor and call `weatherForecastRepository.GetWeatherForecasts()` from inside the `Get()` method.
   
 ```C#
-    [Authorize]
     [ApiController]
     [EnableCors("local")]
     [Route("[controller]")]
+    [Authorize(Roles = "weatheruser")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> logger;
