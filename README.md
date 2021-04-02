@@ -137,13 +137,101 @@ dotnet new is4aspid -n IdentityProvider
 dotnet sln add IdentityProvider
 ```
 
-3.3. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
+3.3. Add the following code to [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs), after the code for creating defaults users *alice* and *bob*. This will create the roles `weatheruser` and `blazoruser`. It will also give default user *alice* both roles, while default user *bob* will only be given the role of `blazoruser`. 
+
+```C#
+                    var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                    var weatherUser = roleMgr.FindByNameAsync("weatheruser").Result;
+                    if (weatherUser == null)
+                    {
+                        weatherUser = new IdentityRole
+                        {
+                            Id = "weatheruser",
+                            Name = "weatheruser",
+                            NormalizedName = "weatheruser"
+                        };
+
+                        var weatherUserResult = roleMgr.CreateAsync(weatherUser).Result;
+                        if (!weatherUserResult.Succeeded)
+                        {
+                            throw new Exception(weatherUserResult.Errors.First().Description);
+                        }
+
+                        var aliceRoleResult = userMgr.AddToRoleAsync(alice, weatherUser.Name).Result;
+                        if (!aliceRoleResult.Succeeded)
+                        {
+                            throw new Exception(aliceRoleResult.Errors.First().Description);
+                        }
+
+                        Log.Debug("weatheruser created");
+                    }
+                    else
+                    {
+                        Log.Debug("weatheruser already exists");
+                    }
+
+                    var blazorUser = roleMgr.FindByNameAsync("blazoruser").Result;
+                    if (blazorUser == null)
+                    {
+                        blazorUser = new IdentityRole
+                        {
+                            Id = "blazoruser",
+                            Name = "blazoruser",
+                            NormalizedName = "blazoruser"
+                        };
+
+                        var blazorUserResult = roleMgr.CreateAsync(blazorUser).Result;
+                        if (!blazorUserResult.Succeeded)
+                        {
+                            throw new Exception(blazorUserResult.Errors.First().Description);
+                        }
+
+                        var aliceRoleResult = userMgr.AddToRoleAsync(alice, blazorUser.Name).Result;
+                        if (!aliceRoleResult.Succeeded)
+                        {
+                            throw new Exception(aliceRoleResult.Errors.First().Description);
+                        }
+
+                        var bobRoleResult = userMgr.AddToRoleAsync(bob, blazorUser.Name).Result;
+                        if (!bobRoleResult.Succeeded)
+                        {
+                            throw new Exception(bobRoleResult.Errors.First().Description);
+                        }
+
+                        Log.Debug("blazoruser created");
+                    }
+                    else
+                    {
+                        Log.Debug("blazoruser already exists");
+                    }
+```
+
+3.4. Compile and rune the code with the `/seed` arg ensuring the code to seed the data is executed.
+
+>Alternatively you can open the CMD console, navigate to the output directory and run `IdentityProvider.exe \seed`.
+>
+>If you opted to seed the database when installing the `IdentityServer4.Templates` you can install [sqlite]() and insert the roles into the `AspNetRoles` table, and add *alice* and *bob* to the appropriate roles by inserting their UserId and the appropriate RoleId into the `AspNetUserRoles` table.
+
+3.5. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
 
 ```C#
 "applicationUrl": "https://localhost:5001"
 ```
 
-3.4. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
+3.6. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
+  * Add *roles* to the `IdentityResources`
+
+```C#
+        public static IEnumerable<IdentityResource> IdentityResources =>
+                   new IdentityResource[]
+                   {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+                new IdentityResource("roles", "User role(s)", new List<string> { "role" })
+                   };
+```
+
   * Replace the default scopes with a new `ApiScope`called *weatherapiread*
 
 ```C#
@@ -201,7 +289,30 @@ dotnet sln add IdentityProvider
             };
 ```
 
-3.5. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
+3.7. Create a custom implementation of [IProfileService](http://docs.identityserver.io/en/latest/reference/profileservice.html) called [ProfileService](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider/ProfileService.cs). This will add the roles to the users claims.
+
+```C#
+    public class ProfileService : IProfileService
+    {
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+        {
+            var nameClaim = context.Subject.FindAll(JwtClaimTypes.Name);
+            context.IssuedClaims.AddRange(nameClaim);
+
+            var roleClaims = context.Subject.FindAll(JwtClaimTypes.Role);
+            context.IssuedClaims.AddRange(roleClaims);
+
+            await Task.CompletedTask;
+        }
+
+        public async Task IsActiveAsync(IsActiveContext context)
+        {
+            await Task.CompletedTask;
+        }
+    }
+```
+
+3.8. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
 
 ```C#
             var builder = services.AddIdentityServer(options =>
@@ -965,6 +1076,7 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
 
 #### Authentication
  * [Securing a Blazor App with Identity Server](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#name-and-role-claim-with-api-authorization)
+ * [Custom Implementation of IProfileService](http://docs.identityserver.io/en/latest/reference/profileservice.html)
  * [JWT bearer authentication](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0)
 
 #### Cross-Origin Requests (CORS)
