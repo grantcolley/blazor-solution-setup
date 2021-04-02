@@ -33,6 +33,7 @@ The following steps will setup the solution and its projects, using their defaul
     * [Authentication](#authentication)
     * [Cross-Origin Requests (CORS)](#cross-origin-requests-cors)
     * [Middleware](#middleware)
+    * [Error Handling](#error-handling)
 
 ## 1. Core Class Library
 First create a solution with a Class Library for core classes and interfaces that will be shared across all projects. How we use these will become apparent later. 
@@ -1200,3 +1201,6 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
 
 #### Middleware
  * [Middleware Order](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-5.0#middleware-order)
+
+#### Error Handling
+ * [Handle Errors in Blazor](https://docs.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-5.0&pivots=server)
