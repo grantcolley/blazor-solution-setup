@@ -312,7 +312,8 @@ dotnet sln add IdentityProvider
     }
 ```
 
-3.8. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs), add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
+3.8. In `ConfigureServices` method of [Startup](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Startup.cs)
+  * Add `AddInMemoryApiResources(Config.ApiResources)` when adding the IdentityServer service with `services.AddIdentityServer`.
 
 ```C#
             var builder = services.AddIdentityServer(options =>
@@ -324,6 +325,12 @@ dotnet sln add IdentityProvider
                 .AddInMemoryApiResources(Config.ApiResources)
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
+```
+
+  * Register the `ProfileService`
+
+```C#
+            services.AddTransient<IProfileService, ProfileService>();
 ```
 
 ## 4. ASP.NET Core Web API
