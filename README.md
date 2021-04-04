@@ -636,13 +636,11 @@ Microsoft.AspNetCore.Components.Web
 6.10. Add a `NavLink` for the `User` component to [NavMenu.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/NavMenu.razor).
 
 ```C#
-
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="user">
                 <span class="oi oi-person" aria-hidden="true"></span> User
             </NavLink>
         </li>
-        
 ```
 
 ## 7. Blazor WebAssembly App
