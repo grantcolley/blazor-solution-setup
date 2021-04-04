@@ -580,7 +580,7 @@ Microsoft.AspNetCore.Components.Web
 
 6.8. In [FetchData.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Pages/FetchData.razor) 
   * Remove `@inject HttpClient Http`
-  * Use role based *AuthorizeView* <AuthorizeView Roles="weatheruser"> to display content based on the users permission
+  * Use role based *AuthorizeView* `<AuthorizeView Roles="weatheruser">` to display content based on the users permission
   * Inject an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs) to fetch the weather forecast in `OnInitializedAsync()` 
 
 >See usage of the [Authorize](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#authorize-attribute) attribute.
@@ -1232,6 +1232,7 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
 
 #### Authentication
  * [Securing a Blazor App with Identity Server](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#name-and-role-claim-with-api-authorization)
+ * [ASP.NET Core Blazor authentication and authorization](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0)
  * [Custom Implementation of IProfileService](http://docs.identityserver.io/en/latest/reference/profileservice.html)
  * [JWT bearer authentication](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0)
  * [IdentityServer4 Authorization and Working with Claims](https://code-maze.com/identityserver4-authorization/)
