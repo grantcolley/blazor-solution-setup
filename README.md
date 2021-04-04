@@ -585,7 +585,7 @@ Microsoft.AspNetCore.Components.Web
 
 >See usage of the [Authorize](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#authorize-attribute) attribute.
 >
->Only use [Authorize] on @page components reached via the Blazor Router. Authorization is only performed as an aspect of routing and not for child components rendered within a page. To authorize the display of specific parts within a page, use AuthorizeView instead.
+>  *"Only use [Authorize] on @page components reached via the Blazor Router. Authorization is only performed as an aspect of routing and not for child components rendered within a page. To authorize the display of specific parts within a page, use AuthorizeView instead."*
 >
 >Here we use role based authorization on the [AuthorizeView](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#role-based-and-policy-based-authorization).
 
@@ -692,9 +692,8 @@ Microsoft.Extensions.Http
         {
         }
 
-        public async override ValueTask<ClaimsPrincipal> CreateUserAsync(
-                                                               RemoteUserAccount account, 
-                                                               RemoteAuthenticationUserOptions options)
+        public async override ValueTask<ClaimsPrincipal> CreateUserAsync(RemoteUserAccount account, 
+                                                                         RemoteAuthenticationUserOptions options)
         {
             var user = await base.CreateUserAsync(account, options);
 
