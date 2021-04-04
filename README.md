@@ -580,8 +580,11 @@ Microsoft.AspNetCore.Components.Web
 
 6.8. In [FetchData.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Pages/FetchData.razor) 
   * Remove `@inject HttpClient Http`
+  * Add `@using Microsoft.AspNetCore.Components.Authorization`
+  * Inject `@inject AuthenticationStateProvider AuthenticationStateProvider` 
   * Use role based *AuthorizeView* `<AuthorizeView Roles="weatheruser">` to display content based on the users permission
-  * Inject an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs) to fetch the weather forecast in `OnInitializedAsync()` 
+  * Inject an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs).
+  * In the `OnInitializedAsync()` method only fetch the weather forecast if the user has the `weatheruser` role claim. We do this to demonstrate claim checking using the [AuthenticationStateProvider](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#authenticationstateprovider-serice). An alternative approach would be to add a button inside the *Authorized* content of the *AuthorizeView*, which would only be visible if the user has the specified role.
 
 >See usage of the [Authorize](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#authorize-attribute) attribute.
 >
@@ -591,6 +594,8 @@ Microsoft.AspNetCore.Components.Web
 
 ```C#
 @page "/fetchdata"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView Roles="weatheruser">
     <Authorized>
@@ -632,8 +637,7 @@ Microsoft.AspNetCore.Components.Web
     </NotAuthorized>
 </AuthorizeView>
 
-@code {
-    
+@code { 
     protected IEnumerable<WeatherForecast> forecasts;
 
     [Inject]
@@ -641,8 +645,17 @@ Microsoft.AspNetCore.Components.Web
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await WeatherForecastService.GetWeatherForecasts();
-    } 
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            if (user.HasClaim(c => c.Type == "role" && c.Value.Equals("weatheruser")))
+            {
+                forecasts = await WeatherForecastService.GetWeatherForecasts();
+            }
+        }
+    }
 }
 ```
 
