@@ -580,8 +580,14 @@ Microsoft.AspNetCore.Components.Web
 
 6.8. In [FetchData.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Pages/FetchData.razor) 
   * Remove `@inject HttpClient Http` 
-  * Add `@using Microsoft.AspNetCore.Authorization` and the `[Authorize]` attribute
+  * Add `@using Microsoft.AspNetCore.Authorization`
   * Change the `@code` block by injecting an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs) and getting the weather forecast in `OnInitializedAsync()` 
+
+>See usage of the [Authorize](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#authorize-attribute) attribute.
+>
+>Only use [Authorize] on @page components reached via the Blazor Router. Authorization is only performed as an aspect of routing and not for child components rendered within a page. To authorize the display of specific parts within a page, use AuthorizeView instead.
+>
+>Here we use role based authorization on the [AuthorizeView](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#role-based-and-policy-based-authorization).
 
 ```C#
 @page "/fetchdata"
@@ -677,8 +683,7 @@ Microsoft.Extensions.Http
 
 7.7. Create a folder called **Account** and inside create [UserAccountFactory.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Account/UserAccountFactory.cs), inheriting AccountClaimsPrincipalFactory<RemoteUserAccount>. It will be registered when configuring authentication in [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs).
 
-> Identity Server sends multiple roles as a JSON array in a single role claim and the factory creates an individual role claim for each of the user's roles.
-> https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#custom-user-factory
+> Identity Server sends multiple roles as a JSON array in a single role claim and the [custom user factory](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#custom-user-factory) creates an individual role claim for each of the user's roles.
 
 ```C#
     public class UserAccountFactory : AccountClaimsPrincipalFactory<RemoteUserAccount>
@@ -687,7 +692,9 @@ Microsoft.Extensions.Http
         {
         }
 
-        public async override ValueTask<ClaimsPrincipal> CreateUserAsync(RemoteUserAccount account, RemoteAuthenticationUserOptions options)
+        public async override ValueTask<ClaimsPrincipal> CreateUserAsync(
+                                                               RemoteUserAccount account, 
+                                                               RemoteAuthenticationUserOptions options)
         {
             var user = await base.CreateUserAsync(account, options);
 
