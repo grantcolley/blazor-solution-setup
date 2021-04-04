@@ -1,4 +1,6 @@
 ﻿@page "/fetchdata"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView Roles="weatheruser">
     <Authorized>
@@ -40,8 +42,7 @@
     </NotAuthorized>
 </AuthorizeView>
 
-@code {
-    
+@code { 
     protected IEnumerable<WeatherForecast> forecasts;
 
     [Inject]
@@ -49,6 +50,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await WeatherForecastService.GetWeatherForecasts();
-    } 
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            if (user.HasClaim(c => c.Type == "role" && c.Value.Equals("weatheruser")))
+            {
+                forecasts = await WeatherForecastService.GetWeatherForecasts();
+            }
+        }
+    }
 }
