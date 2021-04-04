@@ -580,7 +580,7 @@ Microsoft.AspNetCore.Components.Web
 
 6.8. In [FetchData.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Pages/FetchData.razor) 
   * Remove `@inject HttpClient Http`
-  * Use role based *AuthorizeView* <AuthorizeView Roles="weatheruser"> to display content based on the users permission
+  * Use role based *AuthorizeView* `<AuthorizeView Roles="weatheruser">` to display content based on the users permission
   * Inject an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs) to fetch the weather forecast in `OnInitializedAsync()` 
 
 >See usage of the [Authorize](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#authorize-attribute) attribute.
