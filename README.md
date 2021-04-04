@@ -579,9 +579,9 @@ Microsoft.AspNetCore.Components.Web
 ```
 
 6.8. In [FetchData.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Pages/FetchData.razor) 
-  * Remove `@inject HttpClient Http` 
-  * Add `@using Microsoft.AspNetCore.Authorization`
-  * Change the `@code` block by injecting an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs) and getting the weather forecast in `OnInitializedAsync()` 
+  * Remove `@inject HttpClient Http`
+  * Use role based *AuthorizeView* <AuthorizeView Roles="weatheruser"> to display content based on the users permission
+  * Inject an instance of the [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs) to fetch the weather forecast in `OnInitializedAsync()` 
 
 >See usage of the [Authorize](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#authorize-attribute) attribute.
 >
@@ -591,12 +591,49 @@ Microsoft.AspNetCore.Components.Web
 
 ```C#
 @page "/fetchdata"
-@using Microsoft.AspNetCore.Authorization;
-@attribute [Authorize]
 
-// additional code removed for simplicity
-            
+<AuthorizeView Roles="weatheruser">
+    <Authorized>
+        <h1>Weather forecast</h1>
+
+        <p>This component demonstrates fetching data from the server.</p>
+
+        @if (forecasts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temp. (C)</th>
+                        <th>Temp. (F)</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in forecasts)
+                    {
+                        <tr>
+                            <td>@forecast.Date.ToShortDateString()</td>
+                            <td>@forecast.TemperatureC</td>
+                            <td>@forecast.TemperatureF</td>
+                            <td>@forecast.Summary</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>Only users in the <b><i>weatheruser</i></b> role can access this page.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
 @code {
+    
     protected IEnumerable<WeatherForecast> forecasts;
 
     [Inject]
@@ -605,7 +642,7 @@ Microsoft.AspNetCore.Components.Web
     protected override async Task OnInitializedAsync()
     {
         forecasts = await WeatherForecastService.GetWeatherForecasts();
-    }
+    } 
 }
 ```
 
