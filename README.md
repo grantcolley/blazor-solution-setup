@@ -1236,7 +1236,7 @@ Microsoft.Extensions.Http
 
 9.2. Compile and run the solution.
 
-9.3. Login using IdentityServer4 default users, **bob** or **alice** using the default password *Pass123$*.
+9.3. Login using IdentityServer4 default users, **bob** or **alice** using the default password: *Pass123$*.
 
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
