@@ -753,7 +753,7 @@ Microsoft.Extensions.Http
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
 
-7.7. Create a folder called **Account** and inside create [UserAccountFactory.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Account/UserAccountFactory.cs), inheriting AccountClaimsPrincipalFactory<RemoteUserAccount>. It will be registered when configuring authentication in [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs).
+7.7. Create a folder called **Account** and inside create [UserAccountFactory.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Account/UserAccountFactory.cs), inheriting *AccountClaimsPrincipalFactory<RemoteUserAccount>*. It will be registered when configuring authentication in [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs).
 
 > Identity Server sends multiple roles as a JSON array in a single role claim and the [custom user factory](https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-5.0&tabs=visual-studio#custom-user-factory) creates an individual role claim for each of the user's roles.
 
@@ -1275,6 +1275,7 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
  * [JWT bearer authentication](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.jwtbearerextensions.addjwtbearer?view=aspnetcore-5.0)
  * [IdentityServer4 Authorization and Working with Claims](https://code-maze.com/identityserver4-authorization/)
  * [Additional Claims](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/additional-claims?view=aspnetcore-5.0)
+ * [Using Roles In Blazor WebAssembly Hosted Applications](https://code-maze.com/using-roles-in-blazor-webassembly-hosted-applications/)
 
 #### Cross-Origin Requests (CORS)
  * [CORS](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0)
