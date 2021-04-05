@@ -1021,13 +1021,6 @@ Microsoft.Extensions.Http
    
 ```C#            
             services.AddScoped<TokenProvider>();
-            services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
-            {
-                var tokenProvider = sp.GetRequiredService<TokenProvider>();
-                var httpClient = sp.GetRequiredService<IHttpClientFactory>();
-                var weatherForecastServiceHttpClient = httpClient.CreateClient("webapi");
-                return new WeatherForecastService(weatherForecastServiceHttpClient, tokenProvider);
-            });
 ```
 
    *  Register transient service of type [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface/IWeatherForecastService.cs), with implementation type [WeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Services/WeatherForecastService.cs). Inject into its constructor an instance of the `TokenProvider` and the named `HttpClient` called `webapi`.
