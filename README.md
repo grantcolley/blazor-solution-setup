@@ -359,7 +359,7 @@ dotnet sln add IdentityProvider
 ```
 
 ## 4. ASP.NET Core Web API
-Create an ASP.NET Core Web API for accessing the data repository and restrict access to authenticated users.
+Create an ASP.NET Core Web API for accessing the data repository and restrict access to authorized users.
 
 4.1. Create an ASP.NET Core WebAPI project called [WebApi](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/WebApi).
 
