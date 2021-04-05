@@ -34,6 +34,7 @@ The following steps will setup the solution and its projects, using their defaul
     * [Cross-Origin Requests (CORS)](#cross-origin-requests-cors)
     * [Middleware](#middleware)
     * [Error Handling](#error-handling)
+    * [Blazor Templated Components](#blazor-templated-components)
 
 ## 1. Core Class Library
 First create a solution with a Class Library for core classes and interfaces that will be shared across all projects. How we use these will become apparent later. 
@@ -572,7 +573,7 @@ Microsoft.AspNetCore.Components.Web
   
 6.7. Rename *MainLayout.razor* to [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) and replace the contents with the following:
 
-> A RenderFragment represents a segment of UI content, implemented as a delegate. Here we let the consumers of [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) provide UI content for the LoginDisplayFragment and BodyFragment. The consumers will be the Blazor apps, [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp), which we will create later.
+> A [RenderFragment](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/templated-components?view=aspnetcore-5.0) represents a segment of UI content, implemented as a delegate. Here we let the consumers of [MainLayoutBase.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/MainLayoutBase.razor) provide UI content for the LoginDisplayFragment and BodyFragment. The consumers will be the Blazor apps, [BlazorWebAssemblyApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorWebAssemblyApp) and [BlazorServerApp](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/BlazorServerApp), which we will create later.
 
 ```C#
 <div class="page">
@@ -1283,3 +1284,6 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
 
 #### Error Handling
  * [Handle Errors in Blazor](https://docs.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-5.0&pivots=server)
+
+#### Blazor Templated Components
+ * [RenderFragment](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/templated-components?view=aspnetcore-5.0)
