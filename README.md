@@ -35,6 +35,7 @@ The following steps will setup the solution and its projects, using their defaul
     * [Middleware](#middleware)
     * [Error Handling](#error-handling)
     * [Blazor Templated Components](#blazor-templated-components)
+    * [Blazor Dependency Injection](#blazor-dependency-injection)
 
 ## 1. Core Class Library
 First create a solution with a Class Library for core classes and interfaces that will be shared across all projects. How we use these will become apparent later. 
@@ -1289,3 +1290,8 @@ The lifetime of a message handler is controlled by the `IHttpClientFactory`, whi
 
 #### Blazor Templated Components
  * [RenderFragment](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/templated-components?view=aspnetcore-5.0)
+
+#### Blazor Dependency Injection
+ * [Blazor WebAssembly](https://docs.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-5.0&pivots=webassembly)
+ * [Blazor Server](https://docs.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-5.0&pivots=server)
+
