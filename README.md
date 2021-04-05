@@ -752,6 +752,7 @@ Microsoft.Extensions.Http
   * *Shared/SurveyPromt.razor*
   * *Shared/NavMenu.razor*
   * *Shared/NavMenu.razor.css*
+  * *wwwroot/sample-data/weather.json*
 
 7.7. Create a folder called **Account** and inside create [UserAccountFactory.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Account/UserAccountFactory.cs), inheriting *AccountClaimsPrincipalFactory<RemoteUserAccount>*. It will be registered when configuring authentication in [Program.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Program.cs).
 
