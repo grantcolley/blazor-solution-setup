@@ -210,7 +210,7 @@ dotnet sln add IdentityProvider
 
 3.4. Set [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) set `"commandLineArgs": "/seed"`. This will ensure the database is seeded at startup.
 
->Alternatively you can install [sqlite](https://www.sqlite.org/download.html) and insert the roles into the `AspNetRoles` table, and add *alice* and *bob* to the appropriate roles by inserting their UserId and the appropriate RoleId into the `AspNetUserRoles` table.
+>You can install [sqlite](https://www.sqlite.org/download.html) and query the database that is created by [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs).
 
 3.5. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
 
