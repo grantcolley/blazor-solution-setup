@@ -313,7 +313,7 @@ dotnet sln add IdentityProvider
             };
 ```
 
-3.7. Create a custom implementation of [IProfileService](http://docs.identityserver.io/en/latest/reference/profileservice.html) called [ProfileService](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider/ProfileService.cs). This will add the roles to the users claims.
+3.7. Create a custom implementation of [IProfileService](http://docs.identityserver.io/en/latest/reference/profileservice.html) called [ProfileService](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider/ProfileService.cs). This will add roles to the users claims.
 
 ```C#
     public class ProfileService : IProfileService
