@@ -133,7 +133,9 @@ Install the **IdentityServer4** templates and create a project to provide authen
 
 3.2. Install **IdentityServer4** templates, create the [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) project and add it to the solution.
 
-`Note: Opt to seed the database when prompted`
+> Note: When prompted if you want to seed the database select N
+> ![Alt text](/readme-images/IdentityProviderSeedDb.PNG?raw=true "Identity Server install")
+
 ```C#
 dotnet new -i IdentityServer4.Templates
 
