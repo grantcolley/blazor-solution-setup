@@ -835,7 +835,7 @@ Microsoft.Extensions.Http
             });
 ```
 
-   *  Register and configure authentication replacing `builder.Services.AddOidcAuthentication` and set the port number of the `options.ProviderOptions.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
+   *  Register and configure authentication replacing `builder.Services.AddOidcAuthentication` and set the port number of the `options.ProviderOptions.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json). Replace the existing *AccountClaimsPrincipleFactory<TAccount>* with [UserAccountFactory](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/BlazorWebAssemblyApp/Account/UserAccountFactory.cs).
 
 ```C#
             builder.Services.AddOidcAuthentication(options =>
