@@ -45,8 +45,8 @@ First create a solution with a Class Library for core classes and interfaces tha
 1.3. Delete *Class1.cs*
 
 1.4. Create a folder called *Model* and inside it create the following classes:
-  * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/WeatherForecast.cs)
-  * [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/TokenProvider.cs)
+
+* [TokenProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/TokenProvider.cs)
 
 ```C#
     public class TokenProvider
@@ -56,6 +56,8 @@ First create a solution with a Class Library for core classes and interfaces tha
         public string IdToken { get; set; }
     }
 ```
+
+  * [WeatherForecast](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Model/WeatherForecast.cs)
 
 ```C#
     public class WeatherForecast
@@ -71,8 +73,8 @@ First create a solution with a Class Library for core classes and interfaces tha
 ```
 
 1.5. Create a folder called *Interface* and inside it create the following interfaces:
+
   * [IWeatherForecastRepository](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastRepository.cs)
-  * [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs)
 
 ```C#
     public interface IWeatherForecastRepository
@@ -80,6 +82,8 @@ First create a solution with a Class Library for core classes and interfaces tha
         IEnumerable<WeatherForecast> GetWeatherForecasts();
     }
 ```
+
+  * [IWeatherForecastService](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/Core/Interface//IWeatherForecastService.cs)
 
 ```C#   
     public interface IWeatherForecastService
