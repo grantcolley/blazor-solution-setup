@@ -140,7 +140,11 @@ dotnet sln add IdentityProvider
 
 3.3. Add the following code to [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs), after the code for creating default users *alice* and *bob*. This will create the roles `weatheruser` and `blazoruser`. It will also give *alice* both roles, while *bob* will only be given the role of `blazoruser`. 
 
+>You can install [sqlite](https://www.sqlite.org/download.html) and query the database that is created by [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs).
+
 ```C#
+                    // additional code not shown for berevity...
+                    
                     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                     var weatherUser = roleMgr.FindByNameAsync("weatheruser").Result;
@@ -206,16 +210,28 @@ dotnet sln add IdentityProvider
                     {
                         Log.Debug("blazoruser already exists");
                     }
+                    
+                    // additional code not shown for berevity...
 ```
 
-3.4. Set [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) set `"commandLineArgs": "/seed"`. This will ensure the database is seeded at startup.
-
->You can install [sqlite](https://www.sqlite.org/download.html) and query the database that is created by [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs).
-
-3.5. Set the `applicationUrl` in [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) to the following:
+3.4. In [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json)
+  * Set `"commandLineArgs": "/seed"`. This will ensure the database is seeded at startup.
+  * Set the `applicationUrl` to `"applicationUrl": "https://localhost:5001"`
 
 ```C#
-"applicationUrl": "https://localhost:5001"
+      {
+        "profiles": {
+          "SelfHost": {
+            "commandName": "Project",
+            "commandLineArgs": "/seed",
+            "launchBrowser": true,
+            "environmentVariables": {
+              "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "applicationUrl": "https://localhost:5001"
+          }
+        }
+      }
 ```
 
 3.6. In [Config.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Config.cs):
@@ -317,7 +333,7 @@ dotnet sln add IdentityProvider
 ```C#
             var builder = services.AddIdentityServer(options =>
             {
-                // additional code removed for simplicity
+                // additional code not shown for berevity...
             })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
@@ -396,7 +412,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 ```C#
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // additional code removed for simplicity
+            // additional code not shown for berevity...
             
             app.UseRouting();
 
@@ -406,7 +422,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
             app.UseAuthorization();
 
-            // additional code removed for simplicity
+            // additional code not shown for berevity...
         }
 ```
 
@@ -947,7 +963,7 @@ Microsoft.Extensions.Http
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             
-            // additional code removed
+            // additional code not shown for berevity...
 ```
 
    *  Configure authentication with `AddAuthentication`. Set the port number of the `options.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
@@ -1049,12 +1065,12 @@ Microsoft.Extensions.Http
     };
 }
 
-// Additional code not shown for simplicity
+// additional code not shown for berevity...
 
 <body>
     <component type="typeof(App)" param-InitialState="initialState" render-mode="ServerPrerendered" />
 
-    // Additional code not shown for simplicity
+    // additional code not shown for berevity...
 
 </body>
 </html>
@@ -1215,14 +1231,15 @@ Microsoft.Extensions.Http
 
 ![Alt text](/readme-images/BlazorSetupProperties.png?raw=true "Blazor Solution Setup Properties")
 
-9.2. Run the solution.
-
-![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
+9.2. Compile and run the solution.
 
 9.3. Login using IdentityServer4 default users, **bob** or **alice**.
 
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
+9.4. If you login as *alice* and you can fetch the weather data because she is in the `weatheruser` role. However, if you login as *bob* you are not authorized to fetch the weather data.
+
+![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
 
 ## Notes
 
