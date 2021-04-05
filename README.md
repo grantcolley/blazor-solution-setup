@@ -214,16 +214,19 @@ dotnet sln add IdentityProvider
                     // additional code not shown for berevity...
 ```
 
-3.4. In [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json)
-  * Set `"commandLineArgs": "/seed"`. This will ensure the database is seeded at startup.
-  * Set the `applicationUrl` to `"applicationUrl": "https://localhost:5001"`
+3.4. Create and Seed the database:
+  * In [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) set `"commandLineArgs": "/seed"`. This will ensure the database is seeded at startup.
+  * In the solution's properties window set [IdentityProvider](https://github.com/grantcolley/blazor-solution-setup/tree/main/src/IdentityProvider) as a startup project.
+  * Compile and run the solution.
+  * Remove `"commandLineArgs": "/seed"` from [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
+
+3.5. In [launchSettings.json](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json) set the `applicationUrl` to `"applicationUrl": "https://localhost:5001"`:
 
 ```C#
       {
         "profiles": {
           "SelfHost": {
             "commandName": "Project",
-            "commandLineArgs": "/seed",
             "launchBrowser": true,
             "environmentVariables": {
               "ASPNETCORE_ENVIRONMENT": "Development"
