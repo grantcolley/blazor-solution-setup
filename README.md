@@ -1,5 +1,7 @@
 # blazor-solution-setup
 
+[![Build status](https://ci.appveyor.com/api/projects/status/b63s8eprb3c05yfe?svg=true)](https://ci.appveyor.com/project/grantcolley/blazor-solution-setup)
+
 ##### Technologies
 ###### .NET 5.0, Blazor WebAssembly, Blazor Server, IdentityServer4, ASP.NET Core Web API
 \
