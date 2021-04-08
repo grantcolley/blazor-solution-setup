@@ -710,7 +710,7 @@ Microsoft.AspNetCore.Components.Web
 </AuthorizeView>
 ```
 
-6.10. In [NavMenu.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/NavMenu.razor) eiter show or hide `NavLink` for `Fetch data` and `User` based on the logged in users role: 
+6.10. In [NavMenu.razor](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/RazorComponents/Shared/NavMenu.razor) either show or hide the `NavLink` component for `Fetch data` and `User` based on whether the user is logged-in and their roles: 
   * Add a `NavLink` for the `User` component and wrap it with `<AuthorizeView Roles="blazoruser">`
   * Wrap the `NavLink` for the `Fetch data` component with `<AuthorizeView Roles="weatheruser">`
 
