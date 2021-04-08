@@ -1244,7 +1244,7 @@ Microsoft.Extensions.Http
 
 ![Alt text](/readme-images/IdentityServerLogin.png?raw=true "Login with default user accounts")
 
-9.4. If you login as *alice* and you can fetch the weather data because she is in the `weatheruser` role. However, if you login as *bob* you are not authorized to fetch the weather data.
+9.4. If you login as *alice* you can see the `Fetch data` navigation link. This is because she is in the `weatheruser` role and she has permission to fetch the weather data. If you login as *bob* you can't see the `Fetch data` navigation link because he isn't in the `weatheruser` role and is not authorized to fetch the weather data. Both *alice* and *bob* are in the `blazoruser` role so they can both see the `User` navigation link and view their claims.
 
 ![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
 
