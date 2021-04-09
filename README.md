@@ -154,7 +154,7 @@ dotnet sln add IdentityProvider
 >You can install [sqlite](https://www.sqlite.org/download.html) and query the database that is created by [SeedData.cs](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/SeedData.cs).
 
 ```C#
-                    // additional code not shown for berevity...
+                    // additional code not shown for brevity...
                     
                     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -222,7 +222,7 @@ dotnet sln add IdentityProvider
                         Log.Debug("blazoruser already exists");
                     }
                     
-                    // additional code not shown for berevity...
+                    // additional code not shown for brevity...
 ```
 
 3.4. Create and Seed the database:
@@ -347,7 +347,7 @@ dotnet sln add IdentityProvider
 ```C#
             var builder = services.AddIdentityServer(options =>
             {
-                // additional code not shown for berevity...
+                // additional code not shown for brevity...
             })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
@@ -425,7 +425,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 ```C#
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // additional code not shown for berevity...
+            // additional code not shown for brevity...
             
             app.UseRouting();
 
@@ -435,7 +435,7 @@ Microsoft.AspNetCore.Authentication.JwtBearer
 
             app.UseAuthorization();
 
-            // additional code not shown for berevity...
+            // additional code not shown for brevity...
         }
 ```
 
@@ -715,7 +715,7 @@ Microsoft.AspNetCore.Components.Web
   * Wrap the `NavLink` for the `Fetch data` component with `<AuthorizeView Roles="weatheruser">`
 
 ```C#
-        // additional code not shown for berevity...
+        // additional code not shown for brevity...
         
         <AuthorizeView Roles="weatheruser">
             <li class="nav-item px-3">
@@ -732,7 +732,7 @@ Microsoft.AspNetCore.Components.Web
             </li>
         </AuthorizeView>
         
-        // additional code not shown for berevity...
+        // additional code not shown for brevity...
 ```
 
 ## 7. Blazor WebAssembly App
@@ -992,7 +992,7 @@ Microsoft.Extensions.Http
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             
-            // additional code not shown for berevity...
+            // additional code not shown for brevity...
 ```
 
    *  Configure authentication with `AddAuthentication`. Set the port number of the `options.Authority` to `5001`, which is the port for the [IndentityProvider](https://github.com/grantcolley/blazor-solution-setup/blob/main/src/IdentityProvider/Properties/launchSettings.json).
@@ -1087,12 +1087,12 @@ Microsoft.Extensions.Http
     };
 }
 
-// additional code not shown for berevity...
+// additional code not shown for brevity...
 
 <body>
     <component type="typeof(App)" param-InitialState="initialState" render-mode="ServerPrerendered" />
 
-    // additional code not shown for berevity...
+    // additional code not shown for brevity...
 
 </body>
 </html>
