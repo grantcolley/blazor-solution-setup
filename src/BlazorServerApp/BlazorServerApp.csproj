@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>	  
     <UserSecretsId>aspnet-BlazorServerApp-86869AD6-7342-4482-A4B5-429240308809</UserSecretsId>
   </PropertyGroup>
 
