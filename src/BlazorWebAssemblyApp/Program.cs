@@ -40,7 +40,7 @@ namespace BlazorWebAssemblyApp
             {
                 //// Configure your authentication provider options here.
                 //// For more information, see https://aka.ms/blazor-standalone-auth
-                //builder.Configuration.Bind("Local", options.ProviderOptions);
+                builder.Configuration.Bind("Local", options.ProviderOptions);
                 options.ProviderOptions.Authority = "https://localhost:5001/";
                 options.ProviderOptions.ClientId = "blazorwebassemblyapp";
                 options.ProviderOptions.DefaultScopes.Add("openid");
