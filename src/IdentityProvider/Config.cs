@@ -37,6 +37,18 @@ namespace IdentityProvider
             {
                 new Client
                 {
+                    ClientId = "blazorhybridapp",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AllowedScopes = { "openid", "profile", "weatherapiread" },
+                    RedirectUris = { "myapp://callback" },
+                    PostLogoutRedirectUris = { "myapp://callback" },
+                    Enabled = true
+                },
+
+                new Client
+                {
                     ClientId = "blazorwebassemblyapp",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,

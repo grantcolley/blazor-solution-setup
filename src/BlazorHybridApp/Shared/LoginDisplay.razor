@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        @context.User.Identity.Name!
+        <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
+    </Authorized>
+    <NotAuthorized>
+        <button class="nav-link btn btn-link" @onclick="LogIn">Log in</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    private async Task LogIn(MouseEventArgs args)
+    {
+        await ((IdentityAuthenticationStateProvider)AuthenticationStateProvider).LogInAsync();
+        StateHasChanged();
+    }
+
+    private async Task LogOut(MouseEventArgs args)
+    {
+        await ((IdentityAuthenticationStateProvider)AuthenticationStateProvider).LogoutAsync();
+        StateHasChanged();
+    }
+}
