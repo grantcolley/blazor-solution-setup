@@ -32,7 +32,7 @@ namespace BlazorHybridApp
             {
                 var tokenProvider = sp.GetRequiredService<TokenProvider>();
                 var identityAuthenticationStateProviderOptions = sp.GetRequiredService<IdentityAuthenticationStateProviderOptions>();
-                identityAuthenticationStateProviderOptions.Authority = "https://localhost:5001/";
+                identityAuthenticationStateProviderOptions.Authority = "localhost:5001/";
                 identityAuthenticationStateProviderOptions.ClientId = "blazorhybridapp";
                 identityAuthenticationStateProviderOptions.AdditionalProviderParameters.Add("audience", "https://WebApi.com");
                 identityAuthenticationStateProviderOptions.Scope = "openid profile weatherapiread";
@@ -44,7 +44,7 @@ namespace BlazorHybridApp
             });
 
 #if DEBUG
-            builder.Services.AddDevHttpClient("webapi", 44320);
+            builder.Services.AddLocalDevHttpClient("webapi", 44320);
 #else
             builder.Services.AddHttpClient("webapi", client =>
             {
