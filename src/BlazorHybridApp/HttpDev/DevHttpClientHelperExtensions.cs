@@ -34,7 +34,7 @@ namespace BlazorHybridApp.HttpDev
             var devServerRootUrl = new UriBuilder("https", DevServerName, sslPort).Uri.ToString();
 
 #if WINDOWS
-            services.AddHttpClient("webapi", client =>
+            services.AddHttpClient(name, client =>
             {
                 client.BaseAddress = new UriBuilder("https", DevServerName, sslPort).Uri;
             }); 
@@ -43,7 +43,7 @@ namespace BlazorHybridApp.HttpDev
 #endif
 
 #if ANDROID
-            services.AddHttpClient("webapi", client =>
+            services.AddHttpClient(name, client =>
             {
                 client.BaseAddress = new UriBuilder("https", DevServerName, sslPort).Uri;
             })
