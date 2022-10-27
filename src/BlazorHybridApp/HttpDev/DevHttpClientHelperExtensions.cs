@@ -29,7 +29,7 @@ namespace BlazorHybridApp.HttpDev
         /// by https://gist.github.com/EdCharbeneau
         /// </para>
         /// </remarks>
-        public static IServiceCollection AddDevHttpClient(this IServiceCollection services, string name, int sslPort)
+        public static IServiceCollection AddLocalDevHttpClient(this IServiceCollection services, string name, int sslPort)
         {
             var devServerRootUrl = new UriBuilder("https", DevServerName, sslPort).Uri.ToString();
 
