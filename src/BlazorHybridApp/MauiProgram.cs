@@ -35,7 +35,7 @@ namespace BlazorHybridApp
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////
                 // https://github.com/dotnet/maui/discussions/8131
-                identityAuthenticationStateProviderOptions.Authority = $"{LocalDevHttpClientHelper.DevServerName}:5001/";
+                identityAuthenticationStateProviderOptions.Authority = $"https://{LocalDevHttpClientHelper.DevServerName}:5001/";
                 //////////////////////////////////////////////////////////////////////////////////////////////////
 
                 identityAuthenticationStateProviderOptions.ClientId = "blazorhybridapp";
@@ -43,6 +43,7 @@ namespace BlazorHybridApp
                 identityAuthenticationStateProviderOptions.Scope = "openid profile weatherapiread";
                 identityAuthenticationStateProviderOptions.RoleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
                 identityAuthenticationStateProviderOptions.RedirectUri = "myapp://callback";
+                identityAuthenticationStateProviderOptions.PostLogoutRedirectUris = "myapp://callback";
                 //identityAuthenticationStateProviderOptions.RedirectUri = "http://localhost/callback"; // https://github.com/dotnet/maui/issues/8382
 
 #if DEBUG
