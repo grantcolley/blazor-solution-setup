@@ -22,10 +22,11 @@ namespace BlazorHybridApp.Authentication
         {
             var oidcClientOptions = new OidcClientOptions
             {
-                Authority = $"https://{options.Authority}",
+                Authority = options.Authority,
                 ClientId = options.ClientId,
                 Scope = options.Scope,
                 RedirectUri = options.RedirectUri,
+                PostLogoutRedirectUri = options.PostLogoutRedirectUris,
                 Browser = options.Browser
             };
 
