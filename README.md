@@ -29,6 +29,8 @@ The following steps will setup the solution and its projects, using their defaul
 7. [Blazor WebAssembly App](#7-blazor-webassembly-app)
 8. [Blazor Server App](#8-blazor-server-app)
 9. [Running the Solution](#9-running-the-solution)
+10. [Add a Maui Blazor Hybrid Client](#10-add-a-maui-blazor-hybrid-client)
+
  * [Notes](#notes)
     * [IHttpClientFactory](#ihttpclientfactory)
     * [IdentityServer4](#identityserver4)
@@ -1262,6 +1264,89 @@ Microsoft.Extensions.Http
 9.4. If you login as *alice* you can see the `Fetch data` navigation link. This is because she is in the `weatheruser` role and she has permission to fetch the weather data. If you login as *bob* you can't see the `Fetch data` navigation link because he isn't in the `weatheruser` role and is not authorized to fetch the weather data. Both *alice* and *bob* are in the `blazoruser` role so they can both see the `User` navigation link and view their claims.
 
 ![Alt text](/readme-images/BlazorRunning.png?raw=true "Blazor Solution Running")
+
+## 10. Add a Maui Blazor Hybrid Client
+Frst follow the [Auth0](https://auth0.com/blog/add-authentication-to-dotnet-maui-apps-with-auth0/) example for authenticating the user with Auth0.
+
+Then follow [ASP.NET Core Blazor Hybrid authentication and authorization](https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/security/?view=aspnetcore-6.0&pivots=maui#handle-authentication-within-the-blazorwebview-option-2) to create a custom AuthenticationStateProvider called [Auth0AuthenticationStateProvider.cs](https://github.com/grantcolley/blazor-auth0/blob/main/src/BlazorHybridApp/Auth0/Auth0AuthenticationStateProvider.cs).
+
+> Note: In [LogInAsync](https://github.com/grantcolley/blazor-auth0/blob/3f7c4b44b346398a1fb59a44bd9f291e1b782478/src/BlazorHybridApp/Auth0/Auth0AuthenticationStateProvider.cs#L60-L72) find the role claim where RoleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" and re-add the claim as *Role*.
+```C#
+        public async Task LogInAsync()
+        {
+            var loginRequest = new LoginRequest { FrontChannelExtraParameters = new Parameters(options.AdditionalProviderParameters) };
+            var loginResult = await oidcClient.LoginAsync(loginRequest);
+            tokenProvider.RefreshToken = loginResult.RefreshToken;
+            tokenProvider.AccessToken = loginResult.AccessToken;
+            tokenProvider.IdToken = loginResult.IdentityToken;
+            currentUser = loginResult.User;
+
+            if (currentUser.Identity.IsAuthenticated)
+            {
+                var identity = (ClaimsIdentity)currentUser.Identity;
+                var roleClaims = identity.FindAll(options.RoleClaim).ToArray();
+
+                if (roleClaims != null && roleClaims.Any())
+                {
+                    foreach (var existingClaim in roleClaims)
+                    {
+                        identity.AddClaim(new Claim(identity.RoleClaimType, existingClaim.Value));
+                    }
+                }
+            }
+
+            NotifyAuthenticationStateChanged(
+            Task.FromResult(new AuthenticationState(currentUser)));
+        }
+```
+   
+Configure authentication in [MauiProgram.cs](https://github.com/grantcolley/blazor-auth0/blob/3f7c4b44b346398a1fb59a44bd9f291e1b782478/src/BlazorHybridApp/MauiProgram.cs#L29-L48).
+```C#
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddSingleton<TokenProvider>();
+            builder.Services.AddScoped<Auth0AuthenticationStateProviderOptions>();
+            builder.Services.AddScoped<Auth0AuthenticationStateProvider>();
+
+            builder.Services.AddScoped<AuthenticationStateProvider>(sp =>
+            {
+                var tokenProvider = sp.GetRequiredService<TokenProvider>();
+                var auth0AuthenticationStateProviderOptions = sp.GetRequiredService<Auth0AuthenticationStateProviderOptions>();
+
+                auth0AuthenticationStateProviderOptions.Domain = "<YOUR_AUTH0_DOMAIN>";
+                auth0AuthenticationStateProviderOptions.ClientId = "<YOUR_CLIENT_ID>";
+                auth0AuthenticationStateProviderOptions.AdditionalProviderParameters.Add("audience", "<YOUR_AUDIENCE>");
+                auth0AuthenticationStateProviderOptions.Scope = "openid profile";
+                auth0AuthenticationStateProviderOptions.RoleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+                auth0AuthenticationStateProviderOptions.RedirectUri = "myapp://callback";
+                //auth0AuthenticationStateProviderOptions.RedirectUri = "http://localhost/callback"; // https://github.com/dotnet/maui/issues/8382
+
+                return sp.GetRequiredService<Auth0AuthenticationStateProvider>();
+            });
+```
+
+Finally,  connect from Android emulator to the web api on local host - bypassing SSL connections to localhost on Android by creating [DevHttpClientHelperExtensions](https://github.com/grantcolley/blazor-auth0/blob/main/src/BlazorHybridApp/HttpDev/DevHttpClientHelperExtensions.cs).
+- https://github.com/dotnet/maui/discussions/8131
+- https://gist.github.com/Eilon/49e3c5216abfa3eba81e453d45cba2d4
+- https://gist.github.com/EdCharbeneau/ed3d44d8298319c201f276de7a0580f1   
+- https://www.youtube.com/watch?v=jcw-YBrwuZQ
+
+Register the dev HttpClient in [MauiProgram.cs](https://github.com/grantcolley/blazor-auth0/blob/3f7c4b44b346398a1fb59a44bd9f291e1b782478/src/BlazorHybridApp/MauiProgram.cs#L50-L57).
+```C#
+#if DEBUG
+            builder.Services.AddLocalDevHttpClient("webapi", 44320);
+#else
+            builder.Services.AddHttpClient("webapi", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44320");
+            });
+#endif
+```
+   
+>NOTE:  There is currently a [known issue](https://github.com/dotnet/maui/issues/2702) using WebAuthenticator on Windows.
+> - [WebAuthenticationBroker API that supports all WinAppSDK OS's and application types #441](https://github.com/microsoft/WindowsAppSDK/issues/441)
+> - [Web authenticator](https://learn.microsoft.com/en-us/dotnet/maui/platform-integration/communication/authentication?tabs=windows#get-started)
+   
+>NOTE: If there is a [NullReferenceException on CallbackResult](https://github.com/dotnet/maui/issues/3760) you may need to add the following part into your [AndroidManifest.xml](https://github.com/grantcolley/blazor-auth0/blob/main/src/BlazorHybridApp/Platforms/Android/AndroidManifest.xml) file between the `<manifest>` tags.
 
 ## Notes
 
