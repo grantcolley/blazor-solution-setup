@@ -23,5 +23,7 @@
         public Dictionary<string, string> AdditionalProviderParameters { get; set; }
 
         public IdentityModel.OidcClient.Browser.IBrowser Browser { get; set; }
+
+        public HttpClient HttpClient { get; set; }
     }
 }
