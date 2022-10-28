@@ -16,6 +16,8 @@
 
         public string RedirectUri { get; set; }
 
+        public string PostLogoutRedirectUris { get; set; }
+
         public string Scope { get; set; }
 
         public string RoleClaim { get; set; }
