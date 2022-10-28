@@ -20,14 +20,21 @@ namespace BlazorHybridApp.Authentication
 
         public IdentityAuthenticationStateProvider(IdentityAuthenticationStateProviderOptions options, TokenProvider tokenProvider)
         {
-            oidcClient = new OidcClient(new OidcClientOptions
+            var oidcClientOptions = new OidcClientOptions
             {
                 Authority = $"https://{options.Authority}",
                 ClientId = options.ClientId,
                 Scope = options.Scope,
                 RedirectUri = options.RedirectUri,
                 Browser = options.Browser
-            });
+            };
+
+            if(options.HttpClient != null)
+            {
+                oidcClientOptions.HttpClientFactory = _ => options.HttpClient;
+            }
+
+            oidcClient = new OidcClient(oidcClientOptions);
 
             this.options = options;
             this.tokenProvider = tokenProvider;
