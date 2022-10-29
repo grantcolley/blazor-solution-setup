@@ -1284,13 +1284,22 @@ Then follow [ASP.NET Core Blazor Hybrid authentication and authorization](https:
             if (currentUser.Identity.IsAuthenticated)
             {
                 var identity = (ClaimsIdentity)currentUser.Identity;
-                var roleClaims = identity.FindAll(options.RoleClaim).ToArray();
 
-                if (roleClaims != null && roleClaims.Any())
+                if (identity.RoleClaimType != options.RoleClaim)
                 {
-                    foreach (var existingClaim in roleClaims)
+                    var roleClaims = identity.FindAll(options.RoleClaim).ToArray();
+
+                    if (roleClaims != null && roleClaims.Any())
                     {
-                        identity.AddClaim(new Claim(identity.RoleClaimType, existingClaim.Value));
+                        foreach (var roleClaim in roleClaims)
+                        {
+                            identity.RemoveClaim(roleClaim);
+                        }
+
+                        foreach (var roleClaim in roleClaims)
+                        {
+                            identity.AddClaim(new Claim(identity.RoleClaimType, roleClaim.Value));
+                        }
                     }
                 }
             }
