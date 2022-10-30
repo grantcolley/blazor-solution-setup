@@ -101,7 +101,8 @@ namespace BlazorHybridApp.Authentication
             };
 
             var logoutRequest = new LogoutRequest();
-            var endSessionUrl = new RequestUrl($"{oidcClient.Options.Authority}/v2/logout")
+
+            var endSessionUrl = new RequestUrl($"{oidcClient.Options.Authority}/connect/endsession")
               .Create(new Parameters(logoutParameters));
             var browserOptions = new BrowserOptions(endSessionUrl, oidcClient.Options.RedirectUri)
             {
