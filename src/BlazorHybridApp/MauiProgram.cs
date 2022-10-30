@@ -30,6 +30,21 @@ namespace BlazorHybridApp
             builder.Services.AddScoped<IdentityAuthenticationStateProviderOptions>();
             builder.Services.AddScoped<IdentityAuthenticationStateProvider>();
 
+#if DEBUG
+            builder.Services.AddLocalDevHttpClient("auth", 5001);
+            builder.Services.AddLocalDevHttpClient("webapi", 44320);
+#else
+            builder.Services.AddHttpClient("auth", client =>
+            {
+                client.BaseAddress = new Uri($"https://{LocalDevHttpClientHelper.DevServerName}:5001");
+            });
+
+            builder.Services.AddHttpClient("webapi", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44320");
+            });
+#endif
+
             builder.Services.AddScoped<AuthenticationStateProvider>(sp =>
             {
                 var tokenProvider = sp.GetRequiredService<TokenProvider>();
@@ -37,32 +52,29 @@ namespace BlazorHybridApp
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////
                 // https://github.com/dotnet/maui/discussions/8131
-                identityAuthenticationStateProviderOptions.Authority = $"https://{LocalDevHttpClientHelper.DevServerName}:5001/";
+                identityAuthenticationStateProviderOptions.Authority = $"https://{LocalDevHttpClientHelper.DevServerName}:5001";
                 //////////////////////////////////////////////////////////////////////////////////////////////////
 
                 identityAuthenticationStateProviderOptions.ClientId = "blazorhybridapp";
-                identityAuthenticationStateProviderOptions.AdditionalProviderParameters.Add("audience", "https://WebApi.com");
+                identityAuthenticationStateProviderOptions.AdditionalProviderParameters.Add("audience", "weatherapi");
                 identityAuthenticationStateProviderOptions.Scope = "openid profile weatherapiread";
                 identityAuthenticationStateProviderOptions.RoleClaim = "role";
+
+#if WINDOWS
+                // https://github.com/dotnet/maui/issues/8382
+                identityAuthenticationStateProviderOptions.RedirectUri = "http://localhost/callback";
+                identityAuthenticationStateProviderOptions.PostLogoutRedirectUris = "http://localhost/callback";
+#else
                 identityAuthenticationStateProviderOptions.RedirectUri = "myapp://callback";
                 identityAuthenticationStateProviderOptions.PostLogoutRedirectUris = "myapp://callback";
-                //identityAuthenticationStateProviderOptions.RedirectUri = "http://localhost/callback"; // https://github.com/dotnet/maui/issues/8382
-
-#if DEBUG
-                identityAuthenticationStateProviderOptions.HttpClient = LocalDevHttpClientHelper.GetLocalDevHttpClient();
 #endif
+
+                var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+                var httpClient = httpClientFactory.CreateClient("auth");
+                identityAuthenticationStateProviderOptions.HttpClient = httpClient;
 
                 return sp.GetRequiredService<IdentityAuthenticationStateProvider>();
             });
-
-#if DEBUG
-            builder.Services.AddLocalDevHttpClient("webapi", 44320);
-#else
-            builder.Services.AddHttpClient("webapi", client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44320");
-            });
-#endif
 
             builder.Services.AddTransient<IWeatherForecastService, WeatherForecastService>(sp =>
             {
