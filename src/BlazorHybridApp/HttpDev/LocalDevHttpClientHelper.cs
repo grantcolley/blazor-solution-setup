@@ -9,18 +9,6 @@ namespace BlazorHybridApp.HttpDev
 {
     public static class LocalDevHttpClientHelper
     {
-        public static HttpClient GetLocalDevHttpClient()
-        {
-#if WINDOWS
-            return new HttpClient();
-#elif ANDROID
-            var httpClientHandler = GetCustomAndroidMessageHandler();
-            return new HttpClient(httpClientHandler);
-#else
-            throw new PlatformNotSupportedException("Only Windows and Android currently supported.");
-#endif
-        }
-
         /// <summary>
         /// Adds the <see cref="IHttpClientFactory"/> and related services to the <see cref="IServiceCollection"/> and configures
         /// a named <see cref="HttpClient"/> to use localhost or 10.0.2.2 and bypass certificate checking on Android.
@@ -78,7 +66,6 @@ namespace BlazorHybridApp.HttpDev
 #else
         throw new PlatformNotSupportedException("Only Windows and Android currently supported.");
 #endif
-
 
 #if ANDROID        
         internal static CustomAndroidMessageHandler GetCustomAndroidMessageHandler()
