@@ -1,5 +1,9 @@
 # blazor-solution-setup
 
+> **Note**
+> 
+> *Removing BlazorHybridApp from the solution because the build fails as workloads are no longer supported.*
+
 [![Build status](https://ci.appveyor.com/api/projects/status/b63s8eprb3c05yfe?svg=true)](https://ci.appveyor.com/project/grantcolley/blazor-solution-setup)
 
 ##### Technologies
