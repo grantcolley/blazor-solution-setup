@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/b63s8eprb3c05yfe?svg=true)](https://ci.appveyor.com/project/grantcolley/blazor-solution-setup)
 
 ##### Technologies
-###### .NET 6.0, Blazor WebAssembly, Blazor Server, MAUI Blazor, IdentityServer4, ASP.NET Core Web API
+###### .NET 6.0, Blazor WebAssembly, Blazor Server, MAUI Blazor, ASP.NET Core Web API, IdentityServer4, OAuth 2.0
 \
 Setup a solution for a *Blazor* app supporting the hosting models for *Blazor WebAssembly*, *Blazor Server* and *MAUI Blazor Hybrid*, a *WebApi* for accessing data and an *Identity Provider* for authentication:
  * **Blazor WebAssembly** - running client-side on the browser.
